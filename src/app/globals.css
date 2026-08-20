@@ -1,26 +1,230 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ══════════════════════════════════════════════════════════════════════
+   KARMAURA · HOME — design tokens
+   Deep forest ground, aged brass accents, unbleached cream.
+   ══════════════════════════════════════════════════════════════════ */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@theme {
+  /* ground */
+  --color-forest: #2b4220;
+  --color-forest-deep: #243a1b;
+  --color-forest-night: #1b2712;
+  --color-forest-black: #15200e;
+  --color-forest-lit: #35542b;
+  --color-forest-shade: #233819;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* brass */
+  --color-gold: #ac9d62;
+  --color-gold-bright: #c6a15b;
+  --color-brass: #8a7c4e;
+
+  /* paper */
+  --color-cream: #efdfc3;
+  --color-cream-light: #fbf7ef;
+  --color-sand: #e0c69a;
+
+  /* ink on paper */
+  --color-olive: #4a5238;
+  --color-moss: #6b5f33;
+
+  --font-serif: var(--font-eb-garamond), "EB Garamond", Georgia, serif;
+  --font-sans: var(--font-work-sans), "Work Sans", system-ui, sans-serif;
+
+  --radius-km: 8px;
+
+  --ease-km: cubic-bezier(0.16, 0.84, 0.24, 1);
+
+  --animate-aura: km-aura 9s ease-in-out infinite;
+  --animate-rise: km-rise 0.75s cubic-bezier(0.16, 0.84, 0.24, 1);
+  --animate-fade: km-fade 0.35s ease;
+  --animate-drawer: km-drawer 0.5s cubic-bezier(0.16, 0.84, 0.24, 1);
+  --animate-sheet: km-sheet 0.5s cubic-bezier(0.16, 0.84, 0.24, 1) both;
+  --animate-toast: km-toast 2.6s ease forwards;
+  --animate-slow: km-slow 22s ease-in-out infinite alternate;
+  --animate-bag: km-bag 0.52s cubic-bezier(0.16, 0.84, 0.24, 1);
+
+  @keyframes km-aura {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.14); }
+  }
+  @keyframes km-rise {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes km-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes km-drawer {
+    from { transform: translateX(102%); }
+    to { transform: none; }
+  }
+  @keyframes km-sheet {
+    from { opacity: 0; transform: translateY(-14px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes km-toast {
+    0% { opacity: 0; transform: translateY(16px); }
+    10%, 88% { opacity: 1; transform: none; }
+    100% { opacity: 0; transform: translateY(-8px); }
+  }
+  @keyframes km-slow {
+    0% { transform: scale(1.04); }
+    100% { transform: scale(1.13); }
+  }
+  @keyframes km-bag {
+    0% { transform: scale(1); }
+    45% { transform: scale(1.22); }
+    100% { transform: scale(1); }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ── base ────────────────────────────────────────────────────────── */
+/* Everything here belongs in @layer base: unlayered rules outrank every
+   Tailwind utility, so a bare `button { background: none }` would quietly
+   beat `bg-gold` at the call site. */
+
+@layer base {
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--color-forest-black);
+    color: var(--color-cream);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  p { text-wrap: pretty; margin: 0; }
+  h1, h2, h3, h4 { margin: 0; font-weight: 400; }
+  button {
+    font-family: inherit;
+    cursor: pointer;
+    border: 0;
+    background: none;
+    color: inherit;
+  }
+  input, textarea, select { font-family: inherit; font-size: 15px; }
+  img { display: block; max-width: 100%; }
+
+  ::selection { background: rgba(172, 157, 98, 0.32); }
+  :focus-visible {
+    outline: 2px solid var(--color-gold-bright);
+    outline-offset: 3px;
+  }
+
+  ::-webkit-scrollbar { width: 9px; height: 9px; }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(172, 157, 98, 0.32);
+    border-radius: 9px;
+  }
+  ::-webkit-scrollbar-track { background: transparent; }
+}
+
+/* ── component classes ───────────────────────────────────────────── */
+
+@layer components {
+  /* the page shell is the query container every clamp() measures against */
+  .km-shell { container-type: inline-size; }
+
+  /* horizontal page rhythm, straight from the source design */
+  .km-gutter { padding-inline: clamp(20px, 5cqw, 72px); }
+
+  .km-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+  }
+
+  .km-label {
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  /* the primary call — a hairline brass box that floods on hover */
+  .km-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 15px 30px;
+    border: 1px solid var(--color-gold);
+    border-radius: var(--radius-km);
+    background: transparent;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    transition: background 0.4s ease, color 0.4s ease, transform 0.4s var(--ease-km);
+  }
+  .km-btn:active { transform: translateY(0); }
+
+  .km-btn-dark { color: var(--color-cream); }
+  .km-btn-dark:hover { background: var(--color-gold); color: var(--color-forest); transform: translateY(-2px); }
+
+  .km-btn-light { color: var(--color-forest); }
+  .km-btn-light:hover { background: var(--color-gold); color: var(--color-cream-light); transform: translateY(-2px); }
+
+  .km-btn-quiet {
+    border-color: rgba(239, 223, 195, 0.22);
+    color: rgba(239, 223, 195, 0.86);
+  }
+  .km-btn-quiet:hover { border-color: rgba(239, 223, 195, 0.5); color: var(--color-cream); background: transparent; transform: none; }
+
+  /* a link that widens its own stride on hover */
+  .km-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding-bottom: 7px;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(172, 157, 98, 0.4);
+    transition: gap 0.35s ease, border-color 0.35s ease, color 0.3s ease;
+  }
+  .km-arrow:hover { gap: 16px; border-bottom-color: var(--color-gold-bright); }
+
+  .km-field {
+    width: 100%;
+    padding: 14px;
+    border-radius: var(--radius-km);
+    outline: none;
+    transition: border-color 0.3s ease, background 0.3s ease;
+  }
+  .km-field-light {
+    border: 1px solid rgba(95, 106, 66, 0.26);
+    background: var(--color-cream-light);
+    color: var(--color-forest);
+  }
+  .km-field-light:focus { border-color: var(--color-gold); }
+  .km-field-light::placeholder { color: rgba(107, 95, 51, 0.6); }
+
+  .km-field-dark {
+    border: 1px solid rgba(172, 157, 98, 0.28);
+    background: rgba(43, 66, 32, 0.6);
+    color: var(--color-cream);
+  }
+  .km-field-dark:focus { border-color: var(--color-gold-bright); }
+  .km-field-dark::placeholder { color: rgba(239, 223, 195, 0.45); }
+
+  /* a rule that starts brass and dissolves to nothing */
+  .km-rule {
+    height: 1px;
+    background: linear-gradient(90deg, var(--color-gold), rgba(172, 157, 98, 0));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
