@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { Money } from "@phosphor-icons/react/ssr";
 import { useStore } from "@/context/store";
 import { formatDate, money, shippingLabel } from "@/lib/commerce";
 
@@ -33,7 +34,10 @@ export default function OrderScreen({ id }: { id: string }) {
           <Link href="/account/orders" className="km-btn km-btn-light">
             Order history
           </Link>
-          <Link href="/shop" className="km-arrow border-b-[rgba(95,106,66,.3)] text-olive">
+          <Link
+            href="/shop"
+            className="km-arrow border-b-[rgba(95,106,66,.3)] text-olive"
+          >
             Back to the collection
           </Link>
         </div>
@@ -108,6 +112,19 @@ export default function OrderScreen({ id }: { id: string }) {
           <div className="flex items-baseline justify-between pt-4">
             <span className="km-label">Total</span>
             <span className="font-serif text-[26px]">{money(order.total)}</span>
+          </div>
+
+          <div className="mt-4 flex items-start gap-2.5 rounded-lg border border-gold/40 bg-cream-light p-4 text-left">
+            <Money
+              size={19}
+              weight="light"
+              className="mt-0.5 shrink-0 text-gold"
+            />
+            <p className="text-[13px] leading-[1.6] text-moss">
+              <span className="text-forest">Cash on delivery.</span> Have{" "}
+              {money(order.total)} ready for the courier — nothing has been
+              charged.
+            </p>
           </div>
         </div>
 

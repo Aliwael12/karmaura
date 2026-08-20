@@ -40,9 +40,10 @@ Runs on http://localhost:3000 (the checked-in launch config uses 3210).
 - **Bag** — add from a card, a product page or the drawer; quantity steppers,
   remove, a free-delivery threshold at $250, and a toast plus a bag-icon pulse
   on every add.
-- **Checkout** — validates the delivery and payment fields, mints an order
-  number (`KM-4820`, `KM-4821`, …), empties the bag and lands on the receipt.
-  Nothing is charged and no card details go anywhere.
+- **Checkout** — validates the delivery address, mints an order number
+  (`KM-4820`, `KM-4821`, …), empties the bag and lands on the receipt. Payment
+  is **cash on delivery only**: there is no card field anywhere in the site, and
+  nothing is ever charged.
 - **Account** — any email and password signs in. A fresh account is handed
   seed orders, addresses and a repair so the tabs have something to show;
   anything you create yourself is never overwritten.

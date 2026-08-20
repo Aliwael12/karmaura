@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
-import { Minus, Plus } from "@phosphor-icons/react/ssr";
+import { Minus, Money, Plus } from "@phosphor-icons/react/ssr";
 import { useStore } from "@/context/store";
 import {
   FREE_DELIVERY_FROM,
@@ -19,20 +19,13 @@ type Form = {
   line1: string;
   city: string;
   postcode: string;
-  card: string;
 };
 
-const EMPTY: Form = { name: "", line1: "", city: "", postcode: "", card: "" };
+const EMPTY: Form = { name: "", line1: "", city: "", postcode: "" };
 
 export default function CartScreen() {
-  const {
-    hydrated,
-    lines,
-    count,
-    setQty,
-    removeFromCart,
-    addresses,
-  } = useStore();
+  const { hydrated, lines, count, setQty, removeFromCart, addresses } =
+    useStore();
 
   const [giftNote, setGiftNote] = useState("");
 
@@ -226,7 +219,7 @@ function CheckoutPanel({
       (key) => !form[key].trim(),
     );
     if (missing.length > 0) {
-      setError("Delivery and payment need every field before we can send it.");
+      setError("We need the whole delivery address before we can send it.");
       return;
     }
     setError("");
@@ -303,18 +296,16 @@ function CheckoutPanel({
             className="km-field km-field-light min-w-0"
           />
         </div>
-        <input
-          type="text"
-          inputMode="numeric"
-          value={form.card}
-          onChange={(e) => setForm({ ...form, card: e.target.value })}
-          placeholder="Card number"
-          className="km-field km-field-light"
-        />
-        <p className="text-[11px] leading-[1.5] text-moss">
-          A demonstration checkout — nothing is charged and no card details
-          leave this page.
-        </p>
+        <div className="mt-1 rounded-lg border border-gold/40 bg-cream-light p-4">
+          <p className="mb-2 flex items-center gap-2.5 text-[13px] tracking-[.06em] text-forest uppercase">
+            <Money size={19} weight="light" className="text-gold" />
+            Cash on delivery
+          </p>
+          <p className="text-[13px] leading-[1.6] text-moss">
+            Pay the courier when the piece reaches you — it is the only way we
+            take payment. Nothing is charged now.
+          </p>
+        </div>
       </div>
 
       <div className="flex justify-between py-2.5 text-sm text-olive">
