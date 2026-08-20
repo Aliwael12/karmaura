@@ -27,8 +27,6 @@ export default function CartScreen() {
   const { hydrated, lines, count, setQty, removeFromCart, addresses } =
     useStore();
 
-  const [giftNote, setGiftNote] = useState("");
-
   /* the signed-in visitor's default address seeds the delivery panel; keying
      the panel on it re-seeds the fields if the store hydrates late */
   const preset = addresses.find((a) => a.isDefault) ?? addresses[0];
@@ -147,31 +145,10 @@ export default function CartScreen() {
                 </Link>
               </div>
             )}
-
-            <div className="mt-[30px] rounded-lg border border-[rgba(95,106,66,.2)] bg-cream p-[22px]">
-              <label
-                htmlFor="km-gift"
-                className="km-label mb-3.5 block text-olive"
-              >
-                Gift note
-              </label>
-              <textarea
-                id="km-gift"
-                rows={3}
-                value={giftNote}
-                onChange={(e) => setGiftNote(e.target.value)}
-                placeholder="We copy it out in ink on parchment"
-                className="km-field km-field-light resize-y font-serif text-base italic"
-              />
-            </div>
           </div>
 
           {/* ── delivery and payment ──────────────────────────── */}
-          <CheckoutPanel
-            key={preset?.id ?? "blank"}
-            preset={preset}
-            giftNote={giftNote}
-          />
+          <CheckoutPanel key={preset?.id ?? "blank"} preset={preset} />
         </div>
       </section>
     </div>
@@ -180,7 +157,6 @@ export default function CartScreen() {
 
 function CheckoutPanel({
   preset,
-  giftNote,
 }: {
   preset?: {
     id: string;
@@ -189,7 +165,6 @@ function CheckoutPanel({
     city: string;
     postcode: string;
   };
-  giftNote: string;
 }) {
   const { lines, subtotal, shipping, total, placeOrder, user } = useStore();
   const router = useRouter();
@@ -231,7 +206,6 @@ function CheckoutPanel({
         city: form.city,
         postcode: form.postcode,
       },
-      giftNote,
     });
     if (!order) {
       setPlacing(false);

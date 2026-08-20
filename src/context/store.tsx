@@ -51,7 +51,6 @@ export type Order = {
   shipping: number;
   total: number;
   ship: { name: string; line1: string; city: string; postcode: string };
-  giftNote: string;
   status: OrderStatus;
 };
 
@@ -82,35 +81,33 @@ const SEED_ORDERS: Order[] = [
     id: "KM-4791",
     placedAt: "2026-05-14T10:20:00.000Z",
     lines: [
-      { id: "sahel", name: "Sahel Bowl", qty: 2, price: 96 },
-      { id: "halim", name: "Halim Cup Set", qty: 1, price: 74 },
+      { id: "sahel", name: "Sahel Bowl", qty: 2, price: 4800 },
+      { id: "halim", name: "Halim Cup Set", qty: 1, price: 3700 },
     ],
-    subtotal: 266,
+    subtotal: 13300,
     shipping: 0,
-    total: 266,
+    total: 13300,
     ship: {
       name: "Nadia Farouk",
       line1: "8 Sharia Ismail Mohamed",
       city: "Cairo",
       postcode: "11211",
     },
-    giftNote: "",
     status: "Delivered",
   },
   {
     id: "KM-4803",
     placedAt: "2026-07-02T16:05:00.000Z",
-    lines: [{ id: "layla", name: "Layla Throw", qty: 1, price: 240 }],
-    subtotal: 240,
-    shipping: 18,
-    total: 258,
+    lines: [{ id: "layla", name: "Layla Throw", qty: 1, price: 12000 }],
+    subtotal: 12000,
+    shipping: 900,
+    total: 12900,
     ship: {
       name: "Nadia Farouk",
       line1: "8 Sharia Ismail Mohamed",
       city: "Cairo",
       postcode: "11211",
     },
-    giftNote: "For the winter, and for you.",
     status: "On its way",
   },
 ];
@@ -173,10 +170,7 @@ type StoreValue = {
   signOut: () => void;
 
   orders: Order[];
-  placeOrder: (details: {
-    ship: Order["ship"];
-    giftNote: string;
-  }) => Order | null;
+  placeOrder: (details: { ship: Order["ship"] }) => Order | null;
 
   addresses: Address[];
   addAddress: (a: Omit<Address, "id" | "isDefault">) => void;
@@ -239,7 +233,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!hydrated) return;
-    const payload: Persisted = { cart, saved, user, orders, addresses, repairs };
+    const payload: Persisted = {
+      cart,
+      saved,
+      user,
+      orders,
+      addresses,
+      repairs,
+    };
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
     } catch {
@@ -333,7 +334,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   }, [flash]);
 
   const placeOrder = useCallback(
-    ({ ship, giftNote }: { ship: Order["ship"]; giftNote: string }) => {
+    ({ ship }: { ship: Order["ship"] }) => {
       const lines = linesOf(cart);
       if (lines.length === 0) return null;
       const subtotal = subtotalOf(cart);
@@ -351,7 +352,6 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         shipping,
         total: subtotal + shipping,
         ship,
-        giftNote,
         status: "In the atelier",
       };
       setOrders((current) => [order, ...current]);

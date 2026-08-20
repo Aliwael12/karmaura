@@ -1,9 +1,5 @@
 export type CategorySlug =
-  | "ceramics"
-  | "textiles"
-  | "tableware"
-  | "wall"
-  | "storage";
+  "ceramics" | "textiles" | "tableware" | "wall" | "storage";
 
 export type ArtKind =
   | "vessel"
@@ -36,7 +32,8 @@ export const CATEGORIES: Category[] = [
     slug: "ceramics",
     name: "Ceramics & vessels",
     short: "Ceramics",
-    blurb: "Thrown on the wheel in Fustat, left unglazed where the hand meets it.",
+    blurb:
+      "Thrown on the wheel in Fustat, left unglazed where the hand meets it.",
   },
   {
     slug: "textiles",
@@ -48,7 +45,8 @@ export const CATEGORIES: Category[] = [
     slug: "tableware",
     name: "Tableware",
     short: "Tableware",
-    blurb: "For the table that stays laid — serving pieces made to be used daily.",
+    blurb:
+      "For the table that stays laid — serving pieces made to be used daily.",
   },
   {
     slug: "wall",
@@ -85,13 +83,13 @@ export const PRODUCTS: Product[] = [
     id: "amara",
     name: "Amara Vessel",
     category: "ceramics",
-    price: 180,
+    price: 9000,
     blurb:
       "A tall, hand-thrown vessel left unglazed outside so the clay keeps its tooth. Glazed within, so it holds water.",
-    material: "Nile Delta stoneware, matte clay body, food-safe interior glaze.",
+    material:
+      "Nile Delta stoneware, matte clay body, food-safe interior glaze.",
     dim: "H 24 cm · Ø 16 cm · 1.4 kg",
-    care:
-      "Rinse by hand. The unglazed body darkens slowly with use — that is the piece settling in.",
+    care: "Rinse by hand. The unglazed body darkens slowly with use — that is the piece settling in.",
     art: "vessel",
     maker: "Hoda & Sameh, Fustat",
     leadTime: "Dispatched within 5 working days",
@@ -101,7 +99,7 @@ export const PRODUCTS: Product[] = [
     id: "sahel",
     name: "Sahel Bowl",
     category: "ceramics",
-    price: 96,
+    price: 4800,
     blurb:
       "A wide, shallow bowl for fruit, keys, or nothing at all. Thrown thin at the rim, heavy at the foot.",
     material: "Stoneware, oatmeal glaze pooling to olive at the well.",
@@ -116,7 +114,7 @@ export const PRODUCTS: Product[] = [
     id: "nour",
     name: "Nour Carafe",
     category: "ceramics",
-    price: 128,
+    price: 6400,
     blurb:
       "A carafe with a cut lip that pours without a drip. Made to sit out on the table all day.",
     material: "Stoneware, clear glaze, unglazed collar.",
@@ -131,8 +129,9 @@ export const PRODUCTS: Product[] = [
     id: "wadi",
     name: "Wadi Planter",
     category: "ceramics",
-    price: 145,
-    blurb: "A footed planter with a drainage well, sized for a mature fig or olive.",
+    price: 7200,
+    blurb:
+      "A footed planter with a drainage well, sized for a mature fig or olive.",
     material: "Terracotta with a sand slip, sealed base.",
     dim: "H 30 cm · Ø 26 cm",
     care: "Frost-hardy. Empty the well after heavy watering.",
@@ -145,7 +144,7 @@ export const PRODUCTS: Product[] = [
     id: "layla",
     name: "Layla Throw",
     category: "textiles",
-    price: 240,
+    price: 12000,
     blurb:
       "Hand-loomed in a single width, undyed, with a hand-knotted fringe at both ends.",
     material: "Fayoum wool, undyed, hand-loomed.",
@@ -160,7 +159,7 @@ export const PRODUCTS: Product[] = [
     id: "sabaa",
     name: "Sabaa Cushion",
     category: "textiles",
-    price: 88,
+    price: 4400,
     blurb:
       "A heavy linen cushion with a slubbed weave and a hidden linen tie instead of a zip.",
     material: "Washed linen, feather-down inner.",
@@ -175,7 +174,7 @@ export const PRODUCTS: Product[] = [
     id: "dune",
     name: "Dune Runner",
     category: "textiles",
-    price: 165,
+    price: 8250,
     blurb:
       "A narrow table runner woven with an off-set stripe, so it reads differently either way round.",
     material: "Linen and cotton, stone and clay.",
@@ -190,7 +189,7 @@ export const PRODUCTS: Product[] = [
     id: "zahra",
     name: "Zahra Platter",
     category: "tableware",
-    price: 132,
+    price: 6600,
     blurb:
       "An oval serving platter with a raised lip. Large enough for a whole fish or a flatbread.",
     material: "Stoneware, sand glaze, unglazed rim.",
@@ -205,7 +204,7 @@ export const PRODUCTS: Product[] = [
     id: "halim",
     name: "Halim Cup Set",
     category: "tableware",
-    price: 74,
+    price: 3700,
     blurb:
       "Four handleless cups, each thrown a little differently. For tea, coffee, or the last of the wine.",
     material: "Stoneware, four cups, mixed glazes.",
@@ -220,7 +219,7 @@ export const PRODUCTS: Product[] = [
     id: "anbar",
     name: "Anbar Board",
     category: "tableware",
-    price: 110,
+    price: 5500,
     blurb:
       "A thick olive-wood board with a hand-cut finger notch, oiled and nothing else.",
     material: "Olive wood, food-safe oil finish.",
@@ -235,13 +234,12 @@ export const PRODUCTS: Product[] = [
     id: "aura",
     name: "Aura Disc",
     category: "wall",
-    price: 210,
+    price: 10500,
     blurb:
       "A hand-hammered brass disc that catches whatever light the room has. Hangs flush or leans.",
     material: "Solid brass, hammered and lacquered.",
     dim: "Ø 40 cm · 2 mm",
-    care:
-      "Dust dry. The lacquer holds the shine; leave it unlacquered to patina, on request.",
+    care: "Dust dry. The lacquer holds the shine; leave it unlacquered to patina, on request.",
     art: "disc",
     maker: "Khan brass works, Cairo",
     leadTime: "Made to order — 2 weeks",
@@ -251,7 +249,7 @@ export const PRODUCTS: Product[] = [
     id: "barq",
     name: "Barq Mirror",
     category: "wall",
-    price: 320,
+    price: 16000,
     blurb:
       "An arched mirror in an oiled ash frame, deep enough to hold a small shelf at the base.",
     material: "Ash frame, 5 mm mirror glass, brass hangers.",
@@ -266,7 +264,7 @@ export const PRODUCTS: Product[] = [
     id: "qasab",
     name: "Qasab Basket",
     category: "storage",
-    price: 118,
+    price: 5900,
     blurb:
       "Coiled river reed with a soft, open weave. Holds firewood, laundry, or a season of blankets.",
     material: "River reed, cut and dried by hand.",
@@ -281,7 +279,7 @@ export const PRODUCTS: Product[] = [
     id: "reed",
     name: "Reed Tray",
     category: "storage",
-    price: 64,
+    price: 3200,
     blurb:
       "A flat woven tray for the hallway table — post, keys, a cup that has no saucer.",
     material: "Reed and palm fibre.",
@@ -296,7 +294,7 @@ export const PRODUCTS: Product[] = [
     id: "souk",
     name: "Souk Hamper",
     category: "storage",
-    price: 190,
+    price: 9500,
     blurb:
       "A tall lidded hamper with leather pulls, woven to hold its shape when empty.",
     material: "Palm leaf, vegetable-tanned leather pulls.",

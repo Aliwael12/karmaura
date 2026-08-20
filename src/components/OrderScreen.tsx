@@ -128,26 +128,15 @@ export default function OrderScreen({ id }: { id: string }) {
           </div>
         </div>
 
-        <div className="mt-5 grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] gap-5">
-          <div className="rounded-lg border border-[rgba(95,106,66,.2)] bg-cream p-[22px]">
-            <p className="km-label mb-3 text-olive">Going to</p>
-            <p className="text-sm leading-[1.7] text-olive">
-              {order.ship.name}
-              <br />
-              {order.ship.line1}
-              <br />
-              {order.ship.city} {order.ship.postcode}
-            </p>
-          </div>
-
-          {order.giftNote && (
-            <div className="rounded-lg border border-[rgba(95,106,66,.2)] bg-cream p-[22px]">
-              <p className="km-label mb-3 text-olive">Gift note</p>
-              <p className="font-serif text-base leading-[1.6] text-forest italic">
-                “{order.giftNote}”
-              </p>
-            </div>
-          )}
+        <div className="mt-5 rounded-lg border border-[rgba(95,106,66,.2)] bg-cream p-[22px]">
+          <p className="km-label mb-3 text-olive">Going to</p>
+          <p className="text-sm leading-[1.7] text-olive">
+            {order.ship.name}
+            <br />
+            {order.ship.line1}
+            <br />
+            {order.ship.city} {order.ship.postcode}
+          </p>
         </div>
 
         <div className="mt-9 flex flex-wrap justify-center gap-3">

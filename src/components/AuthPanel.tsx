@@ -56,8 +56,8 @@ export default function AuthPanel() {
           <div className="km-rule my-[26px] w-[min(200px,50%)]" />
           <div className="flex max-w-[44ch] flex-col gap-4">
             <p className="text-[15px] leading-[1.66] text-cream/75">
-              An account keeps your addresses, your gift notes and the record of
-              every piece you own — so a repair is one message, not a search.
+              An account keeps your addresses and the record of every piece you
+              own — so a repair is one message, not a search.
             </p>
             <div className="mt-1.5 flex flex-col gap-2.5">
               {PERKS.map(({ Icon, label }) => (

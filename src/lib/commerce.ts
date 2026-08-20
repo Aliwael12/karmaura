@@ -1,11 +1,18 @@
 import { PRODUCTS, type CategorySlug } from "./products";
 
+/** Everything is priced in Egyptian pounds — the atelier bills in EGP. */
+const EGP = new Intl.NumberFormat("en-EG", {
+  style: "currency",
+  currency: "EGP",
+  maximumFractionDigits: 0,
+});
+
 /** free delivery from this subtotal up — the source design's tunable prop */
-export const FREE_DELIVERY_FROM = 250;
-export const FLAT_DELIVERY = 18;
+export const FREE_DELIVERY_FROM = 12_500;
+export const FLAT_DELIVERY = 900;
 
 export function money(n: number): string {
-  return "$" + n.toLocaleString("en-US");
+  return EGP.format(n);
 }
 
 export type CartMap = Record<string, number>;
@@ -16,9 +23,9 @@ export type CartLine = {
   category: CategorySlug;
   price: number;
   qty: number;
-  /** "2 × $180" */
+  /** "2 × EGP 9,000" */
   qtyLabel: string;
-  /** "$360" */
+  /** "EGP 18,000" */
   lineTotal: number;
 };
 

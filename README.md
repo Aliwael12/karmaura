@@ -29,7 +29,7 @@ Runs on http://localhost:3000 (the checked-in launch config uses 3210).
 | `/shop/[slug]` | Product — gallery with four views, quantity, add to bag, save, three accordions, related pieces. All 15 pages are statically generated |
 | `/story` | The story — pillars, atelier band, the four making steps |
 | `/visit` | The atelier, stockists, contact form, and the repairs flow at `#repairs` |
-| `/cart` | Bag and checkout on one screen, with a gift note and a delivery panel |
+| `/cart` | Bag and checkout on one screen |
 | `/order/[id]` | Order confirmation and receipt |
 | `/account` | Signed out: the sign-in / create-account panel. Signed in: the overview |
 | `/account/orders` · `/saved` · `/addresses` · `/repairs` | The account tabs |
@@ -38,8 +38,8 @@ Runs on http://localhost:3000 (the checked-in launch config uses 3210).
 ## Flows
 
 - **Bag** — add from a card, a product page or the drawer; quantity steppers,
-  remove, a free-delivery threshold at $250, and a toast plus a bag-icon pulse
-  on every add.
+  remove, a free-delivery threshold at EGP 12,500, and a toast plus a bag-icon
+  pulse on every add.
 - **Checkout** — validates the delivery address, mints an order number
   (`KM-4820`, `KM-4821`, …), empties the bag and lands on the receipt. Payment
   is **cash on delivery only**: there is no card field anywhere in the site, and
@@ -66,7 +66,7 @@ src/
   context/store.tsx     cart, saved, auth, orders, addresses, repairs, toasts
   lib/
     products.ts         the 15-piece catalogue and its categories
-    commerce.ts         money, cart lines, subtotal, delivery
+    commerce.ts         EGP formatting, cart lines, subtotal, delivery
 public/brand/           emblem, wordmark and the kraft photograph
 ```
 
@@ -85,3 +85,9 @@ public/brand/           emblem, wordmark and the kraft photograph
 - **The desktop/mobile toggle** in the bottom-right of the comp was a preview
   affordance, not a site feature, and is not carried over. The breakpoint it
   switched at (760px) is the one the header still uses for the mobile menu.
+- **Prices are EGP.** The comp priced everything in dollars ($64–$320); those
+  figures were converted at roughly 50 EGP to the dollar and rounded to tidy
+  retail numbers (EGP 3,200–16,000), because relabelling `$180` as `EGP 180`
+  would have made the catalogue nonsense. Every price is one number in
+  `products.ts`; the free-delivery threshold and the flat rate sit at the top
+  of `commerce.ts`.
