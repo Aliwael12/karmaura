@@ -1,11 +1,6 @@
 import type { Metadata } from "next";
 import { EB_Garamond, Work_Sans } from "next/font/google";
 import "./globals.css";
-import { StoreProvider } from "@/context/store";
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
-import Overlays from "@/components/Overlays";
-import { ArtDefs } from "@/components/ObjectArt";
 
 const ebGaramond = EB_Garamond({
   subsets: ["latin"],
@@ -23,7 +18,7 @@ const workSans = Work_Sans({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://karmaura.example"),
+  metadataBase: new URL("https://karmaura.vercel.app"),
   title: {
     default: "KARMAURA · HOME — Good energy, good home",
     template: "%s — KARMAURA · HOME",
@@ -38,6 +33,10 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Only the document itself. The shop's chrome — header, footer, bag drawer —
+ * lives in the (shop) group's layout, so /admin renders without any of it.
+ */
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -47,17 +46,7 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       className={`${ebGaramond.variable} ${workSans.variable}`}
     >
-      <body>
-        <StoreProvider>
-          <ArtDefs />
-          <div className="km-shell flex min-h-screen flex-col bg-forest">
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
-          <Overlays />
-        </StoreProvider>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
