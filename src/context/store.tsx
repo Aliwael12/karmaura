@@ -323,7 +323,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       setOrders((current) => (current.length ? current : SEED_ORDERS));
       setAddresses((current) => (current.length ? current : SEED_ADDRESSES));
       setRepairs((current) => (current.length ? current : SEED_REPAIRS));
-      flash(name ? "Account created" : "Welcome back");
+      flash(name ? "Profile created" : "Welcome back");
     },
     [flash],
   );

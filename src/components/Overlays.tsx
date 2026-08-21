@@ -31,7 +31,7 @@ const MENU_LINKS = [
   { href: "/shop", label: "Collection" },
   { href: "/story", label: "The story" },
   { href: "/visit", label: "Visit" },
-  { href: "/account", label: "Account" },
+  { href: "/account", label: "My profile" },
 ];
 
 function MobileMenu() {
@@ -47,7 +47,7 @@ function MobileMenu() {
           alt="KARMAURA HOME"
           width={880}
           height={300}
-          className="h-5 w-auto opacity-90"
+          className="h-7 w-auto opacity-90"
         />
         <button
           type="button"

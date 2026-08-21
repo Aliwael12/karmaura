@@ -49,7 +49,7 @@ export default function AccountShell({
     >
       <div className="mb-8 flex flex-wrap items-end justify-between gap-5">
         <div>
-          <p className="km-eyebrow mb-3 text-gold-bright">Account</p>
+          <p className="km-eyebrow mb-3 text-gold-bright">My profile</p>
           <h1 className="font-serif text-[clamp(28px,5cqw,48px)] leading-[1.06] text-cream">
             {title}
           </h1>

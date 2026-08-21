@@ -119,7 +119,7 @@ export default function StoryPage() {
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "linear-gradient(180deg,rgba(43,66,32,.35),rgba(43,66,32,0) 45%,rgba(43,66,32,.5))",
+              "linear-gradient(180deg,rgba(61,92,43,.35),rgba(61,92,43,0) 45%,rgba(61,92,43,.5))",
           }}
         />
       </section>

@@ -7,12 +7,12 @@
 
 @theme {
   /* ground */
-  --color-forest: #2b4220;
-  --color-forest-deep: #243a1b;
-  --color-forest-night: #1b2712;
-  --color-forest-black: #15200e;
-  --color-forest-lit: #35542b;
-  --color-forest-shade: #233819;
+  --color-forest: #3d5c2b;
+  --color-forest-deep: #325026;
+  --color-forest-night: #29391b;
+  --color-forest-black: #203015;
+  --color-forest-lit: #4b7439;
+  --color-forest-shade: #314e24;
 
   /* brass */
   --color-gold: #ac9d62;
@@ -207,7 +207,7 @@
 
   .km-field-dark {
     border: 1px solid rgba(172, 157, 98, 0.28);
-    background: rgba(43, 66, 32, 0.6);
+    background: rgba(61, 92, 43, 0.6);
     color: var(--color-cream);
   }
   .km-field-dark:focus { border-color: var(--color-gold-bright); }

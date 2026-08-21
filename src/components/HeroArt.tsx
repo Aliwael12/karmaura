@@ -65,7 +65,7 @@ export default function HeroArt() {
         className="pointer-events-none absolute inset-x-0 bottom-0 h-[38%]"
         style={{
           background:
-            "linear-gradient(180deg,rgba(35,56,25,0),rgba(35,56,25,.55))",
+            "linear-gradient(180deg,rgba(49,78,36,0),rgba(49,78,36,.55))",
         }}
       />
     </div>

@@ -25,8 +25,8 @@ export function ArtDefs() {
           <stop offset="100%" stopColor="#d2b78e" />
         </linearGradient>
         <linearGradient id="km-ground-dark" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#2f4a24" />
-          <stop offset="100%" stopColor="#1e2f15" />
+          <stop offset="0%" stopColor="#3f6231" />
+          <stop offset="100%" stopColor="#2a4020" />
         </linearGradient>
 
         <radialGradient id="km-bloom-light" cx="26%" cy="18%" r="70%">
@@ -34,8 +34,8 @@ export function ArtDefs() {
           <stop offset="100%" stopColor="#fff6e4" stopOpacity="0" />
         </radialGradient>
         <radialGradient id="km-bloom-dark" cx="26%" cy="18%" r="70%">
-          <stop offset="0%" stopColor="#8fa05c" stopOpacity="0.45" />
-          <stop offset="100%" stopColor="#8fa05c" stopOpacity="0" />
+          <stop offset="0%" stopColor="#9fb168" stopOpacity="0.45" />
+          <stop offset="100%" stopColor="#9fb168" stopOpacity="0" />
         </radialGradient>
 
         <linearGradient id="km-clay-light" x1="0.15" y1="0" x2="0.9" y2="1">

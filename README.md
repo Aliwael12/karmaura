@@ -31,8 +31,8 @@ Runs on http://localhost:3000 (the checked-in launch config uses 3210).
 | `/visit` | The atelier, stockists, contact form, and the repairs flow at `#repairs` |
 | `/cart` | Bag and checkout on one screen |
 | `/order/[id]` | Order confirmation and receipt |
-| `/account` | Signed out: the sign-in / create-account panel. Signed in: the overview |
-| `/account/orders` · `/saved` · `/addresses` · `/repairs` | The account tabs |
+| `/account` | "My profile". Signed out: the sign-in / create-profile panel. Signed in: the overview |
+| `/account/orders` · `/saved` · `/addresses` · `/repairs` | The profile tabs |
 | _404_ | "This room is empty" |
 
 ## Flows
@@ -44,7 +44,7 @@ Runs on http://localhost:3000 (the checked-in launch config uses 3210).
   (`KM-4820`, `KM-4821`, …), empties the bag and lands on the receipt. Payment
   is **cash on delivery only**: there is no card field anywhere in the site, and
   nothing is ever charged.
-- **Account** — any email and password signs in. A fresh account is handed
+- **My profile** — any email and password signs in. A fresh profile is handed
   seed orders, addresses and a repair so the tabs have something to show;
   anything you create yourself is never overwritten.
 - **Saved** — the heart on any product card or product page, collected under

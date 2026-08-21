@@ -63,7 +63,7 @@ export default function RepairForm() {
               <>
                 You can follow it in{" "}
                 <Link href="/account/repairs" className="underline underline-offset-4">
-                  your account
+                  your profile
                 </Link>
                 .
               </>

@@ -33,7 +33,7 @@ export default function Header() {
         padding: tight
           ? "12px clamp(16px,4cqw,60px)"
           : "20px clamp(16px,4cqw,60px)",
-        background: tight ? "rgba(27,39,18,.95)" : "rgba(43,66,32,.86)",
+        background: tight ? "rgba(41,57,27,.95)" : "rgba(61,92,43,.86)",
         borderBottom: `1px solid ${tight ? "rgba(172,157,98,.36)" : "rgba(172,157,98,.22)"}`,
         transition:
           "padding .5s cubic-bezier(.16,.84,.24,1), background .5s ease, border-color .5s ease",
@@ -45,8 +45,8 @@ export default function Header() {
         className="flex shrink-0 items-center gap-[11px]"
       >
         <span
-          className="grid size-[38px] shrink-0 place-items-center rounded-full border border-gold bg-cream"
-          style={{ boxShadow: "0 0 18px -4px rgba(198,161,91,.45)" }}
+          className="grid size-[52px] shrink-0 place-items-center rounded-full border border-gold bg-cream"
+          style={{ boxShadow: "0 0 22px -4px rgba(198,161,91,.5)" }}
         >
           <Image
             src="/brand/emblem.png"
@@ -54,7 +54,7 @@ export default function Header() {
             width={340}
             height={380}
             priority
-            className="h-[23px] w-auto"
+            className="h-[32px] w-auto"
           />
         </span>
         <Image
@@ -63,7 +63,7 @@ export default function Header() {
           width={880}
           height={300}
           priority
-          className="h-[21px] w-auto opacity-95"
+          className="h-[30px] w-auto opacity-95"
         />
       </Link>
 
@@ -86,7 +86,7 @@ export default function Header() {
       <div className="flex items-center gap-0.5">
         <Link
           href="/account"
-          aria-label="Account"
+          aria-label="My profile"
           className="grid size-[42px] place-items-center rounded-lg text-cream transition-[background,color] duration-300 hover:bg-gold/15 hover:text-gold-bright"
         >
           <User size={21} weight="light" />

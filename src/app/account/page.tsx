@@ -3,7 +3,7 @@ import AccountShell from "@/components/AccountShell";
 import { OverviewPanel } from "@/components/AccountPanels";
 
 export const metadata: Metadata = {
-  title: "Account",
+  title: "My profile",
   description: "Your orders, saved pieces, addresses and repairs.",
 };
 

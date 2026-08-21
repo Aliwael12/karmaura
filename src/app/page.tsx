@@ -52,7 +52,7 @@ export default function HomePage() {
           gap: "clamp(26px,4cqw,64px)",
           paddingBlock: "clamp(34px,5cqw,82px) clamp(44px,6cqw,96px)",
           background:
-            "radial-gradient(100% 80% at 6% 12%,#35542B 0%,#2B4220 52%,#233819 100%)",
+            "radial-gradient(100% 80% at 6% 12%,#4b7439 0%,#3d5c2b 52%,#314e24 100%)",
         }}
       >
         <div

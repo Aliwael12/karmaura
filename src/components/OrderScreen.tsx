@@ -28,7 +28,7 @@ export default function OrderScreen({ id }: { id: string }) {
         </h1>
         <p className="mx-auto mb-8 max-w-[44ch] text-[15px] leading-[1.7] text-olive">
           Orders live in this browser for the demonstration, so a fresh browser
-          starts with none. Your history is in your account.
+          starts with none. Your history is in your profile.
         </p>
         <div className="flex flex-wrap justify-center gap-3">
           <Link href="/account/orders" className="km-btn km-btn-light">

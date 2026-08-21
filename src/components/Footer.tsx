@@ -37,7 +37,7 @@ export default function Footer() {
             alt="KARMAURA HOME"
             width={880}
             height={300}
-            className="mb-[18px] h-[38px] w-auto opacity-90"
+            className="mb-[18px] h-[50px] w-auto opacity-90"
           />
           <p className="font-serif text-xl text-gold-bright italic">
             Good energy, good home.
@@ -47,7 +47,7 @@ export default function Footer() {
         <FooterColumn title="Shop">
           <FooterLink href="/shop">All objects</FooterLink>
           <FooterLink href="/account/saved">Saved pieces</FooterLink>
-          <FooterLink href="/account">Account</FooterLink>
+          <FooterLink href="/account">My profile</FooterLink>
         </FooterColumn>
 
         <FooterColumn title="House">

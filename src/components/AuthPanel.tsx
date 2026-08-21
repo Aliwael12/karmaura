@@ -49,14 +49,14 @@ export default function AuthPanel() {
         style={{ gap: "clamp(26px,4cqw,64px)" }}
       >
         <Reveal delay={0}>
-          <p className="km-eyebrow mb-4 text-gold-bright">Account</p>
+          <p className="km-eyebrow mb-4 text-gold-bright">My profile</p>
           <h1 className="font-serif text-[clamp(30px,6cqw,56px)] leading-[1.06] text-cream italic">
             Home that feels like you.
           </h1>
           <div className="km-rule my-[26px] w-[min(200px,50%)]" />
           <div className="flex max-w-[44ch] flex-col gap-4">
             <p className="text-[15px] leading-[1.66] text-cream/75">
-              An account keeps your addresses and the record of every piece you
+              A profile keeps your addresses and the record of every piece you
               own — so a repair is one message, not a search.
             </p>
             <div className="mt-1.5 flex flex-col gap-2.5">
@@ -84,7 +84,7 @@ export default function AuthPanel() {
                 Sign in
               </Tab>
               <Tab active={registering} onClick={() => setTab("register")}>
-                Create account
+                Create profile
               </Tab>
             </div>
 
@@ -126,7 +126,7 @@ export default function AuthPanel() {
                 type="submit"
                 className="mt-1.5 rounded-lg border border-gold p-4 text-xs tracking-[.18em] text-cream uppercase transition-[background,color] duration-[400ms] hover:bg-gold hover:text-forest"
               >
-                {registering ? "Create account" : "Sign in"}
+                {registering ? "Create profile" : "Sign in"}
               </button>
 
               <button
@@ -138,7 +138,7 @@ export default function AuthPanel() {
               </button>
 
               <p className="text-center text-[11px] leading-[1.6] text-cream/45">
-                A demonstration account — any email and password will do, and
+                A demonstration profile — any email and password will do, and
                 nothing leaves this browser.
               </p>
             </div>
