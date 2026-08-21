@@ -76,7 +76,6 @@ export default function ProductEditor({
                   width={48}
                   height={56}
                   className="h-full w-full object-cover"
-                  unoptimized
                 />
               ) : (
                 <span className="text-[9px] tracking-wider text-cream/40 uppercase">
@@ -378,7 +377,6 @@ function Photos({ product }: { product: AdminProduct }) {
                 alt={img.alt}
                 width={96}
                 height={120}
-                unoptimized
                 className="h-[120px] w-24 rounded border border-gold/25 object-cover"
               />
               <button
