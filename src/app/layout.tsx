@@ -25,7 +25,6 @@ export const metadata: Metadata = {
   },
   description:
     "Objects for the calm home — hand-thrown clay, undyed linen, woven reed. Made slowly, in small runs, by people we know.",
-  icons: { icon: "/brand/emblem.png" },
   openGraph: {
     title: "KARMAURA · HOME",
     description: "The warmth of simple things.",
