@@ -159,7 +159,7 @@ export default async function HomePage() {
         </div>
 
         <div
-          className="grid snap-x snap-mandatory grid-flow-col auto-cols-[minmax(212px,1fr)] overflow-x-auto pb-2"
+          className="grid snap-x snap-mandatory grid-flow-col auto-cols-[minmax(212px,272px)] overflow-x-auto pb-2"
           style={{ gap: "clamp(10px,1.4cqw,18px)" }}
         >
           {stockedCategories.map((category) => {

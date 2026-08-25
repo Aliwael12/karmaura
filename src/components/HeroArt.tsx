@@ -70,20 +70,22 @@ export default function HeroArt({ photo }: Props) {
       }}
     >
       {photo ? (
-        <Image
-          src={photo.url}
-          alt={photo.alt}
-          fill
-          sizes="(min-width: 1024px) 45vw, 90vw"
-          priority
-          className="object-cover"
-          style={{
-            maskImage:
-              "radial-gradient(ellipse 68% 62% at 50% 46%, black 42%, transparent 80%)",
-            WebkitMaskImage:
-              "radial-gradient(ellipse 68% 62% at 50% 46%, black 42%, transparent 80%)",
-          }}
-        />
+        <div className="absolute inset-[9%]">
+          <Image
+            src={photo.url}
+            alt={photo.alt}
+            fill
+            sizes="(min-width: 1024px) 38vw, 76vw"
+            priority
+            className="object-contain"
+            style={{
+              maskImage:
+                "radial-gradient(ellipse 50% 50% at 50% 50%, black 28%, transparent 98%)",
+              WebkitMaskImage:
+                "radial-gradient(ellipse 50% 50% at 50% 50%, black 28%, transparent 98%)",
+            }}
+          />
+        </div>
       ) : (
         <SceneArt scene="interior" className="size-full" />
       )}
