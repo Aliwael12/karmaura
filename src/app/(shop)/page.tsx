@@ -13,9 +13,10 @@ import {
   getProductsBySlugs,
 } from "@/lib/db/catalogue";
 
-/** The one piece that leads the hero — its sage-to-forest glaze is the
-    closest real photograph we have to the hero's own background colour. */
-const HERO_SLUG = "forest-fade-mug";
+/** The one piece that leads the hero — the only product photographed as a
+    true alpha cutout rather than a studio shot on white, so it sits on the
+    hero's green background as a real object instead of a masked rectangle. */
+const HERO_SLUG = "sage-speckle-mug";
 
 export const dynamic = "force-dynamic";
 

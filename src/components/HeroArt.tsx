@@ -6,9 +6,9 @@ import SceneArt from "./SceneArt";
 
 type Props = {
   /** A real piece to lead with, when one exists — falls back to the drawn
-      interior otherwise. Masked to a soft vignette rather than shown as a
-      hard-edged product cutout, since the source photos are studio shots
-      on white, not lifestyle photography. */
+      interior otherwise. This one needs a true alpha-transparent cutout
+      (not a studio shot on white); it's shown as-is with a drop shadow,
+      no background to mask out. */
   photo?: { url: string; alt: string };
 };
 
@@ -70,20 +70,15 @@ export default function HeroArt({ photo }: Props) {
       }}
     >
       {photo ? (
-        <div className="absolute inset-[9%]">
+        <div className="absolute inset-[10%]">
           <Image
             src={photo.url}
             alt={photo.alt}
             fill
-            sizes="(min-width: 1024px) 38vw, 76vw"
+            sizes="(min-width: 1024px) 36vw, 72vw"
             priority
             className="object-contain"
-            style={{
-              maskImage:
-                "radial-gradient(ellipse 50% 50% at 50% 50%, black 28%, transparent 98%)",
-              WebkitMaskImage:
-                "radial-gradient(ellipse 50% 50% at 50% 50%, black 28%, transparent 98%)",
-            }}
+            style={{ filter: "drop-shadow(0 16px 18px rgba(0,0,0,.45))" }}
           />
         </div>
       ) : (
