@@ -1,11 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { ArrowLeft, Heart, Minus, Plus } from "@phosphor-icons/react/ssr";
 import { useStore } from "@/context/store";
 import { money } from "@/lib/commerce";
-import { categoryName, type Product } from "@/lib/products";
+import type { Product } from "@/lib/catalogue-types";
 import ObjectArt from "./ObjectArt";
 import Reveal from "./Reveal";
 
@@ -17,16 +18,29 @@ type View = {
   origin: string;
 };
 
-const VIEWS: View[] = [
+/** The full four-view gallery for a piece with no photograph yet — each
+    "view" is really the same drawing seen from a different zoom and tone. */
+const SYNTHETIC_VIEWS: View[] = [
   { key: "full", label: "Full view", tone: "light", zoom: 1, origin: "center" },
   { key: "detail", label: "Detail", tone: "light", zoom: 2.4, origin: "50% 30%" },
   { key: "room", label: "In the room", tone: "dark", zoom: 1.15, origin: "center" },
   { key: "scale", label: "Scale", tone: "light", zoom: 1.45, origin: "50% 80%" },
 ];
 
+/** For a piece that has a real photograph, the views are honest crops of
+    that one photo — no "in the room" shot is fabricated, since there isn't
+    one to show. */
+const PHOTO_VIEWS: View[] = [
+  { key: "full", label: "Full view", tone: "light", zoom: 1, origin: "center" },
+  { key: "detail", label: "Detail", tone: "light", zoom: 2.2, origin: "50% 32%" },
+  { key: "scale", label: "Scale", tone: "light", zoom: 1.5, origin: "50% 78%" },
+];
+
 export default function ProductDetail({ product }: { product: Product }) {
   const { addToCart, toggleSaved, isSaved, hydrated } = useStore();
   const [qty, setQty] = useState(1);
+  const photo = product.images[0];
+  const VIEWS = photo ? PHOTO_VIEWS : SYNTHETIC_VIEWS;
   const [view, setView] = useState(VIEWS[0]);
   const [open, setOpen] = useState<Record<string, boolean>>({
     material: true,
@@ -34,7 +48,7 @@ export default function ProductDetail({ product }: { product: Product }) {
     care: false,
   });
 
-  const saved = hydrated && isSaved(product.id);
+  const saved = hydrated && isSaved(product.slug);
   const others = VIEWS.filter((v) => v.key !== view.key);
 
   function toggle(key: string) {
@@ -54,10 +68,10 @@ export default function ProductDetail({ product }: { product: Product }) {
         </Link>
         <span>/</span>
         <Link
-          href={`/shop?room=${product.category}`}
+          href={`/shop?room=${product.categorySlug}`}
           className="transition-colors duration-300 hover:text-brass"
         >
-          {categoryName(product.category)}
+          {product.categoryName}
         </Link>
       </div>
 
@@ -73,14 +87,21 @@ export default function ProductDetail({ product }: { product: Product }) {
           <figure className="m-0">
             <div className="relative aspect-4/5 w-full overflow-hidden rounded-lg bg-cream">
               <div
-                className="size-full transition-transform duration-[900ms] ease-km"
+                className="relative size-full transition-transform duration-[900ms] ease-km"
                 style={{ transform: `scale(${view.zoom})`, transformOrigin: view.origin }}
               >
-                <ObjectArt
-                  kind={product.art}
-                  tone={view.tone}
-                  className="size-full"
-                />
+                {photo ? (
+                  <Image
+                    src={photo.url}
+                    alt={photo.alt || product.name}
+                    fill
+                    sizes="(min-width: 1024px) 45vw, 90vw"
+                    priority
+                    className="object-cover"
+                  />
+                ) : (
+                  <ObjectArt kind={product.art} tone={view.tone} className="size-full" />
+                )}
               </div>
               <figcaption className="absolute bottom-3 left-3 rounded-md bg-forest/75 px-3 py-1.5 text-[10px] tracking-[.16em] text-cream uppercase">
                 {view.label}
@@ -98,17 +119,23 @@ export default function ProductDetail({ product }: { product: Product }) {
                 className="aspect-square overflow-hidden rounded-lg bg-cream ring-gold transition-shadow duration-300 hover:ring-2"
               >
                 <div
-                  className="size-full"
+                  className="relative size-full"
                   style={{
                     transform: `scale(${other.zoom})`,
                     transformOrigin: other.origin,
                   }}
                 >
-                  <ObjectArt
-                    kind={product.art}
-                    tone={other.tone}
-                    className="size-full"
-                  />
+                  {photo ? (
+                    <Image
+                      src={photo.url}
+                      alt=""
+                      fill
+                      sizes="120px"
+                      className="object-cover"
+                    />
+                  ) : (
+                    <ObjectArt kind={product.art} tone={other.tone} className="size-full" />
+                  )}
                 </div>
               </button>
             ))}
@@ -117,9 +144,7 @@ export default function ProductDetail({ product }: { product: Product }) {
 
         {/* ── the description ───────────────────────────────────── */}
         <Reveal delay={120} className="max-w-[520px]">
-          <p className="km-eyebrow mb-3.5 text-moss">
-            {categoryName(product.category)}
-          </p>
+          <p className="km-eyebrow mb-3.5 text-moss">{product.categoryName}</p>
           <h1 className="font-serif text-[clamp(30px,5.6cqw,54px)] leading-[1.06]">
             {product.name}
           </h1>
@@ -164,7 +189,7 @@ export default function ProductDetail({ product }: { product: Product }) {
 
             <button
               type="button"
-              onClick={() => addToCart(product.id, qty)}
+              onClick={() => addToCart(product.slug, qty)}
               className="km-btn km-btn-light min-h-[50px] flex-[1_1_200px]"
             >
               Add to bag
@@ -172,7 +197,7 @@ export default function ProductDetail({ product }: { product: Product }) {
 
             <button
               type="button"
-              onClick={() => toggleSaved(product.id)}
+              onClick={() => toggleSaved(product.slug)}
               aria-pressed={saved}
               aria-label={saved ? "Remove from saved" : "Save this piece"}
               className="grid size-[50px] place-items-center rounded-lg border border-[rgba(95,106,66,.28)] text-olive transition-[background,border-color,color] duration-300 hover:border-gold hover:bg-gold/10 hover:text-forest"

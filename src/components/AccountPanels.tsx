@@ -5,13 +5,12 @@ import { useState, type FormEvent } from "react";
 import { ArrowRight, Star, Trash } from "@phosphor-icons/react/ssr";
 import { useStore } from "@/context/store";
 import { formatDate, money } from "@/lib/commerce";
-import { getProduct } from "@/lib/products";
 import ProductCard from "./ProductCard";
 
 /* ── overview ─────────────────────────────────────────────────────── */
 
 export function OverviewPanel() {
-  const { orders, saved, addresses, repairs } = useStore();
+  const { orders, saved, addresses, repairs, products } = useStore();
   const latest = orders[0];
 
   return (
@@ -66,7 +65,7 @@ export function OverviewPanel() {
           </div>
           <ul className="flex flex-col gap-3">
             {saved.slice(0, 3).map((id) => {
-              const product = getProduct(id);
+              const product = products.find((p) => p.slug === id);
               if (!product) return null;
               return (
                 <li
@@ -126,11 +125,11 @@ export function OrdersPanel() {
           <ul className="mb-4 flex flex-col gap-2">
             {order.lines.map((line) => (
               <li
-                key={line.id}
+                key={line.slug}
                 className="flex items-baseline justify-between gap-4 text-sm"
               >
                 <Link
-                  href={`/shop/${line.id}`}
+                  href={`/shop/${line.slug}`}
                   className="text-cream/85 transition-colors duration-300 hover:text-gold-bright"
                 >
                   {line.name}{" "}
@@ -160,9 +159,9 @@ export function OrdersPanel() {
 /* ── saved ────────────────────────────────────────────────────────── */
 
 export function SavedPanel() {
-  const { saved } = useStore();
+  const { saved, products: catalogue } = useStore();
   const products = saved
-    .map((id) => getProduct(id))
+    .map((id) => catalogue.find((p) => p.slug === id))
     .filter((p): p is NonNullable<typeof p> => Boolean(p));
 
   if (products.length === 0) {

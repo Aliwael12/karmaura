@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
@@ -11,7 +12,6 @@ import {
   money,
   shippingLabel,
 } from "@/lib/commerce";
-import { categoryName, getProduct } from "@/lib/products";
 import ObjectArt from "./ObjectArt";
 
 type Form = {
@@ -24,7 +24,7 @@ type Form = {
 const EMPTY: Form = { name: "", line1: "", city: "", postcode: "" };
 
 export default function CartScreen() {
-  const { hydrated, lines, count, setQty, removeFromCart, addresses } =
+  const { hydrated, lines, count, setQty, removeFromCart, addresses, products } =
     useStore();
 
   /* the signed-in visitor's default address seeds the delivery panel; keying
@@ -66,29 +66,40 @@ export default function CartScreen() {
           {/* ── the lines ─────────────────────────────────────── */}
           <div>
             {lines.map((line) => {
-              const product = getProduct(line.id);
+              const product = products.find((p) => p.slug === line.slug);
+              const photo = product?.images[0];
               return (
                 <div
-                  key={line.id}
+                  key={line.slug}
                   className="flex gap-4 border-b border-[rgba(95,106,66,.16)] py-5"
                 >
                   <Link
-                    href={`/shop/${line.id}`}
-                    className="h-[110px] w-[88px] shrink-0 overflow-hidden rounded-lg border border-gold/35 bg-cream"
+                    href={`/shop/${line.slug}`}
+                    className="relative h-[110px] w-[88px] shrink-0 overflow-hidden rounded-lg border border-gold/35 bg-cream"
                   >
-                    {product && (
-                      <ObjectArt
-                        kind={product.art}
-                        tone="light"
-                        className="size-full"
+                    {photo ? (
+                      <Image
+                        src={photo.url}
+                        alt={photo.alt || line.name}
+                        fill
+                        sizes="88px"
+                        className="object-cover"
                       />
+                    ) : (
+                      product && (
+                        <ObjectArt
+                          kind={product.art}
+                          tone="light"
+                          className="size-full"
+                        />
+                      )
                     )}
                   </Link>
 
                   <div className="flex flex-1 flex-col gap-2">
                     <div className="flex items-baseline justify-between gap-3">
                       <Link
-                        href={`/shop/${line.id}`}
+                        href={`/shop/${line.slug}`}
                         className="font-serif text-xl leading-tight transition-colors duration-300 hover:text-brass"
                       >
                         {line.name}
@@ -98,13 +109,13 @@ export default function CartScreen() {
                       </p>
                     </div>
                     <p className="text-xs tracking-[.08em] text-moss uppercase">
-                      {categoryName(line.category)}
+                      {line.categoryName}
                     </p>
                     <div className="mt-auto flex items-center gap-3.5">
                       <div className="flex items-center rounded-lg border border-[rgba(95,106,66,.24)]">
                         <button
                           type="button"
-                          onClick={() => setQty(line.id, line.qty - 1)}
+                          onClick={() => setQty(line.slug, line.qty - 1)}
                           aria-label={`One fewer ${line.name}`}
                           className="grid size-[38px] place-items-center text-olive transition-[background] duration-300 hover:bg-gold/15"
                         >
@@ -115,7 +126,7 @@ export default function CartScreen() {
                         </span>
                         <button
                           type="button"
-                          onClick={() => setQty(line.id, line.qty + 1)}
+                          onClick={() => setQty(line.slug, line.qty + 1)}
                           aria-label={`One more ${line.name}`}
                           className="grid size-[38px] place-items-center text-olive transition-[background] duration-300 hover:bg-gold/15"
                         >
@@ -124,7 +135,7 @@ export default function CartScreen() {
                       </div>
                       <button
                         type="button"
-                        onClick={() => removeFromCart(line.id)}
+                        onClick={() => removeFromCart(line.slug)}
                         className="text-xs tracking-[.1em] text-moss uppercase transition-colors duration-300 hover:text-forest"
                       >
                         Remove

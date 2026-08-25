@@ -1,58 +1,17 @@
 import "server-only";
 
 import { createServerSupabase } from "@/lib/supabase/server";
-import type { ArtKind } from "@/lib/products";
+import {
+  imageUrl,
+  type ArtKind,
+  type Category,
+  type Product,
+  type SortKey,
+} from "@/lib/catalogue-types";
 import type { CategoryRow, ProductImageRow, ProductRow } from "@/lib/supabase/types";
 
-/* ── the shapes the storefront renders ─────────────────────────────────
-   Deliberately close to the old hardcoded `Product`/`Category`, so the
-   components that were written against those needed almost no rewriting. */
-
-export type Category = {
-  id: string;
-  slug: string;
-  name: string;
-  short: string;
-  blurb: string;
-  art: ArtKind;
-};
-
-export type ProductImage = { url: string; alt: string };
-
-export type Product = {
-  id: string;
-  slug: string;
-  name: string;
-  categorySlug: string;
-  categoryName: string;
-  price: number;
-  blurb: string;
-  material: string;
-  dim: string;
-  care: string;
-  maker: string;
-  leadTime: string;
-  art: ArtKind;
-  stock: number;
-  isFeatured: boolean;
-  images: ProductImage[];
-};
-
-export type SortKey = "featured" | "low" | "high";
-
-export const SORT_LABELS: Record<SortKey, string> = {
-  featured: "Featured",
-  low: "Price up",
-  high: "Price down",
-};
-
-/** Storage paths are stored bare; the public URL is derived at read time. */
-export function imageUrl(path: string): string {
-  const base = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
-  if (!base) return path;
-  if (path.startsWith("http")) return path;
-  return `${base}/storage/v1/object/public/product-images/${path}`;
-}
+export type { ArtKind, Category, Product, ProductImage, SortKey } from "@/lib/catalogue-types";
+export { SORT_LABELS, imageUrl } from "@/lib/catalogue-types";
 
 function toCategory(row: CategoryRow): Category {
   return {
@@ -114,6 +73,36 @@ export async function getCategories(): Promise<Category[]> {
 
   if (error) throw new Error(`Could not load the rooms: ${error.message}`);
   return (data ?? []).map(toCategory);
+}
+
+/** How many active pieces sit in each room, keyed by category slug. */
+export async function getCategoryCounts(): Promise<Record<string, number>> {
+  const supabase = await createServerSupabase();
+  const { data, error } = await supabase
+    .from("products")
+    .select("categories(slug)")
+    .eq("is_active", true);
+
+  if (error) throw new Error(`Could not count the rooms: ${error.message}`);
+
+  const counts: Record<string, number> = {};
+  for (const row of (data ?? []) as unknown as { categories: { slug: string } | null }[]) {
+    const slug = row.categories?.slug;
+    if (!slug) continue;
+    counts[slug] = (counts[slug] ?? 0) + 1;
+  }
+  return counts;
+}
+
+export async function countAllProducts(): Promise<number> {
+  const supabase = await createServerSupabase();
+  const { count, error } = await supabase
+    .from("products")
+    .select("id", { count: "exact", head: true })
+    .eq("is_active", true);
+
+  if (error) throw new Error(`Could not count the collection: ${error.message}`);
+  return count ?? 0;
 }
 
 export async function getProducts(options?: {

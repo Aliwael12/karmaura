@@ -8,7 +8,6 @@ import { Check, X } from "@phosphor-icons/react/ssr";
 import { useStore } from "@/context/store";
 import { useHydrated } from "@/lib/useHydrated";
 import { money } from "@/lib/commerce";
-import { getProduct } from "@/lib/products";
 import ObjectArt from "./ObjectArt";
 
 export default function Overlays() {
@@ -82,8 +81,15 @@ function MobileMenu() {
 /* ── the bag drawer ───────────────────────────────────────────────── */
 
 function CartDrawer() {
-  const { cartOpen, setCartOpen, lines, count, subtotal, removeFromCart } =
-    useStore();
+  const {
+    cartOpen,
+    setCartOpen,
+    lines,
+    count,
+    subtotal,
+    removeFromCart,
+    products,
+  } = useStore();
   useEscape(cartOpen, () => setCartOpen(false));
   if (!cartOpen) return null;
 
@@ -112,28 +118,39 @@ function CartDrawer() {
 
         <div className="flex-1 overflow-y-auto px-6 py-2">
           {lines.map((line) => {
-            const product = getProduct(line.id);
+            const product = products.find((p) => p.slug === line.slug);
+            const photo = product?.images[0];
             return (
               <div
-                key={line.id}
+                key={line.slug}
                 className="flex gap-3.5 border-b border-gold/15 py-[18px]"
               >
                 <Link
-                  href={`/shop/${line.id}`}
+                  href={`/shop/${line.slug}`}
                   onClick={() => setCartOpen(false)}
-                  className="h-20 w-16 shrink-0 overflow-hidden rounded-lg border border-gold/30 bg-cream"
+                  className="relative h-20 w-16 shrink-0 overflow-hidden rounded-lg border border-gold/30 bg-cream"
                 >
-                  {product && (
-                    <ObjectArt
-                      kind={product.art}
-                      tone="light"
-                      className="size-full"
+                  {photo ? (
+                    <Image
+                      src={photo.url}
+                      alt={photo.alt || line.name}
+                      fill
+                      sizes="64px"
+                      className="object-cover"
                     />
+                  ) : (
+                    product && (
+                      <ObjectArt
+                        kind={product.art}
+                        tone="light"
+                        className="size-full"
+                      />
+                    )
                   )}
                 </Link>
                 <div className="min-w-0 flex-1">
                   <Link
-                    href={`/shop/${line.id}`}
+                    href={`/shop/${line.slug}`}
                     onClick={() => setCartOpen(false)}
                     className="font-serif text-lg leading-tight text-cream hover:text-gold-bright"
                   >
@@ -146,7 +163,7 @@ function CartDrawer() {
                 </div>
                 <button
                   type="button"
-                  onClick={() => removeFromCart(line.id)}
+                  onClick={() => removeFromCart(line.slug)}
                   aria-label={`Remove ${line.name}`}
                   className="self-start text-cream/50 transition-colors duration-300 hover:text-gold-bright"
                 >

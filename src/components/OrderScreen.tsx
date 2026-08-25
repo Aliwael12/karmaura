@@ -81,12 +81,12 @@ export default function OrderScreen({ id }: { id: string }) {
 
           {order.lines.map((line) => (
             <div
-              key={line.id}
+              key={line.slug}
               className="flex items-baseline justify-between gap-4 border-b border-[rgba(95,106,66,.14)] py-3.5"
             >
               <div>
                 <Link
-                  href={`/shop/${line.id}`}
+                  href={`/shop/${line.slug}`}
                   className="font-serif text-lg transition-colors duration-300 hover:text-brass"
                 >
                   {line.name}

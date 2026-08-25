@@ -3,13 +3,11 @@ import { notFound } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
 import ProductDetail from "@/components/ProductDetail";
 import Reveal from "@/components/Reveal";
-import { PRODUCTS, getProduct, relatedTo } from "@/lib/products";
+import { getProduct, getRelatedProducts } from "@/lib/db/catalogue";
+
+export const dynamic = "force-dynamic";
 
 type Params = { slug: string };
-
-export function generateStaticParams(): Params[] {
-  return PRODUCTS.map((product) => ({ slug: product.id }));
-}
 
 export async function generateMetadata({
   params,
@@ -17,7 +15,7 @@ export async function generateMetadata({
   params: Promise<Params>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const product = await getProduct(slug);
   if (!product) return { title: "Not found" };
   return { title: product.name, description: product.blurb };
 }
@@ -28,10 +26,10 @@ export default async function ProductPage({
   params: Promise<Params>;
 }) {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const product = await getProduct(slug);
   if (!product) notFound();
 
-  const related = relatedTo(product);
+  const related = await getRelatedProducts(product);
 
   return (
     <>

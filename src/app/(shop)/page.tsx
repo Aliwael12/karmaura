@@ -6,22 +6,12 @@ import ObjectArt from "@/components/ObjectArt";
 import ProductCard from "@/components/ProductCard";
 import Reveal from "@/components/Reveal";
 import {
-  CATEGORIES,
-  FEATURED_IDS,
-  PRODUCTS,
-  productsIn,
-  type ArtKind,
-  type CategorySlug,
-} from "@/lib/products";
+  getCategories,
+  getCategoryCounts,
+  getFeaturedProducts,
+} from "@/lib/db/catalogue";
 
-/* one representative silhouette stands for each room */
-const CATEGORY_ART: Record<CategorySlug, ArtKind> = {
-  ceramics: "vessel",
-  textiles: "throw",
-  tableware: "platter",
-  wall: "disc",
-  storage: "basket",
-};
+export const dynamic = "force-dynamic";
 
 const VALUES = [
   {
@@ -38,10 +28,12 @@ const VALUES = [
   },
 ];
 
-export default function HomePage() {
-  const featured = FEATURED_IDS.map(
-    (id) => PRODUCTS.find((p) => p.id === id)!,
-  );
+export default async function HomePage() {
+  const [categories, counts, featured] = await Promise.all([
+    getCategories(),
+    getCategoryCounts(),
+    getFeaturedProducts(4),
+  ]);
 
   return (
     <>
@@ -157,7 +149,7 @@ export default function HomePage() {
           className="grid snap-x snap-mandatory grid-flow-col auto-cols-[minmax(212px,1fr)] overflow-x-auto pb-2"
           style={{ gap: "clamp(10px,1.4cqw,18px)" }}
         >
-          {CATEGORIES.map((category) => (
+          {categories.map((category) => (
             <Reveal key={category.slug} delay={0} className="snap-start">
               <Link
                 href={`/shop?room=${category.slug}`}
@@ -165,7 +157,7 @@ export default function HomePage() {
               >
                 <div className="relative aspect-3/4 w-full overflow-hidden rounded-lg bg-sand">
                   <ObjectArt
-                    kind={CATEGORY_ART[category.slug]}
+                    kind={category.art}
                     tone="light"
                     className="size-full transition-transform duration-[1.2s] ease-km group-hover:scale-[1.05]"
                   />
@@ -175,7 +167,7 @@ export default function HomePage() {
                     {category.name}
                   </p>
                   <p className="text-xs tracking-[.1em] text-moss uppercase">
-                    {productsIn(category.slug).length} pieces
+                    {counts[category.slug] ?? 0} pieces
                   </p>
                 </div>
               </Link>

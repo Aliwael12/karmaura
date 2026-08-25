@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# raw product photography — uploaded to Supabase Storage, not tracked here
+/Bedroom/
+/Coffee-Espresso Mugs/

@@ -1,4 +1,4 @@
-import type { ArtKind } from "@/lib/products";
+import type { ArtKind } from "@/lib/catalogue-types";
 
 type Tone = "light" | "dark";
 

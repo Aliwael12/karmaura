@@ -3,20 +3,15 @@ import Link from "next/link";
 import { ArrowsDownUp } from "@phosphor-icons/react/ssr";
 import ProductCard from "@/components/ProductCard";
 import Reveal from "@/components/Reveal";
-import {
-  CATEGORIES,
-  PRODUCTS,
-  SORT_LABELS,
-  categoryOf,
-  sortProducts,
-  type CategorySlug,
-  type SortKey,
-} from "@/lib/products";
+import { countAllProducts, getCategories, getProducts } from "@/lib/db/catalogue";
+import { SORT_LABELS, type SortKey } from "@/lib/catalogue-types";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "The collection",
   description:
-    "Everything we make — ceramics, textiles, tableware, brass and reed, in small runs.",
+    "Everything we make — ceramics, textiles, bedroom linens, tableware, brass and reed, in small runs.",
 };
 
 const NEXT_SORT: Record<SortKey, SortKey> = {
@@ -27,16 +22,11 @@ const NEXT_SORT: Record<SortKey, SortKey> = {
 
 type Search = { room?: string; sort?: string };
 
-function readRoom(value?: string): CategorySlug | "all" {
-  const match = CATEGORIES.find((c) => c.slug === value);
-  return match ? match.slug : "all";
-}
-
 function readSort(value?: string): SortKey {
   return value === "low" || value === "high" ? value : "featured";
 }
 
-function hrefFor(room: CategorySlug | "all", sort: SortKey) {
+function hrefFor(room: string, sort: SortKey) {
   const params = new URLSearchParams();
   if (room !== "all") params.set("room", room);
   if (sort !== "featured") params.set("sort", sort);
@@ -50,18 +40,21 @@ export default async function ShopPage({
   searchParams: Promise<Search>;
 }) {
   const params = await searchParams;
-  const room = readRoom(params.room);
   const sort = readSort(params.sort);
 
-  const filtered =
-    room === "all" ? PRODUCTS : PRODUCTS.filter((p) => p.category === room);
-  const list = sortProducts(filtered, sort);
+  const categories = await getCategories();
+  const activeCategory = categories.find((c) => c.slug === params.room);
+  const room = activeCategory?.slug ?? "all";
 
-  const heading = room === "all" ? "Everything we make" : categoryOf(room).name;
-  const standfirst =
-    room === "all"
-      ? "Everything is made in small runs. When a piece sells out we make it again — it takes about six weeks."
-      : categoryOf(room).blurb;
+  const [list, total] = await Promise.all([
+    getProducts({ categorySlug: activeCategory?.slug, sort }),
+    countAllProducts(),
+  ]);
+
+  const heading = activeCategory ? activeCategory.name : "Everything we make";
+  const standfirst = activeCategory
+    ? activeCategory.blurb
+    : "Everything is made in small runs. When a piece sells out we make it again — it takes about six weeks.";
 
   return (
     <div
@@ -95,7 +88,7 @@ export default async function ShopPage({
           <Chip href={hrefFor("all", sort)} active={room === "all"}>
             All
           </Chip>
-          {CATEGORIES.map((category) => (
+          {categories.map((category) => (
             <Chip
               key={category.slug}
               href={hrefFor(category.slug, sort)}
@@ -136,8 +129,8 @@ export default async function ShopPage({
       )}
 
       <p className="mt-[clamp(40px,6cqw,80px)] max-w-[52ch] text-[13px] leading-[1.7] text-moss">
-        Showing {list.length} of {PRODUCTS.length} pieces. Everything is made to
-        order in the atelier — nothing here is warehoused.
+        Showing {list.length} of {total} pieces. Everything is made to order in
+        the atelier — nothing here is warehoused.
       </p>
     </div>
   );

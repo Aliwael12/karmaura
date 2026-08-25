@@ -17,7 +17,8 @@ import {
   shippingOf,
   subtotalOf,
 } from "@/lib/commerce";
-import { getProduct } from "@/lib/products";
+import { fetchCatalogueProducts } from "@/lib/catalogue-client";
+import type { Product } from "@/lib/catalogue-types";
 
 /* ── shapes ──────────────────────────────────────────────────────── */
 
@@ -35,7 +36,7 @@ export type Address = {
 };
 
 export type OrderLine = {
-  id: string;
+  slug: string;
   name: string;
   qty: number;
   price: number;
@@ -81,8 +82,8 @@ const SEED_ORDERS: Order[] = [
     id: "KM-4791",
     placedAt: "2026-05-14T10:20:00.000Z",
     lines: [
-      { id: "sahel", name: "Sahel Bowl", qty: 2, price: 4800 },
-      { id: "halim", name: "Halim Cup Set", qty: 1, price: 3700 },
+      { slug: "sahel", name: "Sahel Bowl", qty: 2, price: 4800 },
+      { slug: "halim", name: "Halim Cup Set", qty: 1, price: 3700 },
     ],
     subtotal: 13300,
     shipping: 0,
@@ -98,7 +99,7 @@ const SEED_ORDERS: Order[] = [
   {
     id: "KM-4803",
     placedAt: "2026-07-02T16:05:00.000Z",
-    lines: [{ id: "layla", name: "Layla Throw", qty: 1, price: 12000 }],
+    lines: [{ slug: "layla", name: "Layla Throw", qty: 1, price: 12000 }],
     subtotal: 12000,
     shipping: 900,
     total: 12900,
@@ -190,6 +191,11 @@ type StoreValue = {
 
   /** bumps every time something lands in the bag, so the header can pulse */
   bagPulse: number;
+
+  /** The catalogue, fetched once for the pieces of UI outside a server-
+      rendered page — the cart drawer, the repair form's picker. Server
+      components already get products as props; this is only for those. */
+  products: Product[];
 };
 
 const StoreContext = createContext<StoreValue | null>(null);
@@ -206,7 +212,21 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [cartOpen, setCartOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [bagPulse, setBagPulse] = useState(0);
+  const [products, setProducts] = useState<Product[]>([]);
   const toastKey = useRef(0);
+
+  /* Fetched once, independent of the localStorage hydration below — the
+     cart/saved arrays hold slugs, and this is what turns a slug back into a
+     name, a price and a photo for the drawer and the repair picker. */
+  useEffect(() => {
+    let cancelled = false;
+    fetchCatalogueProducts().then((list) => {
+      if (!cancelled) setProducts(list);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   /* Read the browser's copy once, after mount, then mirror every change back.
      This has to be an effect: localStorage does not exist during the server
@@ -269,10 +289,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     (id: string, qty = 1) => {
       setCart((current) => ({ ...current, [id]: (current[id] ?? 0) + qty }));
       setBagPulse((n) => n + 1);
-      const product = getProduct(id);
+      const product = products.find((p) => p.slug === id);
       flash((product ? product.name : "Added") + " — added to your bag");
     },
-    [flash],
+    [flash, products],
   );
 
   const setQty = useCallback((id: string, qty: number) => {
@@ -291,7 +311,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   const toggleSaved = useCallback(
     (id: string) => {
-      const product = getProduct(id);
+      const product = products.find((p) => p.slug === id);
       setSaved((current) => {
         if (current.includes(id)) {
           flash((product ? product.name : "Piece") + " — removed from saved");
@@ -301,7 +321,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         return [...current, id];
       });
     },
-    [flash],
+    [flash, products],
   );
 
   const signIn = useCallback(
@@ -335,15 +355,15 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   const placeOrder = useCallback(
     ({ ship }: { ship: Order["ship"] }) => {
-      const lines = linesOf(cart);
+      const lines = linesOf(cart, products);
       if (lines.length === 0) return null;
-      const subtotal = subtotalOf(cart);
+      const subtotal = subtotalOf(cart, products);
       const shipping = shippingOf(subtotal);
       const order: Order = {
         id: "KM-" + (4820 + orders.length),
         placedAt: new Date().toISOString(),
         lines: lines.map((l) => ({
-          id: l.id,
+          slug: l.slug,
           name: l.name,
           qty: l.qty,
           price: l.price,
@@ -358,7 +378,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       setCart({});
       return order;
     },
-    [cart, orders.length],
+    [cart, orders.length, products],
   );
 
   const addAddress = useCallback(
@@ -399,9 +419,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     [flash],
   );
 
-  const lines = useMemo(() => linesOf(cart), [cart]);
+  const lines = useMemo(() => linesOf(cart, products), [cart, products]);
   const count = useMemo(() => countOf(cart), [cart]);
-  const subtotal = useMemo(() => subtotalOf(cart), [cart]);
+  const subtotal = useMemo(() => subtotalOf(cart, products), [cart, products]);
   const shipping = useMemo(() => shippingOf(subtotal), [subtotal]);
 
   const value: StoreValue = {
@@ -437,6 +457,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     menuOpen,
     setMenuOpen,
     bagPulse,
+    products,
   };
 
   return (

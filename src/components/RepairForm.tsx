@@ -3,18 +3,22 @@
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import { useStore } from "@/context/store";
-import { PRODUCTS } from "@/lib/products";
 
 export default function RepairForm() {
-  const { openRepair, user } = useStore();
-  const [piece, setPiece] = useState(PRODUCTS[0].name);
+  const { openRepair, user, products } = useStore();
+  /* "" means "no explicit choice yet" — the catalogue loads asynchronously,
+     so the effective selection falls back to the first piece once it
+     arrives, without an effect syncing state to state. */
+  const [piece, setPiece] = useState("");
   const [note, setNote] = useState("");
   const [done, setDone] = useState(false);
 
+  const selected = piece || products[0]?.name || "";
+
   function submit(event: FormEvent) {
     event.preventDefault();
-    if (!note.trim()) return;
-    openRepair(piece, note.trim());
+    if (!note.trim() || !selected) return;
+    openRepair(selected, note.trim());
     setNote("");
     setDone(true);
   }
@@ -30,15 +34,20 @@ export default function RepairForm() {
         <label className="flex flex-col gap-2">
           <span className="text-xs text-cream/60">Which piece</span>
           <select
-            value={piece}
+            value={selected}
             onChange={(e) => setPiece(e.target.value)}
+            disabled={products.length === 0}
             className="km-field km-field-dark"
           >
-            {PRODUCTS.map((product) => (
-              <option key={product.id} value={product.name}>
-                {product.name}
-              </option>
-            ))}
+            {products.length === 0 ? (
+              <option value="">Loading pieces…</option>
+            ) : (
+              products.map((product) => (
+                <option key={product.id} value={product.name}>
+                  {product.name}
+                </option>
+              ))
+            )}
           </select>
         </label>
 
@@ -53,7 +62,11 @@ export default function RepairForm() {
           />
         </label>
 
-        <button type="submit" className="km-btn km-btn-dark w-full">
+        <button
+          type="submit"
+          disabled={products.length === 0}
+          className="km-btn km-btn-dark w-full disabled:opacity-50"
+        >
           Open a repair
         </button>
 
