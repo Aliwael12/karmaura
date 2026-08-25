@@ -62,35 +62,39 @@ export default function HeroArt({ photo }: Props) {
   return (
     <div
       ref={ref}
-      className="relative order-2 aspect-4/5 w-full max-h-[min(620px,66vh)] overflow-hidden rounded-lg bg-forest-deep"
+      className={`relative order-2 aspect-4/5 w-full max-h-[min(620px,66vh)] ${
+        photo ? "" : "overflow-hidden rounded-lg bg-forest-deep"
+      }`}
       style={{
-        boxShadow: "0 40px 90px -46px rgba(0,0,0,.75)",
+        boxShadow: photo ? undefined : "0 40px 90px -46px rgba(0,0,0,.75)",
         transition:
           "transform 1.2s cubic-bezier(.16,.84,.24,1), opacity .9s ease",
       }}
     >
       {photo ? (
-        <div className="absolute inset-[10%]">
+        <div className="absolute inset-[3%]">
           <Image
             src={photo.url}
             alt={photo.alt}
             fill
-            sizes="(min-width: 1024px) 36vw, 72vw"
+            sizes="(min-width: 1024px) 40vw, 80vw"
             priority
             className="object-contain"
-            style={{ filter: "drop-shadow(0 16px 18px rgba(0,0,0,.45))" }}
+            style={{ filter: "drop-shadow(0 20px 22px rgba(0,0,0,.4))" }}
           />
         </div>
       ) : (
-        <SceneArt scene="interior" className="size-full" />
+        <>
+          <SceneArt scene="interior" className="size-full" />
+          <div
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-[38%]"
+            style={{
+              background:
+                "linear-gradient(180deg,rgba(49,78,36,0),rgba(49,78,36,.55))",
+            }}
+          />
+        </>
       )}
-      <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-[38%]"
-        style={{
-          background:
-            "linear-gradient(180deg,rgba(49,78,36,0),rgba(49,78,36,.55))",
-        }}
-      />
     </div>
   );
 }
