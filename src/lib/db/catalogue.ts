@@ -94,6 +94,35 @@ export async function getCategoryCounts(): Promise<Record<string, number>> {
   return counts;
 }
 
+/** One representative photo per room, for the "Shop by material" tiles —
+    the earliest-position product in that room that actually has a photo,
+    so a room with real photography leads with it instead of the drawn
+    silhouette every room falls back to otherwise. */
+export async function getCategoryCoverImages(): Promise<
+  Record<string, { url: string; alt: string }>
+> {
+  const supabase = await createServerSupabase();
+  const { data, error } = await supabase
+    .from("products")
+    .select("categories(slug), product_images(storage_path, alt, position)")
+    .eq("is_active", true)
+    .order("position");
+
+  if (error) throw new Error(`Could not load room photos: ${error.message}`);
+
+  const covers: Record<string, { url: string; alt: string }> = {};
+  for (const row of (data ?? []) as unknown as {
+    categories: { slug: string } | null;
+    product_images: Pick<ProductImageRow, "storage_path" | "alt" | "position">[] | null;
+  }[]) {
+    const slug = row.categories?.slug;
+    if (!slug || covers[slug]) continue;
+    const images = (row.product_images ?? []).slice().sort((a, b) => a.position - b.position);
+    if (images[0]) covers[slug] = { url: imageUrl(images[0].storage_path), alt: images[0].alt };
+  }
+  return covers;
+}
+
 export async function countAllProducts(): Promise<number> {
   const supabase = await createServerSupabase();
   const { count, error } = await supabase

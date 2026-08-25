@@ -8,6 +8,7 @@ import Reveal from "@/components/Reveal";
 import {
   getCategories,
   getCategoryCounts,
+  getCategoryCoverImages,
   getFeaturedProducts,
 } from "@/lib/db/catalogue";
 
@@ -29,9 +30,10 @@ const VALUES = [
 ];
 
 export default async function HomePage() {
-  const [categories, counts, featured] = await Promise.all([
+  const [categories, counts, covers, featured] = await Promise.all([
     getCategories(),
     getCategoryCounts(),
+    getCategoryCoverImages(),
     getFeaturedProducts(4),
   ]);
 
@@ -149,18 +151,30 @@ export default async function HomePage() {
           className="grid snap-x snap-mandatory grid-flow-col auto-cols-[minmax(212px,1fr)] overflow-x-auto pb-2"
           style={{ gap: "clamp(10px,1.4cqw,18px)" }}
         >
-          {categories.map((category) => (
+          {categories.map((category) => {
+            const cover = covers[category.slug];
+            return (
             <Reveal key={category.slug} delay={0} className="snap-start">
               <Link
                 href={`/shop?room=${category.slug}`}
                 className="group flex flex-col gap-3.5 text-left"
               >
                 <div className="relative aspect-3/4 w-full overflow-hidden rounded-lg bg-sand">
-                  <ObjectArt
-                    kind={category.art}
-                    tone="light"
-                    className="size-full transition-transform duration-[1.2s] ease-km group-hover:scale-[1.05]"
-                  />
+                  {cover ? (
+                    <Image
+                      src={cover.url}
+                      alt={cover.alt || category.name}
+                      fill
+                      sizes="212px"
+                      className="object-cover transition-transform duration-[1.2s] ease-km group-hover:scale-[1.05]"
+                    />
+                  ) : (
+                    <ObjectArt
+                      kind={category.art}
+                      tone="light"
+                      className="size-full transition-transform duration-[1.2s] ease-km group-hover:scale-[1.05]"
+                    />
+                  )}
                 </div>
                 <div>
                   <p className="mb-[3px] font-serif text-[21px] text-forest transition-colors duration-300 group-hover:text-brass">
@@ -172,7 +186,8 @@ export default async function HomePage() {
                 </div>
               </Link>
             </Reveal>
-          ))}
+            );
+          })}
         </div>
       </section>
 
