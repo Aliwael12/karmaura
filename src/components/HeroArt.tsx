@@ -1,13 +1,22 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef } from "react";
 import SceneArt from "./SceneArt";
+
+type Props = {
+  /** A real piece to lead with, when one exists — falls back to the drawn
+      interior otherwise. Masked to a soft vignette rather than shown as a
+      hard-edged product cutout, since the source photos are studio shots
+      on white, not lifestyle photography. */
+  photo?: { url: string; alt: string };
+};
 
 /**
  * The hero plate drifts against the scroll and leans a few pixels toward the
  * cursor. Both are switched off on coarse pointers and reduced motion.
  */
-export default function HeroArt() {
+export default function HeroArt({ photo }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -60,7 +69,24 @@ export default function HeroArt() {
           "transform 1.2s cubic-bezier(.16,.84,.24,1), opacity .9s ease",
       }}
     >
-      <SceneArt scene="interior" className="size-full" />
+      {photo ? (
+        <Image
+          src={photo.url}
+          alt={photo.alt}
+          fill
+          sizes="(min-width: 1024px) 45vw, 90vw"
+          priority
+          className="object-cover"
+          style={{
+            maskImage:
+              "radial-gradient(ellipse 68% 62% at 50% 46%, black 42%, transparent 80%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse 68% 62% at 50% 46%, black 42%, transparent 80%)",
+          }}
+        />
+      ) : (
+        <SceneArt scene="interior" className="size-full" />
+      )}
       <div
         className="pointer-events-none absolute inset-x-0 bottom-0 h-[38%]"
         style={{

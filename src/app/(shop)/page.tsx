@@ -10,7 +10,12 @@ import {
   getCategoryCounts,
   getCategoryCoverImages,
   getFeaturedProducts,
+  getProductsBySlugs,
 } from "@/lib/db/catalogue";
+
+/** The one piece that leads the hero — its sage-to-forest glaze is the
+    closest real photograph we have to the hero's own background colour. */
+const HERO_SLUG = "forest-fade-mug";
 
 export const dynamic = "force-dynamic";
 
@@ -30,12 +35,18 @@ const VALUES = [
 ];
 
 export default async function HomePage() {
-  const [categories, counts, covers, featured] = await Promise.all([
+  const [categories, counts, covers, featured, heroMatches] = await Promise.all([
     getCategories(),
     getCategoryCounts(),
     getCategoryCoverImages(),
     getFeaturedProducts(4),
+    getProductsBySlugs([HERO_SLUG]),
   ]);
+
+  const stockedCategories = categories.filter(
+    (category) => (counts[category.slug] ?? 0) > 0,
+  );
+  const heroPhoto = heroMatches[0]?.images[0];
 
   return (
     <>
@@ -99,7 +110,7 @@ export default async function HomePage() {
           </Reveal>
         </div>
 
-        <HeroArt />
+        <HeroArt photo={heroPhoto} />
       </section>
 
       {/* ── three promises ───────────────────────────────────────── */}
@@ -151,7 +162,7 @@ export default async function HomePage() {
           className="grid snap-x snap-mandatory grid-flow-col auto-cols-[minmax(212px,1fr)] overflow-x-auto pb-2"
           style={{ gap: "clamp(10px,1.4cqw,18px)" }}
         >
-          {categories.map((category) => {
+          {stockedCategories.map((category) => {
             const cover = covers[category.slug];
             return (
             <Reveal key={category.slug} delay={0} className="snap-start">
