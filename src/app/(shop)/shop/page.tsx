@@ -112,7 +112,7 @@ export default async function ShopPage({
       </Reveal>
 
       <div
-        className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,222px),1fr))]"
+        className="grid grid-cols-2 sm:grid-cols-[repeat(auto-fit,minmax(min(100%,222px),1fr))]"
         style={{ gap: "clamp(14px,2cqw,28px)" }}
       >
         {list.map((product, i) => (
