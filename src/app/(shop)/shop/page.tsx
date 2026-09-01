@@ -58,7 +58,7 @@ export default async function ShopPage({
 
   return (
     <div
-      className="km-gutter min-h-full bg-cream-light text-forest"
+      className="km-gutter min-h-full bg-cream text-forest"
       style={{
         paddingBlock: "clamp(30px,4.6cqw,64px) clamp(60px,8cqw,110px)",
       }}
