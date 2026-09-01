@@ -52,8 +52,6 @@ export default function Footer() {
 
         <FooterColumn title="House">
           <FooterLink href="/story">The story</FooterLink>
-          <FooterLink href="/visit">The atelier</FooterLink>
-          <FooterLink href="/visit#repairs">Repairs</FooterLink>
         </FooterColumn>
 
         <div>

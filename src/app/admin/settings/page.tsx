@@ -40,7 +40,8 @@ export default async function AdminSettings() {
               atelier is behind.
             </p>
             <p className="border-t border-gold/15 pt-4 text-cream/40">
-              The atelier details below feed the Visit page and the footer.
+              The atelier details below aren&apos;t shown on the storefront
+              right now — the Visit page was removed.
             </p>
           </div>
         </Panel>

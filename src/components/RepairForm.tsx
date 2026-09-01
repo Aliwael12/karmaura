@@ -1,11 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import { useStore } from "@/context/store";
 
 export default function RepairForm() {
-  const { openRepair, user, products } = useStore();
+  const { openRepair, products } = useStore();
   /* "" means "no explicit choice yet" — the catalogue loads asynchronously,
      so the effective selection falls back to the first piece once it
      arrives, without an effect syncing state to state. */
@@ -72,22 +71,7 @@ export default function RepairForm() {
 
         {done && (
           <p className="text-[13px] leading-[1.7] text-gold-bright">
-            Noted. {user ? (
-              <>
-                You can follow it in{" "}
-                <Link href="/account/repairs" className="underline underline-offset-4">
-                  your profile
-                </Link>
-                .
-              </>
-            ) : (
-              <>
-                <Link href="/account" className="underline underline-offset-4">
-                  Sign in
-                </Link>{" "}
-                to follow it through.
-              </>
-            )}
+            Noted — it will appear in the list above.
           </p>
         )}
       </div>

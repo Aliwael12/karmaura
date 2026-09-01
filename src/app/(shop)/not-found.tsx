@@ -17,8 +17,8 @@ export default function NotFound() {
           This room is empty
         </h1>
         <p className="mx-auto mb-9 max-w-[42ch] text-[15px] leading-[1.7] text-cream/70">
-          The page you were looking for has been put away. The collection, the
-          story and the atelier are all still where you left them.
+          The page you were looking for has been put away. The collection and
+          the story are still where you left them.
         </p>
         <div className="flex flex-wrap justify-center gap-3">
           <Link href="/shop" className="km-btn km-btn-dark">

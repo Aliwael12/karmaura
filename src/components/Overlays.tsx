@@ -29,7 +29,6 @@ export default function Overlays() {
 const MENU_LINKS = [
   { href: "/shop", label: "Collection" },
   { href: "/story", label: "The story" },
-  { href: "/visit", label: "Visit" },
   { href: "/account", label: "My profile" },
 ];
 

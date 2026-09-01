@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight } from "@phosphor-icons/react/ssr";
 import Reveal from "@/components/Reveal";
 import SceneArt from "@/components/SceneArt";
 
@@ -164,9 +163,6 @@ export default function StoryPage() {
             <div className="flex flex-wrap gap-3">
               <Link href="/shop" className="km-btn km-btn-dark">
                 See the collection
-              </Link>
-              <Link href="/visit" className="km-arrow text-cream">
-                Visit the atelier <ArrowRight size={16} weight="light" />
               </Link>
             </div>
           </div>

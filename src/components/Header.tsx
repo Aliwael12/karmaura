@@ -10,7 +10,6 @@ import { useStore } from "@/context/store";
 const LINKS = [
   { href: "/shop", label: "Collection" },
   { href: "/story", label: "The story" },
-  { href: "/visit", label: "Visit" },
 ];
 
 export default function Header() {
