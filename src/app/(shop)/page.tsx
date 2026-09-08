@@ -104,7 +104,7 @@ export default async function HomePage() {
           <Reveal delay={520}>
             <div
               className="flex flex-wrap items-center gap-6"
-              style={{ marginTop: "clamp(26px,3.4cqw,40px)" }}
+              style={{ marginTop: "clamp(18px,3.4cqw,40px)" }}
             >
               <Link href="/shop" className="km-btn km-btn-dark">
                 Explore the collection
@@ -117,7 +117,9 @@ export default async function HomePage() {
               </Link>
             </div>
           </Reveal>
-          <Reveal delay={620}>
+          {/* repeats what the body copy already said — worth the line on a
+              wide screen, one scroll too many on a phone */}
+          <Reveal delay={620} className="hidden sm:block">
             <p
               className="text-[11px] tracking-[.22em] text-cream/50 uppercase"
               style={{ marginTop: "clamp(22px,3cqw,32px)" }}
@@ -150,8 +152,8 @@ export default async function HomePage() {
         style={{ paddingBlock: "clamp(44px,6cqw,90px)" }}
       >
         <ol
-          className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,220px),1fr))]"
-          style={{ gap: "clamp(24px,3.4cqw,52px)" }}
+          className="grid grid-cols-2 sm:grid-cols-[repeat(auto-fit,minmax(min(100%,220px),1fr))]"
+          style={{ gap: "clamp(20px,3.4cqw,52px)" }}
         >
           {VALUES.map((value, i) => (
             <Reveal
