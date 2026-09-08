@@ -43,6 +43,9 @@
   --animate-toast: km-toast 2.6s ease forwards;
   --animate-slow: km-slow 22s ease-in-out infinite alternate;
   --animate-bag: km-bag 0.52s cubic-bezier(0.16, 0.84, 0.24, 1);
+  --animate-marquee: km-marquee 46s linear infinite;
+  --animate-cue: km-cue 2.2s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+  --animate-word: km-rise 0.9s cubic-bezier(0.16, 0.84, 0.24, 1) both;
 
   @keyframes km-aura {
     0%, 100% { opacity: 0.5; transform: scale(1); }
@@ -77,6 +80,19 @@
     0% { transform: scale(1); }
     45% { transform: scale(1.22); }
     100% { transform: scale(1); }
+  }
+  /* the ticker slides by exactly one of its two identical copies, then
+     snaps back — the seam lands on a seam, so it reads as endless */
+  @keyframes km-marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  /* a hairline that draws down, then lets go from the bottom */
+  @keyframes km-cue {
+    0% { opacity: 0; transform: scaleY(0); transform-origin: top; }
+    35% { opacity: 1; transform: scaleY(1); transform-origin: top; }
+    65% { opacity: 1; transform: scaleY(1); transform-origin: bottom; }
+    100% { opacity: 0; transform: scaleY(0); transform-origin: bottom; }
   }
 }
 
@@ -166,21 +182,29 @@
     font-size: 12px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    transition: background 0.4s ease, color 0.4s ease, transform 0.4s var(--ease-km);
+    transition: background 0.4s ease, color 0.4s ease, transform 0.16s var(--ease-km);
   }
-  .km-btn:active { transform: translateY(0); }
+  /* press feedback — the box has to be seen to hear you. Wins over the
+     hover lift when both apply, by being the more specific rule. */
+  .km-btn:active, .km-btn:active:hover { transform: scale(0.97); }
 
   .km-btn-dark { color: var(--color-cream); }
-  .km-btn-dark:hover { background: var(--color-gold); color: var(--color-forest); transform: translateY(-2px); }
+  @media (hover: hover) and (pointer: fine) {
+    .km-btn-dark:hover { background: var(--color-gold); color: var(--color-forest); transform: translateY(-2px); }
+  }
 
   .km-btn-light { color: var(--color-forest); }
-  .km-btn-light:hover { background: var(--color-gold); color: var(--color-cream-light); transform: translateY(-2px); }
+  @media (hover: hover) and (pointer: fine) {
+    .km-btn-light:hover { background: var(--color-gold); color: var(--color-cream-light); transform: translateY(-2px); }
+  }
 
   .km-btn-quiet {
     border-color: rgba(239, 223, 195, 0.22);
     color: rgba(239, 223, 195, 0.86);
   }
-  .km-btn-quiet:hover { border-color: rgba(239, 223, 195, 0.5); color: var(--color-cream); background: transparent; transform: none; }
+  @media (hover: hover) and (pointer: fine) {
+    .km-btn-quiet:hover { border-color: rgba(239, 223, 195, 0.5); color: var(--color-cream); background: transparent; transform: none; }
+  }
 
   /* a link that widens its own stride on hover */
   .km-arrow {
@@ -194,7 +218,9 @@
     border-bottom: 1px solid rgba(172, 157, 98, 0.4);
     transition: gap 0.35s ease, border-color 0.35s ease, color 0.3s ease;
   }
-  .km-arrow:hover { gap: 16px; border-bottom-color: var(--color-gold-bright); }
+  @media (hover: hover) and (pointer: fine) {
+    .km-arrow:hover { gap: 16px; border-bottom-color: var(--color-gold-bright); }
+  }
 
   .km-field {
     width: 100%;
@@ -226,8 +252,47 @@
   }
 }
 
+/* ── motion that follows the scroll ──────────────────────────────── */
+/* Progressive: only where an animation can be driven by scroll position.
+   Elsewhere the class does nothing and the block renders in its resting
+   state — nothing is gated behind it that a reader needs. */
+@supports (animation-timeline: view()) {
+  @keyframes km-view-parallax {
+    from { transform: translateY(7%); }
+    to { transform: translateY(-7%); }
+  }
+  .km-view-parallax {
+    animation: km-view-parallax linear both;
+    animation-timeline: view();
+    animation-range: cover 0% cover 100%;
+    will-change: transform;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .km-view-parallax { animation: none; }
+  }
+}
+
+/* the ticker fades out at both ends, and holds still under a pointer so a
+   word can actually be read */
+.km-marquee {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.km-marquee-track { will-change: transform; }
+@media (hover: hover) and (pointer: fine) {
+  .km-marquee:hover .km-marquee-track { animation-play-state: paused; }
+}
+
+/* one word of a headline, arriving a beat after the one before it */
+.km-word {
+  display: inline-block;
+  animation: var(--animate-word);
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .km-marquee-track { animation: none; }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;

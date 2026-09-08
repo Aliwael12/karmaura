@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import { ArrowRight } from "@phosphor-icons/react/ssr";
 import HeroArt from "@/components/HeroArt";
+import Marquee from "@/components/Marquee";
 import ObjectArt from "@/components/ObjectArt";
 import ProductCard from "@/components/ProductCard";
 import Reveal from "@/components/Reveal";
@@ -14,6 +16,9 @@ import {
 } from "@/lib/db/catalogue";
 
 export const dynamic = "force-dynamic";
+
+/* the headline arrives a word at a time — each span carries its own beat */
+const HEADLINE = ["The", "warmth", "of", "simple", "things."];
 
 const VALUES = [
   {
@@ -49,7 +54,7 @@ export default async function HomePage() {
         className="km-gutter relative grid grid-cols-[repeat(auto-fit,minmax(min(100%,330px),1fr))] items-center overflow-hidden"
         style={{
           gap: "clamp(26px,4cqw,64px)",
-          paddingBlock: "clamp(34px,5cqw,82px) clamp(44px,6cqw,96px)",
+          paddingBlock: "clamp(34px,5cqw,82px) clamp(58px,7cqw,104px)",
           background:
             "radial-gradient(100% 80% at 6% 12%,#4b7439 0%,#3d5c2b 52%,#314e24 100%)",
         }}
@@ -72,24 +77,31 @@ export default async function HomePage() {
               Karmaura · Home
             </p>
           </Reveal>
-          <Reveal delay={90}>
-            <h1 className="font-serif text-[clamp(38px,10.5cqw,86px)] leading-[1.02] tracking-[-.015em] text-cream italic">
-              The warmth of simple things.
-            </h1>
-          </Reveal>
+
+          <h1 className="font-serif text-[clamp(38px,10.5cqw,86px)] leading-[1.02] tracking-[-.015em] text-cream italic">
+            {HEADLINE.map((word, i) => (
+              <span key={word} className="contents">
+                {i > 0 && " "}
+                <span className="km-word" style={{ "--i": i } as CSSProperties}>
+                  {word}
+                </span>
+              </span>
+            ))}
+          </h1>
+
           <Reveal
-            delay={200}
+            delay={380}
             mode="rule"
             className="km-rule w-[min(220px,50%)]"
             style={{ marginBlock: "clamp(20px,3cqw,34px)" }}
           />
-          <Reveal delay={260}>
+          <Reveal delay={440}>
             <p className="max-w-[46ch] text-[clamp(15px,1.7cqw,18px)] leading-[1.62] text-cream/80">
               Objects for the calm home — hand-thrown clay, undyed linen, woven
               reed. Made slowly, in small runs, by people we know.
             </p>
           </Reveal>
-          <Reveal delay={340}>
+          <Reveal delay={520}>
             <div
               className="flex flex-wrap items-center gap-6"
               style={{ marginTop: "clamp(26px,3.4cqw,40px)" }}
@@ -105,26 +117,92 @@ export default async function HomePage() {
               </Link>
             </div>
           </Reveal>
+          <Reveal delay={620}>
+            <p
+              className="text-[11px] tracking-[.22em] text-cream/50 uppercase"
+              style={{ marginTop: "clamp(22px,3cqw,32px)" }}
+            >
+              Small runs · Cairo &amp; the Delta · Mended for life
+            </p>
+          </Reveal>
         </div>
 
         <HeroArt />
+
+        {/* a quiet hint that the page goes on */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 bottom-3 flex flex-col items-center gap-2"
+        >
+          <span className="text-[10px] tracking-[.3em] text-cream/45 uppercase">
+            Scroll
+          </span>
+          <span className="block h-9 w-px animate-cue bg-gold-bright/70" />
+        </div>
       </section>
+
+      {/* ── what things are made of ──────────────────────────────── */}
+      <Marquee />
 
       {/* ── three promises ───────────────────────────────────────── */}
       <section
-        className="km-gutter border-y border-gold/20 bg-forest-deep"
-        style={{ paddingBlock: "clamp(26px,3.4cqw,44px)" }}
+        className="km-gutter bg-forest"
+        style={{ paddingBlock: "clamp(44px,6cqw,90px)" }}
       >
-        <div
-          className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,200px),1fr))]"
-          style={{ gap: "clamp(20px,3cqw,44px)" }}
+        <ol
+          className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,220px),1fr))]"
+          style={{ gap: "clamp(24px,3.4cqw,52px)" }}
         >
           {VALUES.map((value, i) => (
-            <Reveal key={value.title} delay={i * 90}>
+            <Reveal
+              key={value.title}
+              as="li"
+              delay={i * 90}
+              className="border-t border-gold/25 pt-5"
+            >
+              <p className="mb-4 font-serif text-sm tracking-[.2em] text-gold-bright/60">
+                0{i + 1}
+              </p>
               <p className="mb-2 font-serif text-2xl text-gold-bright">
                 {value.title}
               </p>
               <p className="text-sm leading-[1.6] text-cream/65">{value.body}</p>
+            </Reveal>
+          ))}
+        </ol>
+      </section>
+
+      {/* ── quietly new ──────────────────────────────────────────── */}
+      <section
+        className="km-gutter bg-cream-light text-forest"
+        style={{ paddingBlock: "clamp(48px,7cqw,104px)" }}
+      >
+        <div
+          className="flex flex-wrap items-end justify-between gap-6"
+          style={{ marginBottom: "clamp(26px,3.4cqw,44px)" }}
+        >
+          <Reveal delay={0}>
+            <p className="km-eyebrow mb-3 text-moss">This season</p>
+            <h2 className="font-serif text-[clamp(28px,5cqw,52px)] leading-[1.08]">
+              Quietly new
+            </h2>
+          </Reveal>
+          <Reveal delay={120}>
+            <Link
+              href="/shop"
+              className="km-arrow border-b-[rgba(95,106,66,.3)] text-olive hover:border-b-gold"
+            >
+              All objects <ArrowRight size={16} weight="light" />
+            </Link>
+          </Reveal>
+        </div>
+        <div
+          className="grid grid-cols-2 sm:grid-cols-[repeat(auto-fit,minmax(min(100%,232px),1fr))]"
+          style={{ gap: "clamp(14px,2cqw,28px)" }}
+        >
+          {featured.map((product, i) => (
+            <Reveal key={product.id} delay={i * 70}>
+              <ProductCard product={product} />
             </Reveal>
           ))}
         </div>
@@ -159,71 +237,47 @@ export default async function HomePage() {
           className="grid snap-x snap-mandatory grid-flow-col auto-cols-[minmax(212px,272px)] overflow-x-auto pb-2"
           style={{ gap: "clamp(10px,1.4cqw,18px)" }}
         >
-          {stockedCategories.map((category) => {
+          {stockedCategories.map((category, i) => {
             const cover = covers[category.slug];
             return (
-            <Reveal key={category.slug} delay={0} className="snap-start">
-              <Link
-                href={`/shop?room=${category.slug}`}
-                className="group flex flex-col gap-3.5 text-left"
+              <Reveal
+                key={category.slug}
+                delay={i * 80}
+                className="snap-start"
               >
-                <div className="relative aspect-3/4 w-full overflow-hidden rounded-lg bg-sand">
-                  {cover ? (
-                    <Image
-                      src={cover.url}
-                      alt={cover.alt || category.name}
-                      fill
-                      sizes="212px"
-                      className="object-cover transition-transform duration-[1.2s] ease-km group-hover:scale-[1.05]"
-                    />
-                  ) : (
-                    <ObjectArt
-                      kind={category.art}
-                      tone="light"
-                      className="size-full transition-transform duration-[1.2s] ease-km group-hover:scale-[1.05]"
-                    />
-                  )}
-                </div>
-                <div>
-                  <p className="mb-[3px] font-serif text-[21px] text-forest transition-colors duration-300 group-hover:text-brass">
-                    {category.name}
-                  </p>
-                  <p className="text-xs tracking-[.1em] text-moss uppercase">
-                    {counts[category.slug] ?? 0} pieces
-                  </p>
-                </div>
-              </Link>
-            </Reveal>
+                <Link
+                  href={`/shop?room=${category.slug}`}
+                  className="group flex flex-col gap-3.5 text-left transition-transform duration-[160ms] ease-km active:scale-[.98]"
+                >
+                  <div className="relative aspect-3/4 w-full overflow-hidden rounded-lg bg-sand">
+                    {cover ? (
+                      <Image
+                        src={cover.url}
+                        alt={cover.alt || category.name}
+                        fill
+                        sizes="272px"
+                        className="object-cover transition-transform duration-[1.2s] ease-km group-hover:scale-[1.05]"
+                      />
+                    ) : (
+                      <ObjectArt
+                        kind={category.art}
+                        tone="light"
+                        className="size-full transition-transform duration-[1.2s] ease-km group-hover:scale-[1.05]"
+                      />
+                    )}
+                  </div>
+                  <div>
+                    <p className="mb-[3px] font-serif text-[21px] text-forest transition-colors duration-300 group-hover:text-brass">
+                      {category.name}
+                    </p>
+                    <p className="text-xs tracking-[.1em] text-moss uppercase">
+                      {counts[category.slug] ?? 0} pieces
+                    </p>
+                  </div>
+                </Link>
+              </Reveal>
             );
           })}
-        </div>
-      </section>
-
-      {/* ── quietly new ──────────────────────────────────────────── */}
-      <section
-        className="km-gutter bg-cream-light text-forest"
-        style={{ paddingBlock: "clamp(48px,7cqw,104px)" }}
-      >
-        <Reveal delay={0}>
-          <p className="km-eyebrow mb-3 text-moss">This season</p>
-        </Reveal>
-        <Reveal delay={60}>
-          <h2
-            className="font-serif text-[clamp(28px,5cqw,52px)] leading-[1.08]"
-            style={{ marginBottom: "clamp(26px,3.4cqw,44px)" }}
-          >
-            Quietly new
-          </h2>
-        </Reveal>
-        <div
-          className="grid grid-cols-2 sm:grid-cols-[repeat(auto-fit,minmax(min(100%,232px),1fr))]"
-          style={{ gap: "clamp(14px,2cqw,28px)" }}
-        >
-          {featured.map((product, i) => (
-            <Reveal key={product.id} delay={i * 70}>
-              <ProductCard product={product} />
-            </Reveal>
-          ))}
         </div>
       </section>
 
@@ -237,11 +291,14 @@ export default async function HomePage() {
           style={{ gap: "clamp(26px,4cqw,64px)" }}
         >
           <Reveal delay={0}>
-            {/* the drawn interior, not the kraft photograph — that one now
-                leads the hero, and the same frame twice on one page reads
-                as a mistake rather than a motif */}
+            {/* the drawn interior, not the kraft photograph — that one leads
+                the hero, and the same frame twice on one page reads as a
+                mistake rather than a motif. Oversized by 8% each side so it
+                can drift with the scroll without showing its edges. */}
             <div className="relative aspect-5/4 overflow-hidden rounded-lg bg-forest-deep">
-              <SceneArt scene="interior" className="size-full" />
+              <div className="km-view-parallax absolute inset-[-8%]">
+                <SceneArt scene="interior" className="size-full" />
+              </div>
             </div>
           </Reveal>
           <Reveal delay={120}>
@@ -264,7 +321,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── the closing line ─────────────────────────────────────── */}
+      {/* ── the closing line, and the way in ─────────────────────── */}
       <section
         className="km-gutter overflow-hidden bg-sand text-center text-forest"
         style={{ paddingBlock: "clamp(52px,8cqw,120px)" }}
@@ -293,6 +350,15 @@ export default async function HomePage() {
               "linear-gradient(90deg,rgba(172,157,98,0),#6B5F33,rgba(172,157,98,0))",
           }}
         />
+        <Reveal delay={300}>
+          <Link
+            href="/shop"
+            className="km-btn km-btn-light"
+            style={{ marginTop: "clamp(26px,3.6cqw,40px)" }}
+          >
+            Explore the collection
+          </Link>
+        </Reveal>
       </section>
     </>
   );

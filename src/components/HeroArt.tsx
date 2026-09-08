@@ -75,7 +75,7 @@ export default function HeroArt() {
         fill
         sizes="(min-width: 1024px) 45vw, 100vw"
         priority
-        className="object-cover"
+        className="animate-slow object-cover will-change-transform"
       />
 
       {/* on the phone the band has no frame, so it is dissolved into the
