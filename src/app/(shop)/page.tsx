@@ -73,7 +73,7 @@ export default async function HomePage() {
           }}
         />
 
-        <div className="relative order-1 max-w-[640px]">
+        <div className="relative order-2 max-w-[640px] sm:order-1">
           <Reveal delay={0}>
             <p className="km-eyebrow mb-[22px] text-gold-bright">
               Karmaura · Home
@@ -98,14 +98,17 @@ export default async function HomePage() {
           </Reveal>
           <Reveal delay={340}>
             <div
-              className="flex flex-wrap gap-3"
+              className="flex flex-wrap items-center gap-6"
               style={{ marginTop: "clamp(26px,3.4cqw,40px)" }}
             >
               <Link href="/shop" className="km-btn km-btn-dark">
                 Explore the collection
               </Link>
-              <Link href="/story" className="km-btn km-btn-quiet !px-[26px]">
-                Read our story
+              <Link
+                href="/story"
+                className="km-arrow border-b-[rgba(239,223,195,.3)] text-cream/80 hover:border-b-gold-bright hover:text-cream"
+              >
+                Read our story <ArrowRight size={16} weight="light" />
               </Link>
             </div>
           </Reveal>

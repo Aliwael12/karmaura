@@ -62,7 +62,7 @@ export default function HeroArt({ photo }: Props) {
   return (
     <div
       ref={ref}
-      className={`relative order-2 aspect-4/5 w-full max-h-[min(620px,66vh)] ${
+      className={`relative order-1 aspect-square max-h-[380px] w-full sm:order-2 sm:aspect-4/5 sm:max-h-[min(620px,66vh)] ${
         photo ? "" : "overflow-hidden rounded-lg bg-forest-deep"
       }`}
       style={{
@@ -72,14 +72,14 @@ export default function HeroArt({ photo }: Props) {
       }}
     >
       {photo ? (
-        <div className="absolute inset-[3%]">
+        <div className="absolute inset-0 sm:inset-[3%]">
           <Image
             src={photo.url}
             alt={photo.alt}
             fill
             sizes="(min-width: 1024px) 40vw, 80vw"
             priority
-            className="object-contain"
+            className="object-cover sm:object-contain"
             style={{ filter: "drop-shadow(0 20px 22px rgba(0,0,0,.4))" }}
           />
         </div>
