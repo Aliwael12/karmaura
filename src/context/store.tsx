@@ -170,8 +170,11 @@ type StoreValue = {
   signIn: (email: string, name?: string) => void;
   signOut: () => void;
 
+  /** Order history — still a local demo list. Checkout itself is real now
+      (src/components/CartScreen.tsx calls the submitOrder server action
+      directly), but this panel has not been switched to read real orders
+      back yet, so a just-placed order will not appear here. */
   orders: Order[];
-  placeOrder: (details: { ship: Order["ship"] }) => Order | null;
 
   addresses: Address[];
   addAddress: (a: Omit<Address, "id" | "isDefault">) => void;
@@ -353,34 +356,6 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     flash("Signed out");
   }, [flash]);
 
-  const placeOrder = useCallback(
-    ({ ship }: { ship: Order["ship"] }) => {
-      const lines = linesOf(cart, products);
-      if (lines.length === 0) return null;
-      const subtotal = subtotalOf(cart, products);
-      const shipping = shippingOf(subtotal);
-      const order: Order = {
-        id: "KM-" + (4820 + orders.length),
-        placedAt: new Date().toISOString(),
-        lines: lines.map((l) => ({
-          slug: l.slug,
-          name: l.name,
-          qty: l.qty,
-          price: l.price,
-        })),
-        subtotal,
-        shipping,
-        total: subtotal + shipping,
-        ship,
-        status: "In the atelier",
-      };
-      setOrders((current) => [order, ...current]);
-      setCart({});
-      return order;
-    },
-    [cart, orders.length, products],
-  );
-
   const addAddress = useCallback(
     (a: Omit<Address, "id" | "isDefault">) => {
       setAddresses((current) => [
@@ -443,7 +418,6 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     signIn,
     signOut,
     orders,
-    placeOrder,
     addresses,
     addAddress,
     removeAddress,

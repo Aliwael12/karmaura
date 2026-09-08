@@ -1,50 +1,10 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { Money } from "@phosphor-icons/react/ssr";
-import { useStore } from "@/context/store";
+import { Money, Truck } from "@phosphor-icons/react/ssr";
 import { formatDate, money, shippingLabel } from "@/lib/commerce";
+import type { Order } from "@/lib/db/orders";
 
-export default function OrderScreen({ id }: { id: string }) {
-  const { orders, hydrated } = useStore();
-  const order = orders.find((o) => o.id === id);
-
-  if (!hydrated) {
-    return (
-      <div className="km-gutter min-h-[60vh] bg-cream-light py-24 text-forest">
-        <p className="font-serif text-2xl text-moss italic">
-          Fetching the order…
-        </p>
-      </div>
-    );
-  }
-
-  if (!order) {
-    return (
-      <div className="km-gutter min-h-[60vh] bg-cream-light py-24 text-center text-forest">
-        <h1 className="mb-4 font-serif text-[clamp(26px,5cqw,44px)]">
-          We cannot find order {id}
-        </h1>
-        <p className="mx-auto mb-8 max-w-[44ch] text-[15px] leading-[1.7] text-olive">
-          Orders live in this browser for the demonstration, so a fresh browser
-          starts with none. Your history is in your profile.
-        </p>
-        <div className="flex flex-wrap justify-center gap-3">
-          <Link href="/account/orders" className="km-btn km-btn-light">
-            Order history
-          </Link>
-          <Link
-            href="/shop"
-            className="km-arrow border-b-[rgba(95,106,66,.3)] text-olive"
-          >
-            Back to the collection
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
+export default function OrderScreen({ order }: { order: Order }) {
   return (
     <div className="min-h-full bg-cream-light text-forest">
       <section
@@ -62,8 +22,8 @@ export default function OrderScreen({ id }: { id: string }) {
           Thank you — it is on its way
         </h1>
         <p className="mx-auto max-w-[46ch] text-[15px] leading-[1.7] text-olive">
-          Order {order.id}, placed {formatDate(order.placedAt)}. We will write
-          when it leaves the atelier, usually within five working days.
+          Order {order.number}, placed {formatDate(order.placedAt)}. We will
+          write when it leaves the atelier, usually within five working days.
         </p>
       </section>
 
@@ -92,11 +52,11 @@ export default function OrderScreen({ id }: { id: string }) {
                   {line.name}
                 </Link>
                 <p className="text-xs text-moss">
-                  {line.qty} × {money(line.price)}
+                  {line.quantity} × {money(line.unitPrice)}
                 </p>
               </div>
               <p className="text-sm whitespace-nowrap text-olive">
-                {money(line.qty * line.price)}
+                {money(line.lineTotal)}
               </p>
             </div>
           ))}
@@ -107,7 +67,7 @@ export default function OrderScreen({ id }: { id: string }) {
           </div>
           <div className="flex justify-between border-b border-[rgba(95,106,66,.18)] py-2.5 text-sm text-olive">
             <span>Delivery</span>
-            <span>{shippingLabel(order.shipping)}</span>
+            <span>{shippingLabel(order.deliveryFee)}</span>
           </div>
           <div className="flex items-baseline justify-between pt-4">
             <span className="km-label">Total</span>
@@ -126,15 +86,32 @@ export default function OrderScreen({ id }: { id: string }) {
               charged.
             </p>
           </div>
+
+          {order.bosta.trackingNumber && (
+            <div className="mt-3 flex items-start gap-2.5 rounded-lg border border-[rgba(95,106,66,.2)] bg-cream-light p-4 text-left">
+              <Truck
+                size={19}
+                weight="light"
+                className="mt-0.5 shrink-0 text-olive"
+              />
+              <p className="text-[13px] leading-[1.6] text-moss">
+                <span className="text-forest">
+                  Tracking {order.bosta.trackingNumber}.
+                </span>{" "}
+                {order.bosta.stateLabel ?? "Booked with the courier"}.
+              </p>
+            </div>
+          )}
         </div>
 
         <div className="mt-5 rounded-lg border border-[rgba(95,106,66,.2)] bg-cream p-[22px]">
           <p className="km-label mb-3 text-olive">Going to</p>
           <p className="text-sm leading-[1.7] text-olive">
-            {order.ship.name}
+            {order.customerName}
             <br />
             {order.ship.line1}
             <br />
+            {order.ship.districtName ? `${order.ship.districtName}, ` : ""}
             {order.ship.city} {order.ship.postcode}
           </p>
         </div>

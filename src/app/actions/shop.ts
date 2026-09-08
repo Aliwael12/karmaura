@@ -24,6 +24,12 @@ export type CheckoutInput = {
   line1: string;
   city: string;
   postcode?: string;
+  /** Bosta's own ids for the chosen city/district — see CityDistrictPicker.
+      Without these the order still saves, but createBostaDelivery() has
+      nothing to book a courier against. */
+  cityId?: string;
+  districtId?: string;
+  districtName?: string;
   attribution?: OrderAttribution;
 };
 
@@ -35,6 +41,9 @@ export async function submitOrder(
   }
   if (!input.name?.trim() || !input.line1?.trim() || !input.city?.trim()) {
     return { ok: false, error: "We need the whole delivery address before we can send it." };
+  }
+  if (!input.districtId && !(input.cityId && input.districtName)) {
+    return { ok: false, error: "Pick the district closest to you so the courier knows where to go." };
   }
   if (!EMAIL.test(input.email ?? "")) {
     return { ok: false, error: "That email does not look right." };
@@ -56,6 +65,9 @@ export async function submitOrder(
       line1: input.line1.trim(),
       city: input.city.trim(),
       postcode: input.postcode?.trim() ?? "",
+      cityId: input.cityId,
+      districtId: input.districtId,
+      districtName: input.districtName,
     },
     attribution: input.attribution,
     userId: user?.id ?? null,
@@ -118,8 +130,12 @@ export async function saveAddress(formData: FormData): Promise<ActionResult> {
   const full_name = String(formData.get("full_name") ?? "").trim();
   const line1 = String(formData.get("line1") ?? "").trim();
   const city = String(formData.get("city") ?? "").trim();
+  const district_id = String(formData.get("district_id") ?? "").trim();
   if (!full_name || !line1 || !city) {
     return { ok: false, error: "A name, a street and a city, at least." };
+  }
+  if (!district_id) {
+    return { ok: false, error: "Pick the district closest to this address." };
   }
 
   const { count } = await supabase
@@ -133,6 +149,9 @@ export async function saveAddress(formData: FormData): Promise<ActionResult> {
     full_name,
     line1,
     city,
+    city_id: String(formData.get("city_id") ?? "").trim(),
+    district_id,
+    district_name: String(formData.get("district_name") ?? "").trim(),
     postcode: String(formData.get("postcode") ?? "").trim(),
     country: String(formData.get("country") ?? "").trim() || "Egypt",
     is_default: (count ?? 0) === 0,

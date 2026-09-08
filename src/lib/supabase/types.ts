@@ -37,6 +37,9 @@ export type AddressRow = {
   city: string;
   postcode: string;
   country: string;
+  city_id: string;
+  district_id: string;
+  district_name: string;
   is_default: boolean;
 } & Timestamps;
 
@@ -109,6 +112,9 @@ export type OrderRow = {
   ship_city: string;
   ship_postcode: string;
   ship_country: string;
+  ship_city_id: string;
+  ship_district_id: string;
+  ship_district_name: string;
   subtotal: number;
   delivery_fee: number;
   total: number;
@@ -119,6 +125,11 @@ export type OrderRow = {
   approved_at: string | null;
   delivered_at: string | null;
   cancelled_at: string | null;
+  bosta_delivery_id: string | null;
+  bosta_tracking_number: string | null;
+  bosta_state: number | null;
+  bosta_last_event_at: string | null;
+  bosta_error: string;
 };
 
 export type OrderItemRow = {

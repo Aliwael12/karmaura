@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { Minus, Money, Plus } from "@phosphor-icons/react/ssr";
+import { submitOrder } from "@/app/actions/shop";
 import { useStore } from "@/context/store";
 import {
   FREE_DELIVERY_FROM,
@@ -12,16 +13,26 @@ import {
   money,
   shippingLabel,
 } from "@/lib/commerce";
+import CityDistrictPicker, {
+  type CityDistrictValue,
+} from "./CityDistrictPicker";
 import ObjectArt from "./ObjectArt";
 
 type Form = {
   name: string;
+  email: string;
+  phone: string;
   line1: string;
-  city: string;
   postcode: string;
 };
 
-const EMPTY: Form = { name: "", line1: "", city: "", postcode: "" };
+const EMPTY: Form = { name: "", email: "", phone: "", line1: "", postcode: "" };
+const EMPTY_AREA: CityDistrictValue = {
+  cityId: "",
+  cityName: "",
+  districtId: "",
+  districtName: "",
+};
 
 export default function CartScreen() {
   const { hydrated, lines, count, setQty, removeFromCart, addresses, products } =
@@ -177,53 +188,61 @@ function CheckoutPanel({
     postcode: string;
   };
 }) {
-  const { lines, subtotal, shipping, total, placeOrder, user } = useStore();
+  const { lines, cart, subtotal, shipping, total, clearCart, user } =
+    useStore();
   const router = useRouter();
   const [form, setForm] = useState<Form>(() =>
     preset
-      ? {
-          ...EMPTY,
-          name: preset.name,
-          line1: preset.line1,
-          city: preset.city,
-          postcode: preset.postcode,
-        }
+      ? { ...EMPTY, name: preset.name, line1: preset.line1, postcode: preset.postcode }
       : EMPTY,
   );
+  // The fake local address book (still to be wired to the real one) has no
+  // Bosta city/district ids to prefill from, so this always starts blank.
+  const [area, setArea] = useState<CityDistrictValue>(EMPTY_AREA);
   const [error, setError] = useState("");
   const [placing, setPlacing] = useState(false);
 
   const shortfall = FREE_DELIVERY_FROM - subtotal;
 
-  function submit(event: FormEvent) {
+  async function submit(event: FormEvent) {
     event.preventDefault();
     if (lines.length === 0) {
       setError("There is nothing in the bag yet.");
       return;
     }
-    const missing = (Object.keys(EMPTY) as (keyof Form)[]).filter(
-      (key) => !form[key].trim(),
-    );
+    const required: (keyof Form)[] = ["name", "email", "phone", "line1"];
+    const missing = required.filter((key) => !form[key].trim());
     if (missing.length > 0) {
       setError("We need the whole delivery address before we can send it.");
       return;
     }
-    setError("");
-    setPlacing(true);
-    const order = placeOrder({
-      ship: {
-        name: form.name,
-        line1: form.line1,
-        city: form.city,
-        postcode: form.postcode,
-      },
-    });
-    if (!order) {
-      setPlacing(false);
-      setError("Something went astray. Try once more.");
+    if (!area.districtId) {
+      setError("Pick the city and district closest to you.");
       return;
     }
-    router.push(`/order/${order.id}`);
+    setError("");
+    setPlacing(true);
+
+    const result = await submitOrder({
+      items: Object.entries(cart).map(([slug, quantity]) => ({ slug, quantity })),
+      name: form.name,
+      email: form.email,
+      phone: form.phone,
+      line1: form.line1,
+      city: area.cityName,
+      postcode: form.postcode,
+      cityId: area.cityId,
+      districtId: area.districtId,
+      districtName: area.districtName,
+    });
+
+    if (!result.ok) {
+      setPlacing(false);
+      setError(result.error);
+      return;
+    }
+    clearCart();
+    router.push(`/order/${result.data!.orderNumber}`);
   }
 
   return (
@@ -255,32 +274,41 @@ function CheckoutPanel({
           autoComplete="name"
           className="km-field km-field-light"
         />
+        <div className="grid grid-cols-2 gap-3">
+          <input
+            type="email"
+            value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+            placeholder="Email"
+            autoComplete="email"
+            className="km-field km-field-light min-w-0"
+          />
+          <input
+            type="tel"
+            value={form.phone}
+            onChange={(e) => setForm({ ...form, phone: e.target.value })}
+            placeholder="Phone — for the courier"
+            autoComplete="tel"
+            className="km-field km-field-light min-w-0"
+          />
+        </div>
+        <CityDistrictPicker value={area} onChange={setArea} theme="light" />
         <input
           type="text"
           value={form.line1}
           onChange={(e) => setForm({ ...form, line1: e.target.value })}
-          placeholder="Address"
+          placeholder="Street address"
           autoComplete="street-address"
           className="km-field km-field-light"
         />
-        <div className="grid grid-cols-2 gap-3">
-          <input
-            type="text"
-            value={form.city}
-            onChange={(e) => setForm({ ...form, city: e.target.value })}
-            placeholder="City"
-            autoComplete="address-level2"
-            className="km-field km-field-light min-w-0"
-          />
-          <input
-            type="text"
-            value={form.postcode}
-            onChange={(e) => setForm({ ...form, postcode: e.target.value })}
-            placeholder="Postcode"
-            autoComplete="postal-code"
-            className="km-field km-field-light min-w-0"
-          />
-        </div>
+        <input
+          type="text"
+          value={form.postcode}
+          onChange={(e) => setForm({ ...form, postcode: e.target.value })}
+          placeholder="Postcode (optional)"
+          autoComplete="postal-code"
+          className="km-field km-field-light"
+        />
         <div className="mt-1 rounded-lg border border-gold/40 bg-cream-light p-4">
           <p className="mb-2 flex items-center gap-2.5 text-[13px] tracking-[.06em] text-forest uppercase">
             <Money size={19} weight="light" className="text-gold" />

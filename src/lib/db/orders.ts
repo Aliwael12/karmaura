@@ -2,6 +2,7 @@ import "server-only";
 
 import { cookies } from "next/headers";
 import { createAdminSupabase, createServerSupabase } from "@/lib/supabase/server";
+import { createBostaDelivery, BOSTA_STATE_LABELS } from "@/lib/bosta/client";
 import type {
   OrderAttribution,
   OrderItemRow,
@@ -24,13 +25,29 @@ export type Order = {
   customerName: string;
   customerEmail: string;
   customerPhone: string;
-  ship: { line1: string; city: string; postcode: string; country: string };
+  ship: {
+    line1: string;
+    city: string;
+    postcode: string;
+    country: string;
+    cityId: string;
+    districtId: string;
+    districtName: string;
+  };
   subtotal: number;
   deliveryFee: number;
   total: number;
   placedAt: string;
   deliveredAt: string | null;
   lines: OrderLine[];
+  bosta: {
+    deliveryId: string | null;
+    trackingNumber: string | null;
+    state: number | null;
+    stateLabel: string | null;
+    lastEventAt: string | null;
+    error: string;
+  };
 };
 
 type JoinedOrder = OrderRow & { order_items: OrderItemRow[] | null };
@@ -48,6 +65,9 @@ function toOrder(row: JoinedOrder): Order {
       city: row.ship_city,
       postcode: row.ship_postcode,
       country: row.ship_country,
+      cityId: row.ship_city_id,
+      districtId: row.ship_district_id,
+      districtName: row.ship_district_name,
     },
     subtotal: row.subtotal,
     deliveryFee: row.delivery_fee,
@@ -61,6 +81,17 @@ function toOrder(row: JoinedOrder): Order {
       quantity: i.quantity,
       lineTotal: i.line_total,
     })),
+    bosta: {
+      deliveryId: row.bosta_delivery_id,
+      trackingNumber: row.bosta_tracking_number,
+      state: row.bosta_state,
+      stateLabel:
+        row.bosta_state != null
+          ? (BOSTA_STATE_LABELS[row.bosta_state] ?? `Bosta state ${row.bosta_state}`)
+          : null,
+      lastEventAt: row.bosta_last_event_at,
+      error: row.bosta_error,
+    },
   };
 }
 
@@ -165,6 +196,13 @@ export type PlaceOrderInput = {
     line1: string;
     city: string;
     postcode?: string;
+    /** Bosta's own city id — required together with districtName when
+        districtId isn't available (see the district-name fallback shape
+        in src/lib/bosta/client.ts). */
+    cityId?: string;
+    /** Bosta's districtId — the one the address picker normally supplies. */
+    districtId?: string;
+    districtName?: string;
   };
   attribution?: OrderAttribution;
   userId?: string | null;
@@ -196,7 +234,46 @@ export async function placeOrder(
     .eq("id", created.id)
     .maybeSingle();
 
-  const order = toOrder((full ?? created) as unknown as JoinedOrder);
+  let order = toOrder((full ?? created) as unknown as JoinedOrder);
   await rememberReceipt(order.number);
+
+  /* Every order here is cash-on-delivery, so every order becomes a Bosta
+     delivery — but a courier we couldn't book must never undo a sale
+     that already happened. Record the failure and let an admin retry;
+     never throw back into checkout at this point. */
+  const bosta = await createBostaDelivery({
+    number: order.number,
+    customerName: order.customerName,
+    customerEmail: order.customerEmail,
+    customerPhone: order.customerPhone,
+    subtotal: order.subtotal,
+    total: order.total,
+    ship: {
+      line1: order.ship.line1,
+      city: order.ship.city,
+      cityId: order.ship.cityId || undefined,
+      districtId: order.ship.districtId || undefined,
+      districtName: order.ship.districtName || undefined,
+    },
+  });
+
+  const { data: updated } = await admin
+    .from("orders")
+    .update(
+      bosta.ok
+        ? {
+            bosta_delivery_id: bosta.deliveryId,
+            bosta_tracking_number: bosta.trackingNumber,
+            bosta_state: bosta.state.code,
+            bosta_last_event_at: new Date().toISOString(),
+            bosta_error: "",
+          }
+        : { bosta_error: bosta.error },
+    )
+    .eq("id", order.id)
+    .select(ORDER_SELECT)
+    .maybeSingle();
+
+  if (updated) order = toOrder(updated as unknown as JoinedOrder);
   return { ok: true, order };
 }
