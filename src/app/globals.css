@@ -135,6 +135,12 @@
   /* horizontal page rhythm, straight from the source design */
   .km-gutter { padding-inline: clamp(20px, 5cqw, 72px); }
 
+  /* cancels the gutter so a band can run edge to edge — phones only, where
+     a full-bleed image reads as the room opening up rather than a picture
+     set into a frame. Both values resolve against .km-shell, so they match. */
+  .km-bleed { margin-inline: calc(-1 * clamp(20px, 5cqw, 72px)); }
+  @media (min-width: 640px) { .km-bleed { margin-inline: 0; } }
+
   .km-eyebrow {
     font-size: 11px;
     letter-spacing: 0.3em;

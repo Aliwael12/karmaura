@@ -5,18 +5,13 @@ import HeroArt from "@/components/HeroArt";
 import ObjectArt from "@/components/ObjectArt";
 import ProductCard from "@/components/ProductCard";
 import Reveal from "@/components/Reveal";
+import SceneArt from "@/components/SceneArt";
 import {
   getCategories,
   getCategoryCounts,
   getCategoryCoverImages,
   getFeaturedProducts,
-  getProductsBySlugs,
 } from "@/lib/db/catalogue";
-
-/** The one piece that leads the hero — the only product photographed as a
-    true alpha cutout rather than a studio shot on white, so it sits on the
-    hero's green background as a real object instead of a masked rectangle. */
-const HERO_SLUG = "sage-speckle-mug";
 
 export const dynamic = "force-dynamic";
 
@@ -36,18 +31,16 @@ const VALUES = [
 ];
 
 export default async function HomePage() {
-  const [categories, counts, covers, featured, heroMatches] = await Promise.all([
+  const [categories, counts, covers, featured] = await Promise.all([
     getCategories(),
     getCategoryCounts(),
     getCategoryCoverImages(),
     getFeaturedProducts(4),
-    getProductsBySlugs([HERO_SLUG]),
   ]);
 
   const stockedCategories = categories.filter(
     (category) => (counts[category.slug] ?? 0) > 0,
   );
-  const heroPhoto = heroMatches[0]?.images[0];
 
   return (
     <>
@@ -73,7 +66,7 @@ export default async function HomePage() {
           }}
         />
 
-        <div className="relative order-2 max-w-[640px] sm:order-1">
+        <div className="relative order-1 max-w-[640px]">
           <Reveal delay={0}>
             <p className="km-eyebrow mb-[22px] text-gold-bright">
               Karmaura · Home
@@ -114,7 +107,7 @@ export default async function HomePage() {
           </Reveal>
         </div>
 
-        <HeroArt photo={heroPhoto} />
+        <HeroArt />
       </section>
 
       {/* ── three promises ───────────────────────────────────────── */}
@@ -244,14 +237,11 @@ export default async function HomePage() {
           style={{ gap: "clamp(26px,4cqw,64px)" }}
         >
           <Reveal delay={0}>
+            {/* the drawn interior, not the kraft photograph — that one now
+                leads the hero, and the same frame twice on one page reads
+                as a mistake rather than a motif */}
             <div className="relative aspect-5/4 overflow-hidden rounded-lg bg-forest-deep">
-              <Image
-                src="/brand/kraft.png"
-                alt="Kraft packaging with the embossed emblem"
-                width={1200}
-                height={830}
-                className="size-full animate-slow object-cover opacity-95 mix-blend-lighten"
-              />
+              <SceneArt scene="interior" className="size-full" />
             </div>
           </Reveal>
           <Reveal delay={120}>

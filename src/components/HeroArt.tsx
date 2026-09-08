@@ -2,21 +2,22 @@
 
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import SceneArt from "./SceneArt";
-
-type Props = {
-  /** A real piece to lead with, when one exists — falls back to the drawn
-      interior otherwise. This one needs a true alpha-transparent cutout
-      (not a studio shot on white); it's shown as-is with a drop shadow,
-      no background to mask out. */
-  photo?: { url: string; alt: string };
-};
 
 /**
- * The hero plate drifts against the scroll and leans a few pixels toward the
+ * The hero band drifts against the scroll and leans a few pixels toward the
  * cursor. Both are switched off on coarse pointers and reduced motion.
+ *
+ * It carries the one photograph in the house that has a room in it rather
+ * than a seamless backdrop — the packaging on a linen runner, morning light,
+ * a vase out of focus behind. A single product cutout can only say "here is
+ * one object"; the headline promises a calm home, and this is the only frame
+ * that holds one.
+ *
+ * On a phone it breaks the gutter and runs edge to edge, fading up into the
+ * section's green so it reads as the room opening rather than a picture set
+ * into a frame. From sm it returns to its column, boxed and rounded.
  */
-export default function HeroArt({ photo }: Props) {
+export default function HeroArt() {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -62,39 +63,29 @@ export default function HeroArt({ photo }: Props) {
   return (
     <div
       ref={ref}
-      className={`relative order-1 aspect-square max-h-[380px] w-full sm:order-2 sm:aspect-4/5 sm:max-h-[min(620px,66vh)] ${
-        photo ? "" : "overflow-hidden rounded-lg bg-forest-deep"
-      }`}
+      className="km-bleed relative order-2 aspect-3/2 w-auto overflow-hidden bg-forest-deep sm:w-full sm:rounded-lg"
       style={{
-        boxShadow: photo ? undefined : "0 40px 90px -46px rgba(0,0,0,.75)",
         transition:
           "transform 1.2s cubic-bezier(.16,.84,.24,1), opacity .9s ease",
       }}
     >
-      {photo ? (
-        <div className="absolute inset-0 sm:inset-[3%]">
-          <Image
-            src={photo.url}
-            alt={photo.alt}
-            fill
-            sizes="(min-width: 1024px) 40vw, 80vw"
-            priority
-            className="object-cover sm:object-contain"
-            style={{ filter: "drop-shadow(0 20px 22px rgba(0,0,0,.4))" }}
-          />
-        </div>
-      ) : (
-        <>
-          <SceneArt scene="interior" className="size-full" />
-          <div
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-[38%]"
-            style={{
-              background:
-                "linear-gradient(180deg,rgba(49,78,36,0),rgba(49,78,36,.55))",
-            }}
-          />
-        </>
-      )}
+      <Image
+        src="/brand/kraft.png"
+        alt="A Karmaura tube on a linen runner, morning light across the table"
+        fill
+        sizes="(min-width: 1024px) 45vw, 100vw"
+        priority
+        className="object-cover"
+      />
+
+      {/* on the phone the band has no frame, so it is dissolved into the
+          green above it instead of stopping at a hard edge */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[26%] sm:hidden"
+        style={{
+          background: "linear-gradient(180deg,#3d5c2b,rgba(61,92,43,0))",
+        }}
+      />
     </div>
   );
 }
