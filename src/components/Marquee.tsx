@@ -20,7 +20,22 @@ const ITEMS = [
   "Mended for life",
 ];
 
-function Track({ hidden = false }: { hidden?: boolean }) {
+type Props = {
+  /** dark: cream text on the forest green that runs through the rest of
+      the page. light: the reverse — a cream band breaking up two dark
+      sections, so hero and "Quietly new" don't run together unbroken. */
+  tone?: "dark" | "light";
+};
+
+function Track({
+  hidden = false,
+  textClass,
+  dotClass,
+}: {
+  hidden?: boolean;
+  textClass: string;
+  dotClass: string;
+}) {
   return (
     <ul
       aria-hidden={hidden || undefined}
@@ -29,25 +44,37 @@ function Track({ hidden = false }: { hidden?: boolean }) {
       {ITEMS.map((item) => (
         <li
           key={item}
-          className="flex items-center gap-[clamp(28px,4cqw,56px)] font-serif text-[clamp(18px,2.2cqw,26px)] whitespace-nowrap text-cream/85 italic"
+          className={`flex items-center gap-[clamp(28px,4cqw,56px)] font-serif text-[clamp(18px,2.2cqw,26px)] whitespace-nowrap italic ${textClass}`}
         >
           {item}
-          <span aria-hidden className="size-1.5 rounded-full bg-gold-bright/80" />
+          <span aria-hidden className={`size-1.5 rounded-full ${dotClass}`} />
         </li>
       ))}
     </ul>
   );
 }
 
-export default function Marquee() {
+export default function Marquee({ tone = "dark" }: Props) {
+  const light = tone === "light";
   return (
     <div
-      className="km-marquee overflow-hidden border-y border-gold/20 bg-forest-deep py-[clamp(14px,1.8cqw,22px)]"
+      className={`km-marquee overflow-hidden border-y py-[clamp(14px,1.8cqw,22px)] ${
+        light
+          ? "border-forest/12 bg-cream"
+          : "border-gold/20 bg-forest-deep"
+      }`}
       aria-label="Materials and promises"
     >
       <div className="km-marquee-track flex w-max animate-marquee">
-        <Track />
-        <Track hidden />
+        <Track
+          textClass={light ? "text-olive" : "text-cream/85"}
+          dotClass={light ? "bg-gold" : "bg-gold-bright/80"}
+        />
+        <Track
+          hidden
+          textClass={light ? "text-olive" : "text-cream/85"}
+          dotClass={light ? "bg-gold" : "bg-gold-bright/80"}
+        />
       </div>
     </div>
   );
