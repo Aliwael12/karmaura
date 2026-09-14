@@ -13,9 +13,8 @@ import { useEffect, useRef } from "react";
  * "here is one object"; the headline promises a calm home, and this is the
  * only frame that holds one.
  *
- * On a phone it breaks the gutter and runs edge to edge, fading up into the
- * section's green so it reads as the room opening rather than a picture set
- * into a frame. From sm it returns to its column, boxed and rounded.
+ * On a phone it breaks the gutter and runs edge to edge. From sm it returns
+ * to its column, boxed and rounded.
  */
 export default function HeroArt() {
   const ref = useRef<HTMLDivElement>(null);
@@ -76,15 +75,6 @@ export default function HeroArt() {
         sizes="(min-width: 1024px) 45vw, 100vw"
         priority
         className="animate-slow object-cover will-change-transform"
-      />
-
-      {/* on the phone the band has no frame, so it is dissolved into the
-          green above it instead of stopping at a hard edge */}
-      <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-[26%] sm:hidden"
-        style={{
-          background: "linear-gradient(180deg,#3d5c2b,rgba(61,92,43,0))",
-        }}
       />
     </div>
   );

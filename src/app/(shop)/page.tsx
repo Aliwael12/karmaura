@@ -131,10 +131,11 @@ export default async function HomePage() {
 
         <HeroArt />
 
-        {/* a quiet hint that the page goes on */}
+        {/* a quiet hint that the page goes on — the image already fills that
+            role on a phone, so this is desktop-only */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-3 flex flex-col items-center gap-2"
+          className="pointer-events-none absolute inset-x-0 bottom-3 hidden flex-col items-center gap-2 sm:flex"
         >
           <span className="text-[10px] tracking-[.3em] text-cream/45 uppercase">
             Scroll
