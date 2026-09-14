@@ -8,10 +8,10 @@ import { useEffect, useRef } from "react";
  * cursor. Both are switched off on coarse pointers and reduced motion.
  *
  * It carries the one photograph in the house that has a room in it rather
- * than a seamless backdrop — the packaging on a linen runner, morning light,
- * a vase out of focus behind. A single product cutout can only say "here is
- * one object"; the headline promises a calm home, and this is the only frame
- * that holds one.
+ * than a seamless backdrop — lamplight, a made bed through an archway, the
+ * handmade mugs waiting on a tray. A single product cutout can only say
+ * "here is one object"; the headline promises a calm home, and this is the
+ * only frame that holds one.
  *
  * On a phone it breaks the gutter and runs edge to edge, fading up into the
  * section's green so it reads as the room opening rather than a picture set
@@ -70,8 +70,8 @@ export default function HeroArt() {
       }}
     >
       <Image
-        src="/brand/kraft.png"
-        alt="A Karmaura tube on a linen runner, morning light across the table"
+        src="/brand/hero-room.jpg"
+        alt="A warmly lit living room with a tray of handmade Karmaura mugs, a robe and towels by the door, and a made bed through an archway"
         fill
         sizes="(min-width: 1024px) 45vw, 100vw"
         priority
