@@ -153,7 +153,7 @@ export default async function HomePage() {
         style={{ paddingBlock: "clamp(44px,6cqw,90px)" }}
       >
         <ol
-          className="grid grid-cols-2 sm:grid-cols-[repeat(auto-fit,minmax(min(100%,220px),1fr))]"
+          className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(min(100%,220px),1fr))]"
           style={{ gap: "clamp(20px,3.4cqw,52px)" }}
         >
           {VALUES.map((value, i) => (
