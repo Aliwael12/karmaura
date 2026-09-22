@@ -1,19 +1,8 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import {
-  BookmarkSimple,
-  EnvelopeOpen,
-  Package,
-} from "@phosphor-icons/react/ssr";
 import { useStore } from "@/context/store";
 import Reveal from "./Reveal";
-
-const PERKS = [
-  { Icon: Package, label: "Order history and repairs" },
-  { Icon: BookmarkSimple, label: "Saved pieces and restock notes" },
-  { Icon: EnvelopeOpen, label: "First word on small runs" },
-];
 
 export default function AuthPanel() {
   const { signIn } = useStore();
@@ -54,19 +43,6 @@ export default function AuthPanel() {
             Home that feels like you.
           </h1>
           <div className="km-rule my-[26px] w-[min(200px,50%)]" />
-          <div className="flex max-w-[44ch] flex-col gap-4">
-            <div className="flex flex-col gap-2.5">
-              {PERKS.map(({ Icon, label }) => (
-                <p
-                  key={label}
-                  className="flex items-center gap-[11px] text-sm text-cream/80"
-                >
-                  <Icon size={19} weight="light" className="text-gold-bright" />
-                  {label}
-                </p>
-              ))}
-            </div>
-          </div>
         </Reveal>
 
         <Reveal delay={120}>

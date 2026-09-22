@@ -28,7 +28,7 @@ export default function Footer() {
         </div>
 
         <FooterColumn title="Shop">
-          <FooterLink href="/shop">All category</FooterLink>
+          <FooterLink href="/shop">All categories</FooterLink>
           <FooterLink href="/account/saved">Wishlist</FooterLink>
           <FooterLink href="/account">My profile</FooterLink>
         </FooterColumn>
@@ -39,7 +39,7 @@ export default function Footer() {
       </div>
 
       <p className="pt-[22px] text-xs text-cream/40">
-        © 2026 KARMAURA · HOME — Cairo
+        © 2026 KARMAURA · HOME
       </p>
     </footer>
   );
