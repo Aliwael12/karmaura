@@ -52,9 +52,7 @@ export default async function ShopPage({
   ]);
 
   const heading = activeCategory ? activeCategory.name : "Everything we make";
-  const standfirst = activeCategory
-    ? activeCategory.blurb
-    : "Everything is made in small runs. When a piece sells out we make it again — it takes about six weeks.";
+  const standfirst = activeCategory?.blurb;
 
   return (
     <div
@@ -71,11 +69,13 @@ export default async function ShopPage({
           {heading}
         </h1>
       </Reveal>
-      <Reveal delay={130}>
-        <p className="mt-[18px] max-w-[44ch] text-[15px] leading-[1.66] text-olive">
-          {standfirst}
-        </p>
-      </Reveal>
+      {standfirst && (
+        <Reveal delay={130}>
+          <p className="mt-[18px] max-w-[44ch] text-[15px] leading-[1.66] text-olive">
+            {standfirst}
+          </p>
+        </Reveal>
+      )}
 
       <Reveal delay={180}>
         <div
