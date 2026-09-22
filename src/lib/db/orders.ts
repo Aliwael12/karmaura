@@ -234,13 +234,38 @@ export async function placeOrder(
     .eq("id", created.id)
     .maybeSingle();
 
-  let order = toOrder((full ?? created) as unknown as JoinedOrder);
+  const order = toOrder((full ?? created) as unknown as JoinedOrder);
   await rememberReceipt(order.number);
 
-  /* Every order here is cash-on-delivery, so every order becomes a Bosta
-     delivery — but a courier we couldn't book must never undo a sale
-     that already happened. Record the failure and let an admin retry;
-     never throw back into checkout at this point. */
+  /* Every order here is cash-on-delivery, but the atelier reviews an order
+     before it becomes a courier's problem — Bosta booking happens when an
+     admin approves it (see bookBostaDelivery), not at checkout. */
+  return { ok: true, order };
+}
+
+/**
+ * Books an order with Bosta once an admin approves it. Idempotent: an order
+ * that already has a delivery id is left alone rather than booked twice.
+ * A courier we couldn't book must never undo the approval that already
+ * happened — the failure is recorded on the order for an admin to retry,
+ * never thrown back at the caller.
+ */
+export async function bookBostaDelivery(
+  orderId: string,
+): Promise<{ ok: boolean; error?: string }> {
+  const admin = createAdminSupabase();
+
+  const { data } = await admin
+    .from("orders")
+    .select(ORDER_SELECT)
+    .eq("id", orderId)
+    .maybeSingle();
+
+  if (!data) return { ok: false, error: "Order not found." };
+
+  const order = toOrder(data as unknown as JoinedOrder);
+  if (order.bosta.deliveryId) return { ok: true };
+
   const bosta = await createBostaDelivery({
     number: order.number,
     customerName: order.customerName,
@@ -257,7 +282,7 @@ export async function placeOrder(
     },
   });
 
-  const { data: updated } = await admin
+  await admin
     .from("orders")
     .update(
       bosta.ok
@@ -270,10 +295,7 @@ export async function placeOrder(
           }
         : { bosta_error: bosta.error },
     )
-    .eq("id", order.id)
-    .select(ORDER_SELECT)
-    .maybeSingle();
+    .eq("id", order.id);
 
-  if (updated) order = toOrder(updated as unknown as JoinedOrder);
-  return { ok: true, order };
+  return bosta.ok ? { ok: true } : { ok: false, error: bosta.error };
 }

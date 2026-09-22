@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createAdminSupabase, createServerSupabase } from "@/lib/supabase/server";
 import { isAdminRequest } from "@/lib/db/auth";
+import { bookBostaDelivery } from "@/lib/db/orders";
 import { SETTING_KEYS } from "@/lib/db/settings";
 import type { MessageStatus, OrderStatus, RepairStatus } from "@/lib/supabase/types";
 
@@ -88,6 +89,19 @@ export async function setOrderStatus(
   if (error) return { ok: false, error: error.message };
 
   revalidatePath("/admin", "layout");
+
+  /* Approval is the moment an order becomes a courier's problem — book it
+     with Bosta here rather than at checkout. */
+  if (status === "approved") {
+    const bosta = await bookBostaDelivery(orderId);
+    if (!bosta.ok) {
+      return {
+        ok: true,
+        message: `Order approved — Bosta booking failed (${bosta.error}). Approve again to retry.`,
+      };
+    }
+  }
+
   return { ok: true, message: `Order marked ${status}` };
 }
 
@@ -100,12 +114,20 @@ export async function bulkSetOrderStatus(
 
   const db = createAdminSupabase();
   const failures: string[] = [];
+  const bostaFailures: string[] = [];
   for (const id of orderIds) {
     const { error } = await db.rpc("set_order_status", {
       p_order_id: id,
       p_status: status,
     });
-    if (error) failures.push(error.message);
+    if (error) {
+      failures.push(error.message);
+      continue;
+    }
+    if (status === "approved") {
+      const bosta = await bookBostaDelivery(id);
+      if (!bosta.ok) bostaFailures.push(bosta.error ?? "unknown error");
+    }
   }
 
   revalidatePath("/admin", "layout");
@@ -113,6 +135,12 @@ export async function bulkSetOrderStatus(
     return {
       ok: false,
       error: `${orderIds.length - failures.length} moved, ${failures.length} refused: ${failures[0]}`,
+    };
+  }
+  if (bostaFailures.length) {
+    return {
+      ok: true,
+      message: `${orderIds.length} orders marked ${status} — ${bostaFailures.length} Bosta booking(s) failed: ${bostaFailures[0]}. Approve again to retry those.`,
     };
   }
   return { ok: true, message: `${orderIds.length} orders marked ${status}` };
