@@ -242,7 +242,7 @@ export default async function HomePage() {
           }}
         />
         <Reveal delay={0}>
-          <p className="mx-auto max-w-[24ch] font-serif text-[clamp(22px,3.6cqw,30px)] leading-[1.35] text-cream italic">
+          <p className="mx-auto max-w-full font-serif text-[clamp(22px,3.6cqw,30px)] leading-[1.35] text-cream italic sm:whitespace-nowrap">
             &ldquo;Nothing here is too precious to use.&rdquo;
           </p>
         </Reveal>
