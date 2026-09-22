@@ -1,31 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
-import SceneArt from "@/components/SceneArt";
 
 export const metadata: Metadata = {
   title: "The story",
   description:
     "KARMAURA pairs the Sanskrit idea of karma with the aura a home gives back: warmth, calm, belonging.",
 };
-
-const PILLARS = [
-  {
-    kicker: "Essence",
-    body: "Good energy, good home.",
-    serif: true,
-  },
-  {
-    kicker: "Promise",
-    body: "Home that feels like you.",
-    serif: true,
-  },
-  {
-    kicker: "Heritage",
-    body: "An earthy, artisan feeling with a quiet Egyptian and Arabian soul — simple forms, honest materials, space to breathe.",
-    serif: false,
-  },
-];
 
 export default function StoryPage() {
   return (
@@ -61,53 +42,15 @@ export default function StoryPage() {
 
       <section
         className="km-gutter"
-        style={{ paddingBottom: "clamp(40px,6cqw,90px)" }}
-      >
-        <div
-          className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,240px),1fr))] border-t border-gold/20"
-          style={{
-            gap: "clamp(20px,3cqw,44px)",
-            paddingTop: "clamp(26px,3.4cqw,44px)",
-          }}
-        >
-          {PILLARS.map((pillar, i) => (
-            <Reveal key={pillar.kicker} delay={i * 100}>
-              <p className="mb-3 text-[11px] tracking-[.24em] text-gold-bright uppercase">
-                {pillar.kicker}
-              </p>
-              {pillar.serif ? (
-                <p className="font-serif text-[clamp(21px,2.6cqw,28px)] leading-[1.3] text-cream italic">
-                  {pillar.body}
-                </p>
-              ) : (
-                <p className="text-[15px] leading-[1.66] text-cream/78">
-                  {pillar.body}
-                </p>
-              )}
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
-      <section className="relative h-[clamp(280px,42vh,480px)] overflow-hidden bg-forest-deep">
-        <SceneArt scene="atelier" className="size-full" />
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(180deg,rgba(61,92,43,.35),rgba(61,92,43,0) 45%,rgba(61,92,43,.5))",
-          }}
-        />
-      </section>
-
-      <section
-        className="km-gutter bg-forest-deep"
-        style={{ paddingBlock: "clamp(44px,6cqw,90px)" }}
+        style={{ paddingBottom: "clamp(44px,6cqw,90px)" }}
       >
         <Reveal delay={0}>
-          <div className="flex flex-wrap items-center justify-between gap-8">
-            <p className="max-w-[26ch] font-serif text-[clamp(22px,3.4cqw,34px)] leading-[1.2] text-cream italic">
-              Everything begins with a pair of hands.
+          <div
+            className="flex flex-wrap items-center justify-between gap-8 border-t border-gold/20"
+            style={{ paddingTop: "clamp(26px,3.4cqw,44px)" }}
+          >
+            <p className="font-serif text-[clamp(21px,2.6cqw,28px)] leading-[1.3] text-cream italic">
+              Good energy, good home.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link href="/shop" className="km-btn km-btn-dark">
