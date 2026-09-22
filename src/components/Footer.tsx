@@ -1,24 +1,7 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { useState, type FormEvent } from "react";
-import { useStore } from "@/context/store";
 
 export default function Footer() {
-  const { flash } = useStore();
-  const [email, setEmail] = useState("");
-
-  function subscribe(event: FormEvent) {
-    event.preventDefault();
-    if (!email.trim()) {
-      flash("An email, first");
-      return;
-    }
-    setEmail("");
-    flash("You are on the list");
-  }
-
   return (
     <footer
       className="km-gutter border-t border-gold/20 bg-forest-night"
@@ -45,39 +28,14 @@ export default function Footer() {
         </div>
 
         <FooterColumn title="Shop">
-          <FooterLink href="/shop">All objects</FooterLink>
-          <FooterLink href="/account/saved">Saved pieces</FooterLink>
+          <FooterLink href="/shop">All category</FooterLink>
+          <FooterLink href="/account/saved">Wishlist</FooterLink>
           <FooterLink href="/account">My profile</FooterLink>
         </FooterColumn>
 
         <FooterColumn title="House">
           <FooterLink href="/story">The story</FooterLink>
         </FooterColumn>
-
-        <div>
-          <p className="mb-4 text-[11px] tracking-[.24em] text-cream/50 uppercase">
-            Letters, twice a season
-          </p>
-          <form onSubmit={subscribe} className="flex flex-wrap gap-2">
-            <label className="sr-only" htmlFor="km-newsletter">
-              Your email
-            </label>
-            <input
-              id="km-newsletter"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Your email"
-              className="km-field km-field-dark min-w-0 flex-[1_1_140px] !p-[13px]"
-            />
-            <button
-              type="submit"
-              className="rounded-lg border border-gold px-[18px] py-[13px] text-[11px] tracking-[.16em] text-cream uppercase transition-[background,color] duration-[400ms] hover:bg-gold hover:text-forest"
-            >
-              Join
-            </button>
-          </form>
-        </div>
       </div>
 
       <p className="pt-[22px] text-xs text-cream/40">

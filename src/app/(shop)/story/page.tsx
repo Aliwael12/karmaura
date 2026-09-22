@@ -27,29 +27,6 @@ const PILLARS = [
   },
 ];
 
-const STEPS = [
-  {
-    n: "01",
-    title: "Sourced",
-    body: "Clay from the Nile Delta, wool from Fayoum, reed cut and dried by hand.",
-  },
-  {
-    n: "02",
-    title: "Made",
-    body: "Thrown, woven or turned in workshops of three to eight people. Nothing is moulded.",
-  },
-  {
-    n: "03",
-    title: "Finished",
-    body: "Oiled, waxed, checked twice — then wrapped in kraft with the emblem embossed.",
-  },
-  {
-    n: "04",
-    title: "Mended",
-    body: "Send anything back and we repair it. A chip is a history, not a fault.",
-  },
-];
-
 export default function StoryPage() {
   return (
     <div className="min-h-full bg-forest">
@@ -75,9 +52,9 @@ export default function StoryPage() {
         />
         <Reveal delay={220}>
           <p className="max-w-[56ch] text-[clamp(16px,2cqw,20px)] leading-[1.66] text-cream/80">
-            KARMAURA pairs the Sanskrit idea of karma — the energy you send out
-            returns to you — with the aura a home gives back: warmth, calm,
-            belonging.
+            KARMAURA combines the idea of karma with the welcoming aura of a
+            home that feels uniquely yours. The collection is designed to
+            cultivate warmth, calm, and positive energy in every corner.
           </p>
         </Reveal>
       </section>
@@ -121,34 +98,6 @@ export default function StoryPage() {
               "linear-gradient(180deg,rgba(61,92,43,.35),rgba(61,92,43,0) 45%,rgba(61,92,43,.5))",
           }}
         />
-      </section>
-
-      <section
-        className="km-gutter bg-cream text-forest"
-        style={{ paddingBlock: "clamp(44px,7cqw,110px)" }}
-      >
-        <Reveal delay={0}>
-          <h2
-            className="max-w-[20ch] font-serif text-[clamp(26px,4.6cqw,48px)] leading-[1.1]"
-            style={{ marginBottom: "clamp(28px,3.6cqw,48px)" }}
-          >
-            How a piece comes to be
-          </h2>
-        </Reveal>
-        <div
-          className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,220px),1fr))]"
-          style={{ gap: "clamp(22px,3cqw,44px)" }}
-        >
-          {STEPS.map((step, i) => (
-            <Reveal key={step.n} delay={i * 90}>
-              <p className="mb-2.5 font-serif text-[34px] text-gold">{step.n}</p>
-              <p className="mb-2 text-[13px] tracking-[.14em] uppercase">
-                {step.title}
-              </p>
-              <p className="text-sm leading-[1.66] text-olive">{step.body}</p>
-            </Reveal>
-          ))}
-        </div>
       </section>
 
       <section

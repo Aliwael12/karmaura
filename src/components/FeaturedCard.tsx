@@ -61,7 +61,7 @@ export default function FeaturedCard({ product }: { product: Product }) {
       <div className="flex items-baseline justify-between gap-2">
         <Link
           href={`/shop/${product.slug}`}
-          className="truncate font-serif text-[18px] text-cream transition-colors duration-300 hover:text-gold-bright"
+          className="truncate font-sans font-semibold text-[18px] text-cream transition-colors duration-300 hover:text-gold-bright"
         >
           {product.name}
         </Link>

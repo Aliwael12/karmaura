@@ -55,7 +55,7 @@ export default function ProductCard({ product, compact = false }: Props) {
         <div className="min-w-0">
           <Link
             href={`/shop/${product.slug}`}
-            className={`line-clamp-2 font-serif leading-[1.25] text-forest transition-colors duration-300 hover:text-brass ${
+            className={`line-clamp-2 font-sans font-semibold leading-[1.25] text-forest transition-colors duration-300 hover:text-brass ${
               compact ? "text-[18px]" : "text-[19px]"
             }`}
           >

@@ -29,7 +29,7 @@
   --color-moss: #6b5f33;
 
   --font-serif: var(--font-eb-garamond), "EB Garamond", Georgia, serif;
-  --font-sans: var(--font-work-sans), "Work Sans", system-ui, sans-serif;
+  --font-sans: var(--font-inter), "Inter", system-ui, sans-serif;
 
   --radius-km: 8px;
 

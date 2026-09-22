@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { EB_Garamond, Work_Sans } from "next/font/google";
+import { EB_Garamond, Inter } from "next/font/google";
 import "./globals.css";
 
 const ebGaramond = EB_Garamond({
@@ -10,10 +10,10 @@ const ebGaramond = EB_Garamond({
   display: "swap",
 });
 
-const workSans = Work_Sans({
+const inter = Inter({
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
-  variable: "--font-work-sans",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-inter",
   display: "swap",
 });
 
@@ -43,7 +43,7 @@ export default function RootLayout({
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className={`${ebGaramond.variable} ${workSans.variable}`}
+      className={`${ebGaramond.variable} ${inter.variable}`}
     >
       <body>{children}</body>
     </html>

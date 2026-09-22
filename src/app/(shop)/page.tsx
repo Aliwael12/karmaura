@@ -7,7 +7,6 @@ import HeroArt from "@/components/HeroArt";
 import Marquee from "@/components/Marquee";
 import ObjectArt from "@/components/ObjectArt";
 import Reveal from "@/components/Reveal";
-import SceneArt from "@/components/SceneArt";
 import {
   getCategories,
   getCategoryCounts,
@@ -22,16 +21,12 @@ const HEADLINE = ["The", "warmth", "of", "simple", "things."];
 
 const VALUES = [
   {
-    title: "Made by hand",
-    body: "Small workshops in Cairo and the Delta. No two pieces are identical.",
+    title: "Care in every detail",
+    body: "Every design is chosen for how it lives in a home, not just how it looks on a shelf.",
   },
   {
-    title: "Honest materials",
-    body: "Clay, wool, linen, reed and brass — finished with oil and wax, nothing more.",
-  },
-  {
-    title: "Made to last",
-    body: "Repaired, not replaced — we mend anything we have made, for as long as we exist.",
+    title: "Quality you can feel",
+    body: "Natural where we can, durable where it matters, nothing dressed up to look like something it's not.",
   },
 ];
 
@@ -96,36 +91,11 @@ export default async function HomePage() {
             style={{ marginBlock: "clamp(20px,3cqw,34px)" }}
           />
           <Reveal delay={440}>
-            <p className="max-w-[46ch] text-[clamp(15px,1.7cqw,18px)] leading-[1.62] text-cream/80">
-              Objects for the calm home — hand-thrown clay, undyed linen, woven
-              reed. Made slowly, in small runs, by people we know.
-            </p>
-          </Reveal>
-          <Reveal delay={520}>
-            <div
-              className="flex flex-wrap items-center gap-6"
-              style={{ marginTop: "clamp(18px,3.4cqw,40px)" }}
-            >
+            <div style={{ marginTop: "clamp(18px,3.4cqw,40px)" }}>
               <Link href="/shop" className="km-btn km-btn-dark">
                 Explore the collection
               </Link>
-              <Link
-                href="/story"
-                className="km-arrow border-b-[rgba(239,223,195,.3)] text-cream/80 hover:border-b-gold-bright hover:text-cream"
-              >
-                Read our story <ArrowRight size={16} weight="light" />
-              </Link>
             </div>
-          </Reveal>
-          {/* repeats what the body copy already said — worth the line on a
-              wide screen, one scroll too many on a phone */}
-          <Reveal delay={620} className="hidden sm:block">
-            <p
-              className="text-[11px] tracking-[.22em] text-cream/50 uppercase"
-              style={{ marginTop: "clamp(22px,3cqw,32px)" }}
-            >
-              Small runs · Cairo &amp; the Delta · Mended for life
-            </p>
           </Reveal>
         </div>
 
@@ -211,56 +181,17 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── the story ────────────────────────────────────────────── */}
-      <section
-        className="km-gutter bg-cream text-forest"
-        style={{ paddingBlock: "clamp(48px,7cqw,100px)" }}
-      >
-        <div
-          className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,320px),1fr))] items-center"
-          style={{ gap: "clamp(26px,4cqw,64px)" }}
-        >
-          <Reveal delay={0} className="order-1 sm:order-2">
-            <p className="km-eyebrow mb-4 text-moss">The making</p>
-            <h2 className="mb-5 font-serif text-[clamp(27px,4.6cqw,46px)] leading-[1.12]">
-              Clay, linen, reed,
-              <br />
-              <em>and time.</em>
-            </h2>
-            <p className="mb-[26px] max-w-[42ch] text-[15px] leading-[1.68] text-olive">
-              Every piece leaves a small workshop with a name attached to it.
-              We keep the runs short so the hand stays visible in the work.
-            </p>
-            <Link href="/story" className="km-arrow text-forest">
-              Read the story <ArrowRight size={16} weight="light" />
-            </Link>
-          </Reveal>
-          <Reveal delay={120} className="order-2 sm:order-1">
-            {/* no real workshop photograph exists yet — the drawn interior,
-                not a fabricated one */}
-            <div className="relative aspect-16/11 overflow-hidden rounded-2xl bg-forest-deep">
-              <div className="km-view-parallax absolute inset-[-8%]">
-                <SceneArt scene="interior" className="size-full" />
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
       {/* ── shop by material ─────────────────────────────────────── */}
       <section
         className="km-gutter bg-cream-light text-forest"
         style={{ paddingBlock: "clamp(48px,7cqw,100px)" }}
       >
-        <Reveal delay={0}>
-          <p className="km-eyebrow mb-4 text-moss">Rooms and rituals</p>
-        </Reveal>
         <Reveal delay={60}>
           <h2
             className="font-serif text-[clamp(27px,4.8cqw,48px)] leading-[1.08]"
             style={{ marginBottom: "clamp(22px,3cqw,34px)" }}
           >
-            Shop by material
+            Shop by category
           </h2>
         </Reveal>
         <div className="flex flex-col gap-2.5">
@@ -324,8 +255,7 @@ export default async function HomePage() {
         />
         <Reveal delay={0}>
           <p className="max-w-[24ch] font-serif text-[clamp(22px,3.6cqw,30px)] leading-[1.35] text-cream italic">
-            &ldquo;Nothing here is too precious to use. That was the whole
-            point.&rdquo;
+            &ldquo;Nothing here is too precious to use.&rdquo;
           </p>
         </Reveal>
       </section>
@@ -341,7 +271,7 @@ export default async function HomePage() {
             alt=""
             width={340}
             height={380}
-            className="mx-auto mb-[26px] h-14 w-auto opacity-90"
+            className="mx-auto mb-[26px] h-24 w-auto opacity-90"
           />
         </Reveal>
         <Reveal delay={90}>

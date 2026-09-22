@@ -10,14 +10,11 @@
  */
 
 const ITEMS = [
-  "Hand-thrown clay",
-  "Undyed linen",
-  "Woven reed",
-  "Aged brass",
-  "Egyptian cotton",
-  "Stoneware glazes",
-  "Small runs",
-  "Mended for life",
+  "Quality you can feel",
+  "Design that doesn't shout",
+  "Made to last",
+  "Good energy, good home",
+  "Care in every detail",
 ];
 
 type Props = {
