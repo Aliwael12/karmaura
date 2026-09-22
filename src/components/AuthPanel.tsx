@@ -55,11 +55,7 @@ export default function AuthPanel() {
           </h1>
           <div className="km-rule my-[26px] w-[min(200px,50%)]" />
           <div className="flex max-w-[44ch] flex-col gap-4">
-            <p className="text-[15px] leading-[1.66] text-cream/75">
-              A profile keeps your addresses and the record of every piece you
-              own — so a repair is one message, not a search.
-            </p>
-            <div className="mt-1.5 flex flex-col gap-2.5">
+            <div className="flex flex-col gap-2.5">
               {PERKS.map(({ Icon, label }) => (
                 <p
                   key={label}
@@ -136,11 +132,6 @@ export default function AuthPanel() {
               >
                 Forgotten password
               </button>
-
-              <p className="text-center text-[11px] leading-[1.6] text-cream/45">
-                A demonstration profile — any email and password will do, and
-                nothing leaves this browser.
-              </p>
             </div>
           </form>
         </Reveal>

@@ -100,18 +100,6 @@ export default async function HomePage() {
         </div>
 
         <HeroArt />
-
-        {/* a quiet hint that the page goes on — the image already fills that
-            role on a phone, so this is desktop-only */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-3 hidden flex-col items-center gap-2 sm:flex"
-        >
-          <span className="text-[10px] tracking-[.3em] text-cream/45 uppercase">
-            Scroll
-          </span>
-          <span className="block h-9 w-px animate-cue bg-gold-bright/70" />
-        </div>
       </section>
 
       {/* ── what things are made of ──────────────────────────────── */}
@@ -242,8 +230,8 @@ export default async function HomePage() {
 
       {/* ── a quiet word ─────────────────────────────────────────── */}
       <section
-        className="km-gutter relative overflow-hidden bg-forest-deep"
-        style={{ paddingBlock: "clamp(48px,7cqw,88px)" }}
+        className="km-gutter relative overflow-hidden bg-forest-deep text-center"
+        style={{ paddingBlock: "clamp(34px,5cqw,56px)" }}
       >
         <div
           aria-hidden
@@ -254,7 +242,7 @@ export default async function HomePage() {
           }}
         />
         <Reveal delay={0}>
-          <p className="max-w-[24ch] font-serif text-[clamp(22px,3.6cqw,30px)] leading-[1.35] text-cream italic">
+          <p className="mx-auto max-w-[24ch] font-serif text-[clamp(22px,3.6cqw,30px)] leading-[1.35] text-cream italic">
             &ldquo;Nothing here is too precious to use.&rdquo;
           </p>
         </Reveal>
