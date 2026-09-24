@@ -80,47 +80,6 @@ export default function SettingsForm({ settings }: { settings: StoreSettings }) 
         Open for orders
       </label>
 
-      <h2 className="km-label mt-8 mb-5 border-t border-gold/15 pt-6 text-cream/70">
-        The atelier
-      </h2>
-      <div className="grid gap-4">
-        <label className={label}>
-          Address
-          <input
-            name="atelier_address"
-            defaultValue={settings.atelierAddress}
-            className={field}
-          />
-        </label>
-        <label className={label}>
-          Hours
-          <input
-            name="atelier_hours"
-            defaultValue={settings.atelierHours}
-            className={field}
-          />
-        </label>
-        <div className="grid gap-4 md:grid-cols-2">
-          <label className={label}>
-            Telephone
-            <input
-              name="atelier_phone"
-              defaultValue={settings.atelierPhone}
-              className={field}
-            />
-          </label>
-          <label className={label}>
-            Email
-            <input
-              name="atelier_email"
-              type="email"
-              defaultValue={settings.atelierEmail}
-              className={field}
-            />
-          </label>
-        </div>
-      </div>
-
       {error && (
         <p role="alert" className="mt-5 text-[13px] text-gold-bright">
           {error}

@@ -39,19 +39,19 @@ export default async function AdminCategories() {
 
   return (
     <>
-      <PageHead eyebrow="Rooms" title="How the collection is divided">
-        <p className="text-sm text-cream/50">{categories.length} rooms</p>
+      <PageHead eyebrow="Collections" title="How the collection is divided">
+        <p className="text-sm text-cream/50">{categories.length} collections</p>
       </PageHead>
 
       <Panel className="mb-6">
         <p className="text-[13px] leading-[1.7] text-cream/55">
-          Rooms are what the shop calls categories — they drive the home page
+          Collections are how the shop groups its pieces — they drive the home page
           strip, the filter chips and the breadcrumb on every piece. Removing
-          one does not delete its pieces; they simply lose their room and stop
+          one does not delete its pieces; they simply lose their collection and stop
           appearing under a filter until reassigned.
           {(orphans ?? 0) > 0 && (
             <span className="mt-2 block text-gold-bright">
-              {orphans} piece{orphans === 1 ? " has" : "s have"} no room right now.
+              {orphans} piece{orphans === 1 ? " has" : "s have"} no collection right now.
             </span>
           )}
         </p>

@@ -7,10 +7,6 @@ export type StoreSettings = {
   freeDeliveryFrom: number;
   storeOpen: boolean;
   announcement: string;
-  atelierAddress: string;
-  atelierHours: string;
-  atelierPhone: string;
-  atelierEmail: string;
 };
 
 /** What the shop falls back to if a key has not been seeded yet. */
@@ -19,10 +15,6 @@ export const DEFAULT_SETTINGS: StoreSettings = {
   freeDeliveryFrom: 12_500,
   storeOpen: true,
   announcement: "",
-  atelierAddress: "14 Sharia Bahgat Ali, Zamalek, Cairo",
-  atelierHours: "Thursday to Saturday, 11 — 7. By appointment otherwise.",
-  atelierPhone: "+20 2 2735 1180",
-  atelierEmail: "hello@karmaura.example",
 };
 
 const KEYS: Record<keyof StoreSettings, string> = {
@@ -30,10 +22,6 @@ const KEYS: Record<keyof StoreSettings, string> = {
   freeDeliveryFrom: "free_delivery_from",
   storeOpen: "store_open",
   announcement: "announcement",
-  atelierAddress: "atelier_address",
-  atelierHours: "atelier_hours",
-  atelierPhone: "atelier_phone",
-  atelierEmail: "atelier_email",
 };
 
 export async function getSettings(): Promise<StoreSettings> {
@@ -57,12 +45,6 @@ export async function getSettings(): Promise<StoreSettings> {
     ),
     storeOpen: Boolean(read(KEYS.storeOpen, DEFAULT_SETTINGS.storeOpen)),
     announcement: String(read(KEYS.announcement, DEFAULT_SETTINGS.announcement)),
-    atelierAddress: String(
-      read(KEYS.atelierAddress, DEFAULT_SETTINGS.atelierAddress),
-    ),
-    atelierHours: String(read(KEYS.atelierHours, DEFAULT_SETTINGS.atelierHours)),
-    atelierPhone: String(read(KEYS.atelierPhone, DEFAULT_SETTINGS.atelierPhone)),
-    atelierEmail: String(read(KEYS.atelierEmail, DEFAULT_SETTINGS.atelierEmail)),
   };
 }
 

@@ -219,7 +219,7 @@ function Form({
           />
         </label>
         <label className={label}>
-          Room
+          Collection
           <select
             name="category_id"
             defaultValue={product?.category_id ?? ""}

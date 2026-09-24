@@ -29,7 +29,7 @@ export default function CategoryEditor({
           }}
           className="rounded-lg border border-gold px-5 py-2.5 text-[11px] tracking-[.14em] text-cream uppercase hover:bg-gold hover:text-forest"
         >
-          {adding ? "Cancel" : "New room"}
+          {adding ? "Cancel" : "New collection"}
         </button>
       </div>
 
@@ -154,7 +154,7 @@ function Form({
       </div>
 
       <label className={`${label} mt-4`}>
-        Blurb (shown when the room is filtered)
+        Blurb (shown when the collection is filtered)
         <textarea
           name="blurb"
           rows={2}
@@ -185,7 +185,7 @@ function Form({
           disabled={pending}
           className="rounded-lg border border-gold px-5 py-2.5 text-[11px] tracking-[.14em] text-cream uppercase hover:bg-gold hover:text-forest disabled:opacity-50"
         >
-          {pending ? "Saving…" : category ? "Save room" : "Add room"}
+          {pending ? "Saving…" : category ? "Save collection" : "Add collection"}
         </button>
         <button
           type="button"
@@ -210,7 +210,7 @@ function Form({
             }
             className="ml-auto rounded-lg border border-gold/25 px-5 py-2.5 text-[11px] tracking-[.14em] text-cream/45 uppercase hover:border-gold-bright hover:text-gold-bright disabled:opacity-50"
           >
-            Remove room
+            Remove collection
           </button>
         )}
       </div>

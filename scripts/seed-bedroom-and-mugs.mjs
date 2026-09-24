@@ -197,7 +197,7 @@ const MUG_PRODUCTS = [
     lead_time: "Dispatched within 5 working days",
     stock: 10,
     position: 25,
-    photo: `${MUGS_DIR}/Boho Ceramic Coffee Mug _ Teal Blue Geometric Pattern.png`,
+    photo: `${MUGS_DIR}/7.png`,
   },
   {
     slug: "reactive-amber-mug",
@@ -210,7 +210,7 @@ const MUG_PRODUCTS = [
     lead_time: "Dispatched within 5 working days",
     stock: 14,
     position: 26,
-    photo: `${MUGS_DIR}/Ceramic Coffee Mug _ Brown Reactive Glaze.png`,
+    photo: `${MUGS_DIR}/14.png`,
   },
   {
     slug: "copper-lustre-cup",
@@ -223,7 +223,7 @@ const MUG_PRODUCTS = [
     lead_time: "Made to order — 2 weeks",
     stock: 6,
     position: 27,
-    photo: `${MUGS_DIR}/Copy of 16.png`,
+    photo: `${MUGS_DIR}/15.png`,
   },
   {
     slug: "forest-fade-mug",
@@ -236,7 +236,7 @@ const MUG_PRODUCTS = [
     lead_time: "Dispatched within 5 working days",
     stock: 9,
     position: 28,
-    photo: `${MUGS_DIR}/Copy of 9.png`,
+    photo: `${MUGS_DIR}/2.png`,
   },
   {
     slug: "blue-ombre-mug",
@@ -249,7 +249,7 @@ const MUG_PRODUCTS = [
     lead_time: "Dispatched within 5 working days",
     stock: 8,
     position: 29,
-    photo: `${MUGS_DIR}/Handcrafted Blue Ombre Reactive Glaze Stoneware Mug.png`,
+    photo: `${MUGS_DIR}/13.png`,
   },
   {
     slug: "speckled-umber-mug",
@@ -262,7 +262,7 @@ const MUG_PRODUCTS = [
     lead_time: "Dispatched within 5 working days",
     stock: 15,
     position: 30,
-    photo: `${MUGS_DIR}/Handcrafted Brown Speckled Stoneware Mug.png`,
+    photo: `${MUGS_DIR}/6.png`,
   },
   {
     slug: "forest-bubble-mug",
@@ -275,7 +275,7 @@ const MUG_PRODUCTS = [
     lead_time: "Dispatched within 5 working days",
     stock: 7,
     position: 31,
-    photo: `${MUGS_DIR}/Handcrafted Forest Green Bubble Ceramic Mug.png`,
+    photo: `${MUGS_DIR}/17.png`,
   },
   {
     slug: "plum-lustre-mug",
@@ -288,7 +288,7 @@ const MUG_PRODUCTS = [
     lead_time: "Made to order — 2 weeks",
     stock: 5,
     position: 32,
-    photo: `${MUGS_DIR}/Handcrafted Iridescent Luster Stoneware Mug.png`,
+    photo: `${MUGS_DIR}/3.png`,
   },
   {
     slug: "scale-texture-espresso-cup",
@@ -301,7 +301,7 @@ const MUG_PRODUCTS = [
     lead_time: "Dispatched within 5 working days",
     stock: 9,
     position: 33,
-    photo: `${MUGS_DIR}/Handcrafted Iridescent Stoneware Espresso Mug _ Scale Texture.png`,
+    photo: `${MUGS_DIR}/8.png`,
   },
   {
     slug: "sgraffito-lotus-mug",
@@ -314,7 +314,7 @@ const MUG_PRODUCTS = [
     lead_time: "Made to order — 2 weeks",
     stock: 4,
     position: 34,
-    photo: `${MUGS_DIR}/Handcrafted Sgraffito Ceramic Mug.png`,
+    photo: `${MUGS_DIR}/10.png`,
   },
   {
     slug: "teal-scale-mug",
@@ -327,7 +327,7 @@ const MUG_PRODUCTS = [
     lead_time: "Dispatched within 5 working days",
     stock: 8,
     position: 35,
-    photo: `${MUGS_DIR}/Handcrafted Teal Speckled Stoneware Mug _ Scale Texture.png`,
+    photo: `${MUGS_DIR}/16.png`,
   },
   {
     slug: "indigo-iridescent-mug",
@@ -340,7 +340,7 @@ const MUG_PRODUCTS = [
     lead_time: "Made to order — 2 weeks",
     stock: 5,
     position: 36,
-    photo: `${MUGS_DIR}/Handmade Blue Iridescent Stoneware Mug.png`,
+    photo: `${MUGS_DIR}/5.png`,
   },
   {
     slug: "olive-ridge-mug",
@@ -353,7 +353,7 @@ const MUG_PRODUCTS = [
     lead_time: "Dispatched within 5 working days",
     stock: 7,
     position: 37,
-    photo: `${MUGS_DIR}/Handmade Green & Cream Glaze Speckled Stoneware Mug_.png`,
+    photo: `${MUGS_DIR}/12.png`,
   },
   {
     slug: "dusty-rose-bubble-mug",
@@ -366,7 +366,7 @@ const MUG_PRODUCTS = [
     lead_time: "Dispatched within 5 working days",
     stock: 9,
     position: 38,
-    photo: `${MUGS_DIR}/Handmade Pink Bubble Glazed Stoneware Mug.png`,
+    photo: `${MUGS_DIR}/1.png`,
   },
   {
     slug: "sage-speckle-mug",
@@ -379,7 +379,7 @@ const MUG_PRODUCTS = [
     lead_time: "Dispatched within 5 working days",
     stock: 12,
     position: 39,
-    photo: `${MUGS_DIR}/Speckled Green Glazed Stoneware Mug.png`,
+    photo: `${MUGS_DIR}/11.png`,
   },
   {
     slug: "speckled-mauve-mug",
@@ -392,7 +392,7 @@ const MUG_PRODUCTS = [
     lead_time: "Dispatched within 5 working days",
     stock: 10,
     position: 40,
-    photo: `${MUGS_DIR}/Speckled Pink & Purple Glazed Stoneware Mug.png`,
+    photo: `${MUGS_DIR}/4.png`,
   },
   {
     slug: "rose-bubble-ridge-mug",
@@ -405,7 +405,7 @@ const MUG_PRODUCTS = [
     lead_time: "Dispatched within 5 working days",
     stock: 8,
     position: 41,
-    photo: `${MUGS_DIR}/Speckled Pink Bubble Ceramic Mug.png`,
+    photo: `${MUGS_DIR}/9.png`,
   },
 ];
 

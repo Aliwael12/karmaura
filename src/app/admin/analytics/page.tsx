@@ -205,7 +205,7 @@ export default async function AdminAnalytics({
           format={fmtNum}
         />
         <BreakdownTable
-          title="Sales by room"
+          title="Sales by collection"
           rows={breakdowns.categorySales}
           format={fmtEgp}
         />

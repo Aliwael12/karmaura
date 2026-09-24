@@ -321,7 +321,7 @@ export async function saveCategory(formData: FormData): Promise<AdminResult> {
 
   const id = str(formData, "id");
   const name = str(formData, "name");
-  if (!name) return { ok: false, error: "A room needs a name." };
+  if (!name) return { ok: false, error: "A collection needs a name." };
 
   const row = {
     name,
@@ -348,14 +348,14 @@ export async function saveCategory(formData: FormData): Promise<AdminResult> {
   revalidatePath("/admin/categories");
   revalidatePath("/shop");
   revalidatePath("/");
-  return { ok: true, message: id ? "Room saved" : "Room added" };
+  return { ok: true, message: id ? "Collection saved" : "Collection added" };
 }
 
 export async function deleteCategory(id: string): Promise<AdminResult> {
   const denied = await guard();
   if (denied) return denied;
 
-  /* Products point at categories with ON DELETE SET NULL, so removing a room
+  /* Products point at categories with ON DELETE SET NULL, so removing a collection
      orphans its pieces rather than deleting them. Warn if any would be. */
   const db = createAdminSupabase();
   const { count } = await db
@@ -371,8 +371,8 @@ export async function deleteCategory(id: string): Promise<AdminResult> {
   return {
     ok: true,
     message: count
-      ? `Room removed — ${count} piece${count === 1 ? "" : "s"} now have no room`
-      : "Room removed",
+      ? `Collection removed — ${count} piece${count === 1 ? "" : "s"} now have no collection`
+      : "Collection removed",
   };
 }
 
@@ -429,10 +429,6 @@ export async function saveSettings(formData: FormData): Promise<AdminResult> {
     { key: SETTING_KEYS.freeDeliveryFrom, value: free },
     { key: SETTING_KEYS.storeOpen, value: bool(formData, "store_open") },
     { key: SETTING_KEYS.announcement, value: str(formData, "announcement").slice(0, 300) },
-    { key: SETTING_KEYS.atelierAddress, value: str(formData, "atelier_address") },
-    { key: SETTING_KEYS.atelierHours, value: str(formData, "atelier_hours") },
-    { key: SETTING_KEYS.atelierPhone, value: str(formData, "atelier_phone") },
-    { key: SETTING_KEYS.atelierEmail, value: str(formData, "atelier_email") },
   ];
 
   const { error } = await createAdminSupabase()

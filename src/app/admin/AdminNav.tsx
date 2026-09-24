@@ -12,7 +12,7 @@ const LINKS = [
   { href: "/admin/orders", label: "Orders" },
   { href: "/admin/analytics", label: "Analytics" },
   { href: "/admin/products", label: "Products" },
-  { href: "/admin/categories", label: "Rooms" },
+  { href: "/admin/categories", label: "Collections" },
   { href: "/admin/customers", label: "Customers" },
   { href: "/admin/inbox", label: "Inbox" },
   { href: "/admin/settings", label: "Settings" },
