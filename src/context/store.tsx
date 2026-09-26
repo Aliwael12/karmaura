@@ -76,75 +76,12 @@ type Persisted = {
 
 const STORAGE_KEY = "karmaura:v1";
 
-/* a signed-in demo account arrives with a little history behind it */
-const SEED_ORDERS: Order[] = [
-  {
-    id: "KM-4791",
-    placedAt: "2026-05-14T10:20:00.000Z",
-    lines: [
-      { slug: "sahel", name: "Sahel Bowl", qty: 2, price: 4800 },
-      { slug: "halim", name: "Halim Cup Set", qty: 1, price: 3700 },
-    ],
-    subtotal: 13300,
-    shipping: 0,
-    total: 13300,
-    ship: {
-      name: "Nadia Farouk",
-      line1: "8 Sharia Ismail Mohamed",
-      city: "Cairo",
-      postcode: "11211",
-    },
-    status: "Delivered",
-  },
-  {
-    id: "KM-4803",
-    placedAt: "2026-07-02T16:05:00.000Z",
-    lines: [{ slug: "layla", name: "Layla Throw", qty: 1, price: 12000 }],
-    subtotal: 12000,
-    shipping: 900,
-    total: 12900,
-    ship: {
-      name: "Nadia Farouk",
-      line1: "8 Sharia Ismail Mohamed",
-      city: "Cairo",
-      postcode: "11211",
-    },
-    status: "On its way",
-  },
-];
-
-const SEED_ADDRESSES: Address[] = [
-  {
-    id: "addr-home",
-    label: "Home",
-    name: "Nadia Farouk",
-    line1: "8 Sharia Ismail Mohamed",
-    city: "Cairo",
-    postcode: "11211",
-    country: "Egypt",
-    isDefault: true,
-  },
-  {
-    id: "addr-studio",
-    label: "Studio",
-    name: "Nadia Farouk",
-    line1: "3 Sharia Bahgat Ali, Zamalek",
-    city: "Cairo",
-    postcode: "11561",
-    country: "Egypt",
-    isDefault: false,
-  },
-];
-
-const SEED_REPAIRS: Repair[] = [
-  {
-    id: "RP-118",
-    piece: "Sahel Bowl",
-    note: "A chip on the rim — dropped a spoon in it.",
-    openedAt: "2026-08-04T09:00:00.000Z",
-    status: "Being mended",
-  },
-];
+/* Earlier builds handed every signed-in visitor a fictional customer's
+   orders, addresses and repair. Browsers that already stored them are
+   cleaned out on load, or checkout keeps prefilling a stranger's details. */
+const DEMO_ORDER_IDS = new Set(["KM-4791", "KM-4803"]);
+const DEMO_ADDRESS_IDS = new Set(["addr-home", "addr-studio"]);
+const DEMO_REPAIR_IDS = new Set(["RP-118"]);
 
 /* ── context ─────────────────────────────────────────────────────── */
 
@@ -244,9 +181,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         if (stored.cart) setCart(stored.cart);
         if (stored.saved) setSaved(stored.saved);
         if (stored.user) setUser(stored.user);
-        if (stored.orders) setOrders(stored.orders);
-        if (stored.addresses) setAddresses(stored.addresses);
-        if (stored.repairs) setRepairs(stored.repairs);
+        if (stored.orders)
+          setOrders(stored.orders.filter((o) => !DEMO_ORDER_IDS.has(o.id)));
+        if (stored.addresses)
+          setAddresses(
+            stored.addresses.filter((a) => !DEMO_ADDRESS_IDS.has(a.id)),
+          );
+        if (stored.repairs)
+          setRepairs(stored.repairs.filter((r) => !DEMO_REPAIR_IDS.has(r.id)));
       }
     } catch {
       /* a corrupt or blocked store just means we start fresh */
@@ -293,7 +235,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       setCart((current) => ({ ...current, [id]: (current[id] ?? 0) + qty }));
       setBagPulse((n) => n + 1);
       const product = products.find((p) => p.slug === id);
-      flash((product ? product.name : "Added") + " — added to your bag");
+      flash((product ? product.name : "Added") + " added to your bag");
     },
     [flash, products],
   );
@@ -317,10 +259,10 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       const product = products.find((p) => p.slug === id);
       setSaved((current) => {
         if (current.includes(id)) {
-          flash((product ? product.name : "Piece") + " — removed from saved");
+          flash((product ? product.name : "Piece") + " removed from saved");
           return current.filter((s) => s !== id);
         }
-        flash((product ? product.name : "Piece") + " — saved");
+        flash((product ? product.name : "Piece") + " saved");
         return [...current, id];
       });
     },
@@ -341,11 +283,6 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         email,
         since: new Date().toISOString(),
       });
-      /* a demo account is handed a little history to browse — but only where
-         it has none of its own, so a real session is never overwritten */
-      setOrders((current) => (current.length ? current : SEED_ORDERS));
-      setAddresses((current) => (current.length ? current : SEED_ADDRESSES));
-      setRepairs((current) => (current.length ? current : SEED_REPAIRS));
       flash(name ? "Profile created" : "Welcome back");
     },
     [flash],
@@ -389,7 +326,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         },
         ...current,
       ]);
-      flash("Repair noted — we will write back");
+      flash("Repair noted, we will write back");
     },
     [flash],
   );

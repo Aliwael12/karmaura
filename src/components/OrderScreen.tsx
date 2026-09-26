@@ -19,7 +19,7 @@ export default function OrderScreen({ order }: { order: Order }) {
           className="mx-auto mb-[26px] h-16 w-auto animate-aura"
         />
         <h1 className="mb-4.5 font-serif text-[clamp(28px,5cqw,48px)] leading-[1.1]">
-          Thank you — it is on its way
+          Thank you, it is on its way
         </h1>
         <p className="mx-auto max-w-[46ch] text-[15px] leading-[1.7] text-olive">
           Order {order.number}, placed {formatDate(order.placedAt)}. We will
@@ -82,7 +82,7 @@ export default function OrderScreen({ order }: { order: Order }) {
             />
             <p className="text-[13px] leading-[1.6] text-moss">
               <span className="text-forest">Cash on delivery.</span> Have{" "}
-              {money(order.total)} ready for the courier — nothing has been
+              {money(order.total)} ready for the courier. Nothing has been
               charged.
             </p>
           </div>

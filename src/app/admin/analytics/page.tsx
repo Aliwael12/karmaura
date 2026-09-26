@@ -213,7 +213,7 @@ export default async function AdminAnalytics({
           title="Sessions by location"
           rows={breakdowns.locations}
           format={fmtNum}
-          emptyNote="No location data — this arrives from the host's geo headers in production."
+          emptyNote="No location data. This arrives from the host's geo headers in production."
         />
         <BreakdownTable
           title="Sessions by social referrer"

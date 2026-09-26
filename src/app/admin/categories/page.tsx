@@ -45,7 +45,7 @@ export default async function AdminCategories() {
 
       <Panel className="mb-6">
         <p className="text-[13px] leading-[1.7] text-cream/55">
-          Collections are how the shop groups its pieces — they drive the home page
+          Collections are how the shop groups its pieces. They drive the home page
           strip, the filter chips and the breadcrumb on every piece. Removing
           one does not delete its pieces; they simply lose their collection and stop
           appearing under a filter until reassigned.

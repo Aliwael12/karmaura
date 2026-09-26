@@ -149,7 +149,7 @@ export default async function AdminInbox() {
                   ))}
                 </ul>
                 <p className="mt-4 border-t border-gold/15 pt-3 text-[11px] leading-[1.6] text-cream/35">
-                  Sending is deliberately not built in — export these addresses
+                  Sending is deliberately not built in. Export these addresses
                   into whichever letter tool the house uses.
                 </p>
               </>

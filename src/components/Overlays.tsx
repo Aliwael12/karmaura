@@ -103,7 +103,7 @@ function CartDrawer() {
       <aside className="relative flex h-full w-[min(420px,88%)] animate-drawer flex-col border-l border-gold/25 bg-forest-deep">
         <div className="flex items-center justify-between border-b border-gold/20 px-6 py-5">
           <p className="text-xs tracking-[.2em] text-cream uppercase">
-            Your bag — {count}
+            Your bag ({count})
           </p>
           <button
             type="button"

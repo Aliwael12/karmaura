@@ -212,7 +212,7 @@ export default async function AdminOrders({
           </div>
           {rows.length === 200 && (
             <p className="mt-4 text-[11px] text-cream/35">
-              Showing the first 200 — narrow the search to see more.
+              Showing the first 200. Narrow the search to see more.
             </p>
           )}
         </Panel>

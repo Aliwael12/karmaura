@@ -225,7 +225,7 @@ function Form({
             defaultValue={product?.category_id ?? ""}
             className={field}
           >
-            <option value="">— none —</option>
+            <option value="">None</option>
             {categories.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.name}

@@ -48,7 +48,7 @@ export default async function AdminProducts() {
           A piece with no photograph falls back to its drawn silhouette, chosen
           by <span className="text-cream/80">art kind</span>. Prices are whole
           Egyptian pounds. Stock is taken when an order is approved and returned
-          if it is cancelled — so edit it here only to correct a count, not to
+          if it is cancelled, so edit it here only to correct a count, not to
           fulfil an order.
         </p>
       </Panel>

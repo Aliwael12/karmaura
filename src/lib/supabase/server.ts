@@ -45,7 +45,7 @@ export function createAdminSupabase() {
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!key) {
     throw new Error(
-      "SUPABASE_SERVICE_ROLE_KEY is missing — server-side writes cannot run.",
+      "SUPABASE_SERVICE_ROLE_KEY is missing, server-side writes cannot run.",
     );
   }
   return createRawClient<Database>(

@@ -105,7 +105,7 @@ function Delta({ pct }: { pct: number | null }) {
         flat ? "text-cream/40" : up ? "text-lime-300/80" : "text-gold-bright"
       }`}
     >
-      {flat ? "—" : `${up ? "▲" : "▼"} ${Math.abs(pct).toFixed(1)}%`}
+      {flat ? "0.0%" : `${up ? "▲" : "▼"} ${Math.abs(pct).toFixed(1)}%`}
     </span>
   );
 }

@@ -102,7 +102,7 @@ export async function createBostaDelivery(
   if (!order.ship.districtId && !(order.ship.cityId && order.ship.districtName)) {
     return {
       ok: false,
-      error: "No Bosta district on this order's address — cannot create a delivery",
+      error: "No Bosta district on this order's address, cannot create a delivery",
     };
   }
   if (order.total <= 0) {
@@ -119,7 +119,7 @@ export async function createBostaDelivery(
     cod: order.total,
     goodsInfo: { amount: order.subtotal },
     specs: { packageType: "MEDIUM" },
-    notes: "Handmade ceramics and textiles — please handle with care.",
+    notes: "Handmade ceramics and textiles. Please handle with care.",
     businessReference: order.number,
     dropOffAddress: {
       city: order.ship.city,

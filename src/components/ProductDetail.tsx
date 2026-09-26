@@ -207,7 +207,7 @@ export default function ProductDetail({ product }: { product: Product }) {
           </div>
 
           <p className="mb-2 text-[13px] text-moss">
-            {product.leadTime} — wrapped in kraft and embossed by hand.
+            {product.leadTime}. Wrapped in kraft and embossed by hand.
           </p>
           <p className="mb-[30px] text-[13px] text-moss">
             Made by {product.maker}.

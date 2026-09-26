@@ -8,7 +8,6 @@ import { Minus, Money, Plus } from "@phosphor-icons/react/ssr";
 import { submitOrder } from "@/app/actions/shop";
 import { useStore } from "@/context/store";
 import {
-  FREE_DELIVERY_FROM,
   bagHeading,
   money,
   shippingLabel,
@@ -202,8 +201,6 @@ function CheckoutPanel({
   const [error, setError] = useState("");
   const [placing, setPlacing] = useState(false);
 
-  const shortfall = FREE_DELIVERY_FROM - subtotal;
-
   async function submit(event: FormEvent) {
     event.preventDefault();
     if (lines.length === 0) {
@@ -287,7 +284,7 @@ function CheckoutPanel({
             type="tel"
             value={form.phone}
             onChange={(e) => setForm({ ...form, phone: e.target.value })}
-            placeholder="Phone — for the courier"
+            placeholder="Phone for the courier"
             autoComplete="tel"
             className="km-field km-field-light min-w-0"
           />
@@ -315,7 +312,7 @@ function CheckoutPanel({
             Cash on delivery
           </p>
           <p className="text-[13px] leading-[1.6] text-moss">
-            Pay the courier when the piece reaches you — it is the only way we
+            Pay the courier when the piece reaches you. It is the only way we
             take payment. Nothing is charged now.
           </p>
         </div>
@@ -347,12 +344,6 @@ function CheckoutPanel({
       >
         {placing ? "Sending…" : "Place the order"}
       </button>
-
-      <p className="mt-3.5 text-xs leading-[1.6] text-moss">
-        {shortfall > 0 && subtotal > 0
-          ? `${money(shortfall)} more for complimentary delivery. Wrapped in kraft, embossed by hand.`
-          : `Free delivery over ${money(FREE_DELIVERY_FROM)}. Wrapped in kraft, embossed by hand.`}
-      </p>
     </form>
   );
 }

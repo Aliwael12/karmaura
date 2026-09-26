@@ -9,7 +9,7 @@ export type AuthResult = { ok: boolean; error?: string; message?: string };
 function readableAuthError(message: string): string {
   const m = message.toLowerCase();
   if (m.includes("invalid login")) return "That email and password do not match.";
-  if (m.includes("already registered")) return "That email already has a profile — sign in instead.";
+  if (m.includes("already registered")) return "That email already has a profile. Sign in instead.";
   if (m.includes("password should be")) return "Use at least six characters for the password.";
   if (m.includes("rate limit")) return "Too many attempts. Try again in a minute.";
   return message;

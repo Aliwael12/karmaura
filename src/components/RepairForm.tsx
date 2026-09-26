@@ -71,7 +71,7 @@ export default function RepairForm() {
 
         {done && (
           <p className="text-[13px] leading-[1.7] text-gold-bright">
-            Noted — it will appear in the list above.
+            Noted. It will appear in the list above.
           </p>
         )}
       </div>

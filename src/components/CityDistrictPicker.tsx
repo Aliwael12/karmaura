@@ -50,7 +50,7 @@ export default function CityDistrictPicker({
   if (error) {
     return (
       <p className="text-[13px] text-brass">
-        Could not load delivery areas — {error}
+        Could not load delivery areas: {error}
       </p>
     );
   }

@@ -97,7 +97,7 @@ export async function setOrderStatus(
     if (!bosta.ok) {
       return {
         ok: true,
-        message: `Order approved — Bosta booking failed (${bosta.error}). Approve again to retry.`,
+        message: `Order approved, but Bosta booking failed (${bosta.error}). Approve again to retry.`,
       };
     }
   }
@@ -140,7 +140,7 @@ export async function bulkSetOrderStatus(
   if (bostaFailures.length) {
     return {
       ok: true,
-      message: `${orderIds.length} orders marked ${status} — ${bostaFailures.length} Bosta booking(s) failed: ${bostaFailures[0]}. Approve again to retry those.`,
+      message: `${orderIds.length} orders marked ${status}, but ${bostaFailures.length} Bosta booking(s) failed: ${bostaFailures[0]}. Approve again to retry those.`,
     };
   }
   return { ok: true, message: `${orderIds.length} orders marked ${status}` };
@@ -371,7 +371,7 @@ export async function deleteCategory(id: string): Promise<AdminResult> {
   return {
     ok: true,
     message: count
-      ? `Collection removed — ${count} piece${count === 1 ? "" : "s"} now have no collection`
+      ? `Collection removed, ${count} piece${count === 1 ? "" : "s"} now have no collection`
       : "Collection removed",
   };
 }

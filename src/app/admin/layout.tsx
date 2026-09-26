@@ -4,7 +4,7 @@ import { getViewer } from "@/lib/db/auth";
 import AdminNav from "./AdminNav";
 
 export const metadata: Metadata = {
-  title: { default: "Admin", template: "%s — KARMAURA admin" },
+  title: { default: "Admin", template: "%s | KARMAURA admin" },
   robots: { index: false, follow: false },
 };
 

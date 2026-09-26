@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "The collection",
   description:
-    "Everything we make — ceramics, textiles, bedroom linens, tableware, brass and reed, in small runs.",
+    "Everything we make: ceramics, textiles, bedroom linens, tableware, brass and reed, in small runs.",
 };
 
 const NEXT_SORT: Record<SortKey, SortKey> = {

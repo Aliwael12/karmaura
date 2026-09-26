@@ -69,7 +69,7 @@ export default async function AdminCustomers() {
                   return (
                     <tr key={p.id} className="border-b border-gold/10 last:border-0">
                       <td className="py-3 pr-4 text-cream/80">
-                        {p.full_name || "—"}
+                        {p.full_name || "-"}
                         {p.phone && (
                           <span className="block text-[11px] text-cream/40">
                             {p.phone}

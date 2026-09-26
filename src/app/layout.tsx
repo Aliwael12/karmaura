@@ -20,11 +20,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://karmaura.vercel.app"),
   title: {
-    default: "KARMAURA · HOME — Good energy, good home",
-    template: "%s — KARMAURA · HOME",
+    default: "KARMAURA · HOME | Good energy, good home",
+    template: "%s | KARMAURA · HOME",
   },
   description:
-    "Objects for the calm home — hand-thrown clay, undyed linen, woven reed. Made slowly, in small runs, by people we know.",
+    "Objects for the calm home: hand-thrown clay, undyed linen, woven reed. Made slowly, in small runs, by people we know.",
   openGraph: {
     title: "KARMAURA · HOME",
     description: "The warmth of simple things.",

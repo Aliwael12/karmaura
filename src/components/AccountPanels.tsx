@@ -168,7 +168,7 @@ export function SavedPanel() {
   if (products.length === 0) {
     return (
       <Empty
-        line="Nothing saved yet — the heart on any piece keeps it here"
+        line="Nothing saved yet. The heart on any piece keeps it here"
         cta="Browse the collection"
         href="/shop"
       />
@@ -271,7 +271,7 @@ export function AddressesPanel() {
         <div className="flex flex-col gap-3">
           <input
             className="km-field km-field-dark"
-            placeholder="Label — Home, Studio"
+            placeholder="Label (Home, Studio)"
             value={form.label}
             onChange={(e) => setForm({ ...form, label: e.target.value })}
           />

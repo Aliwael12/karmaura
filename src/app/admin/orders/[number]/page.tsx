@@ -96,7 +96,7 @@ export default async function AdminOrderDetail({
             </dl>
 
             <p className="mt-4 rounded-lg border border-gold/30 bg-forest-night/50 p-3 text-[12px] text-cream/60">
-              Cash on delivery — collect {money(order.total)} from the customer.
+              Cash on delivery: collect {money(order.total)} from the customer.
             </p>
           </Panel>
 

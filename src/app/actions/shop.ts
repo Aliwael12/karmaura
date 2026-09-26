@@ -214,7 +214,7 @@ export async function sendContactMessage(
     .insert({ name, email: email.toLowerCase(), message });
 
   if (error) return { ok: false, error: "Could not send that. Try again." };
-  return { ok: true, message: "Thank you — we will write back" };
+  return { ok: true, message: "Thank you, we will write back" };
 }
 
 export async function subscribeToLetters(email: string): Promise<ActionResult> {
@@ -251,7 +251,7 @@ export async function openRepair(formData: FormData): Promise<ActionResult> {
   if (error) return { ok: false, error: "Could not open that repair. Try again." };
 
   revalidatePath("/account/repairs");
-  return { ok: true, message: "Repair noted — we will write back" };
+  return { ok: true, message: "Repair noted, we will write back" };
 }
 
 /** Best-effort read of the country the request came from, for tracking. */
