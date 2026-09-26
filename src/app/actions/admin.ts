@@ -6,7 +6,7 @@ import { createAdminSupabase, createServerSupabase } from "@/lib/supabase/server
 import { isAdminRequest } from "@/lib/db/auth";
 import { bookBostaDelivery } from "@/lib/db/orders";
 import { SETTING_KEYS } from "@/lib/db/settings";
-import type { MessageStatus, OrderStatus, RepairStatus } from "@/lib/supabase/types";
+import type { MessageStatus, OrderStatus } from "@/lib/supabase/types";
 
 export type AdminResult = { ok: boolean; error?: string; message?: string };
 
@@ -392,24 +392,6 @@ export async function setMessageStatus(
 
   if (error) return { ok: false, error: error.message };
   revalidatePath("/admin/inbox");
-  return { ok: true };
-}
-
-export async function setRepairStatus(
-  id: string,
-  status: RepairStatus,
-): Promise<AdminResult> {
-  const denied = await guard();
-  if (denied) return denied;
-
-  const { error } = await createAdminSupabase()
-    .from("repairs")
-    .update({ status })
-    .eq("id", id);
-
-  if (error) return { ok: false, error: error.message };
-  revalidatePath("/admin/inbox");
-  revalidatePath("/account/repairs");
   return { ok: true };
 }
 

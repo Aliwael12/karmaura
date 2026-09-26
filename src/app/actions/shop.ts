@@ -229,31 +229,6 @@ export async function subscribeToLetters(email: string): Promise<ActionResult> {
   return { ok: true, message: "You are on the list" };
 }
 
-export async function openRepair(formData: FormData): Promise<ActionResult> {
-  const piece = String(formData.get("piece") ?? "").trim();
-  const note = String(formData.get("note") ?? "").trim();
-  const email = String(formData.get("email") ?? "").trim();
-
-  if (!piece) return { ok: false, error: "Which piece needs mending?" };
-
-  const supabase = await createServerSupabase();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const { error } = await createAdminSupabase().rpc("open_repair", {
-    p_piece: piece,
-    p_note: note,
-    p_email: email || user?.email || "",
-    p_user_id: user?.id ?? null,
-  });
-
-  if (error) return { ok: false, error: "Could not open that repair. Try again." };
-
-  revalidatePath("/account/repairs");
-  return { ok: true, message: "Repair noted, we will write back" };
-}
-
 /** Best-effort read of the country the request came from, for tracking. */
 export async function requestCountry(): Promise<string | null> {
   const h = await headers();

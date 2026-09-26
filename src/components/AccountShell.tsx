@@ -11,7 +11,6 @@ const TABS = [
   { href: "/account/orders", label: "Orders" },
   { href: "/account/saved", label: "Saved" },
   { href: "/account/addresses", label: "Addresses" },
-  { href: "/account/repairs", label: "Repairs" },
 ];
 
 /**

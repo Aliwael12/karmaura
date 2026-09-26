@@ -55,14 +55,6 @@ export type Order = {
   status: OrderStatus;
 };
 
-export type Repair = {
-  id: string;
-  piece: string;
-  note: string;
-  openedAt: string;
-  status: "Received" | "Being mended" | "Sent back";
-};
-
 type Toast = { key: number; message: string };
 
 type Persisted = {
@@ -71,17 +63,15 @@ type Persisted = {
   user: User | null;
   orders: Order[];
   addresses: Address[];
-  repairs: Repair[];
 };
 
 const STORAGE_KEY = "karmaura:v1";
 
 /* Earlier builds handed every signed-in visitor a fictional customer's
-   orders, addresses and repair. Browsers that already stored them are
+   orders and addresses. Browsers that already stored them are
    cleaned out on load, or checkout keeps prefilling a stranger's details. */
 const DEMO_ORDER_IDS = new Set(["KM-4791", "KM-4803"]);
 const DEMO_ADDRESS_IDS = new Set(["addr-home", "addr-studio"]);
-const DEMO_REPAIR_IDS = new Set(["RP-118"]);
 
 /* ── context ─────────────────────────────────────────────────────── */
 
@@ -118,9 +108,6 @@ type StoreValue = {
   removeAddress: (id: string) => void;
   makeDefaultAddress: (id: string) => void;
 
-  repairs: Repair[];
-  openRepair: (piece: string, note: string) => void;
-
   toasts: Toast[];
   flash: (message: string) => void;
 
@@ -133,7 +120,7 @@ type StoreValue = {
   bagPulse: number;
 
   /** The catalogue, fetched once for the pieces of UI outside a server-
-      rendered page — the cart drawer, the repair form's picker. Server
+      rendered page — the cart drawer. Server
       components already get products as props; this is only for those. */
   products: Product[];
 };
@@ -147,7 +134,6 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
   const [addresses, setAddresses] = useState<Address[]>([]);
-  const [repairs, setRepairs] = useState<Repair[]>([]);
   const [toasts, setToasts] = useState<Toast[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -157,7 +143,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   /* Fetched once, independent of the localStorage hydration below — the
      cart/saved arrays hold slugs, and this is what turns a slug back into a
-     name, a price and a photo for the drawer and the repair picker. */
+     name, a price and a photo for the drawer. */
   useEffect(() => {
     let cancelled = false;
     fetchCatalogueProducts().then((list) => {
@@ -187,8 +173,6 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           setAddresses(
             stored.addresses.filter((a) => !DEMO_ADDRESS_IDS.has(a.id)),
           );
-        if (stored.repairs)
-          setRepairs(stored.repairs.filter((r) => !DEMO_REPAIR_IDS.has(r.id)));
       }
     } catch {
       /* a corrupt or blocked store just means we start fresh */
@@ -204,14 +188,13 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       user,
       orders,
       addresses,
-      repairs,
     };
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
     } catch {
       /* private mode — the session still works, it just will not survive */
     }
-  }, [hydrated, cart, saved, user, orders, addresses, repairs]);
+  }, [hydrated, cart, saved, user, orders, addresses]);
 
   /* the menu and the drawer both lock the page behind them */
   useEffect(() => {
@@ -314,23 +297,6 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     );
   }, []);
 
-  const openRepair = useCallback(
-    (piece: string, note: string) => {
-      setRepairs((current) => [
-        {
-          id: "RP-" + (119 + current.length),
-          piece,
-          note,
-          openedAt: new Date().toISOString(),
-          status: "Received",
-        },
-        ...current,
-      ]);
-      flash("Repair noted, we will write back");
-    },
-    [flash],
-  );
-
   const lines = useMemo(() => linesOf(cart, products), [cart, products]);
   const count = useMemo(() => countOf(cart), [cart]);
   const subtotal = useMemo(() => subtotalOf(cart, products), [cart, products]);
@@ -359,8 +325,6 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     addAddress,
     removeAddress,
     makeDefaultAddress,
-    repairs,
-    openRepair,
     toasts,
     flash,
     cartOpen,

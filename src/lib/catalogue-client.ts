@@ -3,7 +3,7 @@ import { imageUrl, type ArtKind, type Product } from "@/lib/catalogue-types";
 
 /**
  * The one place a client component reaches for product data — the cart
- * drawer resolving a slug to a thumbnail, the repair form's picker. Pages
+ * drawer resolving a slug to a thumbnail. Pages
  * already get their products server-rendered as props; this is only for the
  * pieces of UI that live outside that render, in the store's local cart and
  * saved-item state.

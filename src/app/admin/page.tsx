@@ -33,13 +33,12 @@ export default async function AdminOverview() {
       db.from("products").select("id", { count: "exact", head: true }).eq("is_active", true),
       db.from("profiles").select("id", { count: "exact", head: true }),
       db.from("contact_messages").select("id", { count: "exact", head: true }).eq("status", "new"),
-      db.from("repairs").select("id", { count: "exact", head: true }).neq("status", "closed"),
       db.from("orders").select("id", { count: "exact", head: true }).eq("status", "pending"),
       db.from("products").select("id", { count: "exact", head: true }).lte("stock", 3).eq("is_active", true),
     ]),
   ]);
 
-  const [orderCount, productCount, customerCount, newMessages, openRepairs, pending, lowStock] =
+  const [orderCount, productCount, customerCount, newMessages, pending, lowStock] =
     counts.map((c) => c.count ?? 0);
 
   const rows = (recent.data ?? []) as unknown as Recent[];
@@ -80,11 +79,10 @@ export default async function AdminOverview() {
         />
       </div>
 
-      <div className="mt-4 grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="mt-4 grid grid-cols-2 gap-4 lg:grid-cols-3">
         <Stat label="Awaiting review" value={fmtNum(pending)} href="/admin/orders?status=pending" />
         <Stat label="Low stock" value={fmtNum(lowStock)} hint="3 or fewer left" href="/admin/products" />
         <Stat label="New messages" value={fmtNum(newMessages)} href="/admin/inbox" />
-        <Stat label="Open repairs" value={fmtNum(openRepairs)} href="/admin/inbox" />
       </div>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-[2fr_1fr]">

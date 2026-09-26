@@ -6,12 +6,11 @@ import { ArrowRight, Star, Trash } from "@phosphor-icons/react/ssr";
 import { useStore } from "@/context/store";
 import { formatDate, money } from "@/lib/commerce";
 import ProductCard from "./ProductCard";
-import RepairForm from "./RepairForm";
 
 /* ── overview ─────────────────────────────────────────────────────── */
 
 export function OverviewPanel() {
-  const { orders, saved, addresses, repairs, products } = useStore();
+  const { orders, saved, addresses, products } = useStore();
   const latest = orders[0];
 
   return (
@@ -20,7 +19,6 @@ export function OverviewPanel() {
         <Stat value={orders.length} label="Orders" href="/account/orders" />
         <Stat value={saved.length} label="Saved pieces" href="/account/saved" />
         <Stat value={addresses.length} label="Addresses" href="/account/addresses" />
-        <Stat value={repairs.length} label="Repairs" href="/account/repairs" />
       </div>
 
       {latest ? (
@@ -317,42 +315,6 @@ export function AddressesPanel() {
           </button>
         </div>
       </form>
-    </div>
-  );
-}
-
-/* ── repairs ──────────────────────────────────────────────────────── */
-
-export function RepairsPanel() {
-  const { repairs } = useStore();
-
-  return (
-    <div className="flex flex-col gap-8">
-      {repairs.length === 0 ? (
-        <p className="rounded-lg border border-gold/20 bg-forest-deep/50 px-6 py-16 text-center font-serif text-2xl text-cream/65 italic">
-          Nothing is in for mending
-        </p>
-      ) : (
-        <div className="flex flex-col gap-4">
-          {repairs.map((repair) => (
-            <Card key={repair.id}>
-              <div className="mb-3 flex flex-wrap items-baseline justify-between gap-3">
-                <p className="font-serif text-xl text-cream">{repair.piece}</p>
-                <span className="rounded-md border border-gold/50 px-3 py-1 text-[11px] tracking-[.14em] text-gold-bright uppercase">
-                  {repair.status}
-                </span>
-              </div>
-              <p className="mb-2 text-sm leading-[1.7] text-cream/75">
-                “{repair.note}”
-              </p>
-              <p className="text-xs text-cream/45">
-                {repair.id} · opened {formatDate(repair.openedAt)}
-              </p>
-            </Card>
-          ))}
-        </div>
-      )}
-      <RepairForm />
     </div>
   );
 }

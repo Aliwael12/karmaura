@@ -2,11 +2,7 @@ import { requireAdmin } from "@/lib/db/auth";
 import { createAdminSupabase } from "@/lib/supabase/server";
 import { EmptyNote, PageHead, Panel } from "../ui";
 import InboxItem from "./InboxItem";
-import type {
-  ContactMessageRow,
-  NewsletterRow,
-  RepairRow,
-} from "@/lib/supabase/types";
+import type { ContactMessageRow, NewsletterRow } from "@/lib/supabase/types";
 
 export const dynamic = "force-dynamic";
 
@@ -23,9 +19,8 @@ export default async function AdminInbox() {
   await requireAdmin();
   const db = createAdminSupabase();
 
-  const [messagesRes, repairsRes, lettersRes] = await Promise.all([
+  const [messagesRes, lettersRes] = await Promise.all([
     db.from("contact_messages").select("*").order("created_at", { ascending: false }).limit(200),
-    db.from("repairs").select("*").order("created_at", { ascending: false }).limit(200),
     db
       .from("newsletter_subscribers")
       .select("*")
@@ -35,17 +30,15 @@ export default async function AdminInbox() {
   ]);
 
   const messages = (messagesRes.data ?? []) as unknown as ContactMessageRow[];
-  const repairs = (repairsRes.data ?? []) as unknown as RepairRow[];
   const letters = (lettersRes.data ?? []) as unknown as NewsletterRow[];
 
   const unread = messages.filter((m) => m.status === "new").length;
-  const openRepairs = repairs.filter((r) => r.status !== "closed").length;
 
   return (
     <>
-      <PageHead eyebrow="Inbox" title="Notes, repairs and letters">
+      <PageHead eyebrow="Inbox" title="Notes and letters">
         <p className="text-sm text-cream/50">
-          {unread} unread · {openRepairs} repairs open · {letters.length} on the list
+          {unread} unread · {letters.length} on the list
         </p>
       </PageHead>
 
@@ -79,7 +72,7 @@ export default async function AdminInbox() {
                   <p className="mb-3 text-sm leading-[1.7] whitespace-pre-wrap text-cream/75">
                     {m.message}
                   </p>
-                  <InboxItem kind="message" id={m.id} status={m.status} />
+                  <InboxItem id={m.id} status={m.status} />
                 </li>
               ))}
             </ul>
@@ -87,42 +80,6 @@ export default async function AdminInbox() {
         </Panel>
 
         <div className="flex flex-col gap-6">
-          <Panel title="In for mending">
-            {repairs.length === 0 ? (
-              <EmptyNote>Nothing is in for mending</EmptyNote>
-            ) : (
-              <ul className="flex flex-col gap-3">
-                {repairs.map((r) => (
-                  <li
-                    key={r.id}
-                    className="rounded-lg border border-gold/15 p-4"
-                  >
-                    <div className="mb-2 flex flex-wrap items-baseline justify-between gap-2">
-                      <span className="font-serif text-lg text-cream">{r.piece}</span>
-                      <span className="text-[11px] text-cream/40">
-                        {r.reference} · {when(r.created_at)}
-                      </span>
-                    </div>
-                    {r.note && (
-                      <p className="mb-2 text-sm leading-[1.7] text-cream/70">
-                        “{r.note}”
-                      </p>
-                    )}
-                    {r.customer_email && (
-                      <a
-                        href={`mailto:${r.customer_email}`}
-                        className="mb-3 block text-[12px] text-gold-bright hover:underline hover:underline-offset-4"
-                      >
-                        {r.customer_email}
-                      </a>
-                    )}
-                    <InboxItem kind="repair" id={r.id} status={r.status} />
-                  </li>
-                ))}
-              </ul>
-            )}
-          </Panel>
-
           <Panel
             title="Letters, twice a season"
             action={

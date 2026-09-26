@@ -2,8 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
-import { setMessageStatus, setRepairStatus } from "@/app/actions/admin";
-import type { MessageStatus, RepairStatus } from "@/lib/supabase/types";
+import { setMessageStatus } from "@/app/actions/admin";
+import type { MessageStatus } from "@/lib/supabase/types";
 
 const MESSAGE_MOVES: { to: MessageStatus; label: string }[] = [
   { to: "new", label: "Unread" },
@@ -11,29 +11,17 @@ const MESSAGE_MOVES: { to: MessageStatus; label: string }[] = [
   { to: "archived", label: "Archived" },
 ];
 
-const REPAIR_MOVES: { to: RepairStatus; label: string }[] = [
-  { to: "received", label: "Received" },
-  { to: "mending", label: "Being mended" },
-  { to: "sent_back", label: "Sent back" },
-  { to: "closed", label: "Closed" },
-];
-
 export default function InboxItem({
-  kind,
   id,
   status,
 }: {
-  kind: "message" | "repair";
   id: string;
   status: string;
 }) {
   const router = useRouter();
   const [pending, start] = useTransition();
 
-  const moves =
-    kind === "message"
-      ? MESSAGE_MOVES.map((m) => ({ ...m, to: m.to as string }))
-      : REPAIR_MOVES.map((m) => ({ ...m, to: m.to as string }));
+  const moves = MESSAGE_MOVES.map((m) => ({ ...m, to: m.to as string }));
 
   return (
     <div className="flex flex-wrap gap-1.5">
@@ -44,11 +32,7 @@ export default function InboxItem({
           disabled={pending || status === m.to}
           onClick={() =>
             start(async () => {
-              if (kind === "message") {
-                await setMessageStatus(id, m.to as MessageStatus);
-              } else {
-                await setRepairStatus(id, m.to as RepairStatus);
-              }
+              await setMessageStatus(id, m.to as MessageStatus);
               router.refresh();
             })
           }

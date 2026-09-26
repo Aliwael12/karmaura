@@ -1,7 +1,7 @@
 /**
  * The shapes the storefront renders, shared between the server-only reader
  * (lib/db/catalogue.ts) and the browser-side reader (lib/catalogue-client.ts)
- * that client components — the cart drawer, the repair form's picker — use
+ * that client components — the cart drawer — use
  * to resolve a slug to a name, price and photo without a page reload.
  *
  * Deliberately no Supabase import here: this file has to be safe to pull
