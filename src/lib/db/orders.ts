@@ -3,6 +3,7 @@ import "server-only";
 import { cookies } from "next/headers";
 import { createAdminSupabase, createServerSupabase } from "@/lib/supabase/server";
 import { createBostaDelivery, BOSTA_STATE_LABELS } from "@/lib/bosta/client";
+import { notifyNewOrder } from "@/lib/email/orderNotification";
 import type {
   OrderAttribution,
   OrderItemRow,
@@ -236,6 +237,7 @@ export async function placeOrder(
 
   const order = toOrder((full ?? created) as unknown as JoinedOrder);
   await rememberReceipt(order.number);
+  await notifyNewOrder(order);
 
   /* Every order here is cash-on-delivery, but the atelier reviews an order
      before it becomes a courier's problem — Bosta booking happens when an
