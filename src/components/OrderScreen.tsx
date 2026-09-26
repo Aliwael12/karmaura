@@ -22,8 +22,7 @@ export default function OrderScreen({ order }: { order: Order }) {
           Thank you, it is on its way
         </h1>
         <p className="mx-auto max-w-[46ch] text-[15px] leading-[1.7] text-olive">
-          Order {order.number}, placed {formatDate(order.placedAt)}. We will
-          write when it leaves the atelier, usually within five working days.
+          Order {order.number}, placed {formatDate(order.placedAt)}.
         </p>
       </section>
 
