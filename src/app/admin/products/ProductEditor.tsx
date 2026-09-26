@@ -429,7 +429,7 @@ function Photos({ product }: { product: AdminProduct }) {
         </p>
       )}
       <p className="mt-3 text-[11px] text-cream/35">
-        JPEG, PNG, WebP or AVIF, up to 8 MB. The first photograph is the one the
+        JPEG, PNG, WebP or AVIF, under 4 MB. The first photograph is the one the
         shop leads with.
       </p>
     </div>

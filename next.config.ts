@@ -15,6 +15,12 @@ const supabaseHost = (() => {
 })();
 
 const nextConfig: NextConfig = {
+  experimental: {
+    /* Product photos are posted through a server action. The default cap is
+       1 MB and Vercel rejects request bodies over 4.5 MB, so 4 MB is the
+       most that can work; uploadProductImage enforces the file size below it. */
+    serverActions: { bodySizeLimit: "4mb" },
+  },
   images: {
     remotePatterns: supabaseHost
       ? [

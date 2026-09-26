@@ -255,8 +255,8 @@ export async function uploadProductImage(formData: FormData): Promise<AdminResul
   if (!(file instanceof File) || file.size === 0) {
     return { ok: false, error: "Choose an image first." };
   }
-  if (file.size > 8 * 1024 * 1024) {
-    return { ok: false, error: "Images must be under 8 MB." };
+  if (file.size > 3.9 * 1024 * 1024) {
+    return { ok: false, error: "Images must be under 4 MB." };
   }
   if (!/^image\/(jpeg|png|webp|avif)$/.test(file.type)) {
     return { ok: false, error: "JPEG, PNG, WebP or AVIF, please." };
