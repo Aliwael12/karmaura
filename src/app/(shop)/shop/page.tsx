@@ -129,8 +129,7 @@ export default async function ShopPage({
       )}
 
       <p className="mt-[clamp(40px,6cqw,80px)] max-w-[52ch] text-[13px] leading-[1.7] text-moss">
-        Showing {list.length} of {total} pieces. Everything is made to order in
-        the atelier — nothing here is warehoused.
+        Showing {list.length} of {total} pieces.
       </p>
     </div>
   );
